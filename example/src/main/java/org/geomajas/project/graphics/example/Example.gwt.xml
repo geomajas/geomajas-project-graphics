@@ -19,7 +19,7 @@
   	
     <entry-point class="org.geomajas.project.graphics.example.client.Example"/>
 
-	<collapse-all-properties />
+	<!--<collapse-all-properties />-->
 
 	<source path='client'/>
 </module>
