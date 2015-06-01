@@ -18,24 +18,25 @@
   provided on top of the graphics model.</para>
 
   <section>
-	  <title>Define a GraphicsObject container Widget</title>
-	  <para>
-			First of all, define a <code>GraphicsObjectContainer</code> implementation. This object will have to
-		  contain all created <code>GraphicsObject</code>s and render them in the application.
-		  An abstract implementation with most of the functions is available as <code>AbstractGraphicsObjectContainer</code>.
-          A fully configured GWT widget - the graphicsObjectContainer can be added to a GWT layout - is
-          available in the example module, look at <code>ExampleGraphicsObjectContainer</code>.
-	  </para>
+    <title>Define a GraphicsObject container Widget</title>
 
-	  <para><programlisting>EventBus eventBus = new SimpleEventBus(); //choice an EventBus implementation
+    <para>First of all, define a <code>GraphicsObjectContainer</code>
+    implementation. This object will have to contain all created
+    <code>GraphicsObject</code>s and render them in the application. An
+    abstract implementation with most of the functions is available as
+    <code>AbstractGraphicsObjectContainer</code>. A fully configured GWT
+    widget - the graphicsObjectContainer can be added to a GWT layout - is
+    available in the example module, look at
+    <code>ExampleGraphicsObjectContainer</code>.</para>
+
+    <para><programlisting>EventBus eventBus = new SimpleEventBus(); //choice an EventBus implementation
 // implement GraphicsObjectContainer e.g. AbstractGraphicsObjectContainer
 GraphicsObjectContainer graphicsObjectContainer = new CustomGraphicsObjectContainerImpl(eventBus);</programlisting></para>
 
-	  <para>
-		  Graphics objects can be added at run time (see later), but one can also a add them programmatically:
-	  </para>
+    <para>Graphics objects can be added at run time (see later), but one can
+    also a add them programmatically:</para>
 
-	  <para><programlisting>GraphicsObjectContainer graphicsObjectContainer =...;
+    <para><programlisting>GraphicsObjectContainer graphicsObjectContainer =...;
 LabeledRectangle rect = new LabeledRectangle(100, 100, 100, 100, "Rectangle label");
 graphicsObjectContainer.add(rect);
 
@@ -46,14 +47,14 @@ LabeledEllipse ellipse = new LabeledEllipse(100, 300, 50, 80, "Ellipse");
 graphicsObjectContainer.add(ellipse);</programlisting></para>
   </section>
 
-	<section>
-		<title>Configure the GraphicsService</title>
-		<para>
-			The central class in using the Graphics function, is the <code>GraphicsService</code> object.
-			Create the service with an <code>EventBus</code> and the defined object container.
-		</para>
+  <section>
+    <title>Configure the GraphicsService</title>
 
-		<para><programlisting>EventBus eventBus = new SimpleEventBus(); // a simple EventBus implementation
+    <para>The central class in using the Graphics function, is the
+    <code>GraphicsService</code> object. Create the service with an
+    <code>EventBus</code> and the defined object container.</para>
+
+    <para><programlisting>EventBus eventBus = new SimpleEventBus(); // a simple EventBus implementation
 GraphicsObjectContainer graphicsObjectContainer = new CustomAbstractGraphicsObjectContainerImplementation(eventBus);
 
 //create and configure the GraphicsService
@@ -62,32 +63,36 @@ graphicsService.setObjectContainer(graphicsObjectContainer);
 graphicsService.setUndoKeys(true);
 graphicsService.setShowOriginalObjectWhileDragging(true);</programlisting></para>
 
-        <para>The <code>GraphicsController</code> interface is used for managing specific changes to the graphics objects.
-        Specific implementations are: <code>ResizeController</code>, <code>DragController</code> or <code>DeleteController</code>.
-            These controllers can be registered to the <code>GraphicsService</code> via their
-            <code>GraphicsControllerFactory</code> implementations. These factories will be used to create
-        a <code>GraphicsController</code> for each new graphics object added to the container.
-            In the example below, one will be able to resize, drag and delete objects added to the graphics container.
-		</para>
+    <para>The <code>GraphicsController</code> interface is used for managing
+    specific changes to the graphics objects. Specific implementations are:
+    <code>ResizeController</code>, <code>DragController</code> or
+    <code>DeleteController</code>. These controllers can be registered to the
+    <code>GraphicsService</code> via their
+    <code>GraphicsControllerFactory</code> implementations. These factories
+    will be used to create a <code>GraphicsController</code> for each new
+    graphics object added to the container. In the example below, one will be
+    able to resize, drag and delete objects added to the graphics
+    container.</para>
 
-        <para><programlisting>GraphicsService graphicsService = ...;
+    <para><programlisting>GraphicsService graphicsService = ...;
 // register controller factories
 graphicsService.registerControllerFactory(new ResizeControllerFactory());
 graphicsService.registerControllerFactory(new DragControllerFactory());
 graphicsService.registerControllerFactory(new DeleteControllerFactory());</programlisting></para>
+  </section>
 
-	</section>
+  <section>
+    <title>PopupMenu configuration</title>
 
-	<section>
-		<title>PopupMenu configuration</title>
-        <para>One special <code>GraphicsController</code> is the <code>PopupMenuController</code>.
-        This controller will add extra tools to a <code>GraphicsObject</code>: the default implementation will
-        add a cog symbol to the upper left corner of the bounding box of an object on selection.
-            On clicking this cog icon, a dropdown is shown with registered actions.
-            The registration of the actions is done as below, directly on the
-            <code>PopupMenuControllerFactory</code>.</para>
+    <para>One special <code>GraphicsController</code> is the
+    <code>PopupMenuController</code>. This controller will add extra tools to
+    a <code>GraphicsObject</code>: the default implementation will add a cog
+    symbol to the upper left corner of the bounding box of an object on
+    selection. On clicking this cog icon, a dropdown is shown with registered
+    actions. The registration of the actions is done as below, directly on the
+    <code>PopupMenuControllerFactory</code>.</para>
 
-        <para><programlisting>GraphicsService graphicsService = ...;
+    <para><programlisting>GraphicsService graphicsService = ...;
 PopupMenuControllerFactory popupFactory = new PopupMenuControllerFactory();
 /* register actions */
 // editor for labels of the object
@@ -100,31 +105,40 @@ popupFactory.registerAction(new DeleteAction());
 //register popupfactory to graphicsService
 graphicsService.registerControllerFactory(popupFactory);</programlisting></para>
 
-        <para>Actions of the <code>PopupMenuController</code> dropdown will only be shown when
-        appropriate for the specific object.
-            In case of a labeled Image object, the Stroke and Fill action will not be available, but the label editor will.
-        In case of an unlabeled Line object, only the stroke section of the <code>StrokeFillEditor</code>
-        will be available, etc...</para>
-	</section>
+    <para>Actions of the <code>PopupMenuController</code> dropdown will only
+    be shown when appropriate for the specific object. In case of a labeled
+    Image object, the Stroke and Fill action will not be available, but the
+    label editor will. In case of an unlabeled Line object, only the stroke
+    section of the <code>StrokeFillEditor</code> will be available,
+    etc...</para>
+  </section>
 
-	<section>
-		<title>Create Controllers</title>
-        <para><code>CreateController</code> is a special abstract implementation of the <code>GraphicsController</code>
-            interface, that can be used to create and add a specific type of <code>GraphicsObject</code>.
-        Default implementations are provided for creating the most basic <code>GraphicsObject</code> types:
-        <code>CreateBaseTextController</code>, <code>CreateBaseCircleByRadiusController</code>,
-        <code>CreateBasePathController</code>, ...</para>
-        <para>These <code>CreateController</code>s function mostly as follows. Upon creation they will be inactive.
-        On activation, they will listen to specific events on the area of the <code>GraphicsObjectContainer</code>.
-        From the information of these events, a <code>GraphicsObject</code> will be created.
-            This object will be added to the <code>GraphicsService</code>. </para>
-        <para>A developer is free to use the <code>CreateController</code>s in any way they want.
-        Mostly, the activation of the controllers will be triggered via the user via the gui.
-        A widget is available in the project: <code>CreateButtonGroupWidget</code> represents a horizontal
-        or vertical list of buttons, each linked to their specific create controller.
-            Code below from the example module:</para>
+  <section>
+    <title>Create Controllers</title>
 
-        <para><programlisting>CreateButtonGroupWidget createBaseButtonGroupWidget = new CreateButtonGroupWidget(graphicsService);
+    <para><code>CreateController</code> is a special abstract implementation
+    of the <code>GraphicsController</code> interface, that can be used to
+    create and add a specific type of <code>GraphicsObject</code>. Default
+    implementations are provided for creating the most basic
+    <code>GraphicsObject</code> types: <code>CreateBaseTextController</code>,
+    <code>CreateBaseCircleByRadiusController</code>,
+    <code>CreateBasePathController</code>, ...</para>
+
+    <para>These <code>CreateController</code>s function mostly as follows.
+    Upon creation they will be inactive. On activation, they will listen to
+    specific events on the area of the <code>GraphicsObjectContainer</code>.
+    From the information of these events, a <code>GraphicsObject</code> will
+    be created. This object will be added to the
+    <code>GraphicsService</code>.</para>
+
+    <para>A developer is free to use the <code>CreateController</code>s in any
+    way they want. Mostly, the activation of the controllers will be triggered
+    via the user via the gui. A widget is available in the project:
+    <code>CreateButtonGroupWidget</code> represents a horizontal or vertical
+    list of buttons, each linked to their specific create controller. Code
+    below from the example module:</para>
+
+    <para><programlisting>CreateButtonGroupWidget createBaseButtonGroupWidget = new CreateButtonGroupWidget(graphicsService);
 // addCreateController method takes 2 attributes: CreateController and String, i.e. label on button
 createButtonGroupWidget.addCreateController(new CreateBaseTextController(graphicsService), "Base Text");
 createButtonGroupWidget.addCreateController(
@@ -133,5 +147,49 @@ createButtonGroupWidget.addCreateController(new CreateBaseCircleByRectangleContr
 "Base Circle (by rectangle)");
 // add the widget to the GWT Layout
 ...</programlisting></para>
-	</section>
+  </section>
+
+  <section>
+    <title>Add a custom role (advanced)</title>
+
+    <para>To add a custom role, a couple of things have to be done:</para>
+
+    <orderedlist>
+      <listitem>
+        <para>Create a role interface by extending
+        <code>RoleInterface</code></para>
+      </listitem>
+
+      <listitem>
+        <para>Add a <code>RoleType</code> constant to your interface</para>
+      </listitem>
+
+      <listitem>
+        <para>Implement the role. This is preferrably done in a separate
+        object that is later on added to the main graphics object</para>
+      </listitem>
+
+      <listitem>
+        <para>Implement <code>Renderable</code> to display your role together
+        with the main object. </para>
+      </listitem>
+
+      <listitem>
+        <para>Implement <code>Updateable</code> to react on changes to other
+        aspects/roles of the main object (e.g resizing).</para>
+      </listitem>
+
+      <listitem>
+        <para>Create a new GraphicsObject by extending
+        <code>UpdateableGroupGraphicsObject</code> and composing all the roles
+        that you need. Take care to add updatables and configure the rendering
+        order.</para>
+      </listitem>
+
+      <listitem>
+        <para>Create a new <code>GraphicsControllerFactory</code> for your
+        role and register it with the <code>GraphicsService</code></para>
+      </listitem>
+    </orderedlist>
+  </section>
 </chapter>
