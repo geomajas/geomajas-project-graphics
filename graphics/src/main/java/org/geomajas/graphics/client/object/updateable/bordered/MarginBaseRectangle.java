@@ -15,10 +15,11 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.Graphics;
 import org.geomajas.graphics.client.object.BaseGraphicsObject;
 import org.geomajas.graphics.client.object.role.Draggable;
-import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.object.role.Fillable;
+import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.object.role.Strokable;
 import org.geomajas.graphics.client.render.AnchoredRectangle;
+import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.util.FlipState;
 import org.vaadin.gwtgraphics.client.VectorObject;
 
@@ -97,11 +98,8 @@ public class MarginBaseRectangle extends BaseGraphicsObject implements Resizable
 	}
 
 	@Override
-	public VectorObject asObject() {
-		if (rectangle instanceof VectorObject) {
-			return (VectorObject) rectangle;
-		}
-		return null;
+	public Renderable getRenderable() {
+		return rectangle.getRenderable();
 	}
 
 	@Override

@@ -16,6 +16,7 @@ import org.geomajas.graphics.client.object.BaseGraphicsObject;
 import org.geomajas.graphics.client.object.role.Cloneable;
 import org.geomajas.graphics.client.object.role.Fillable;
 import org.geomajas.graphics.client.object.role.Strokable;
+import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.render.RenderableList;
 import org.vaadin.gwtgraphics.client.VectorObject;
 
@@ -160,8 +161,8 @@ public class Marker extends BaseGraphicsObject implements Strokable, Fillable {
 	//------------------------
 
 	@Override
-	public VectorObject asObject() {
-		return markerGroup.asObject();
+	public Renderable getRenderable() {
+		return markerGroup.getRenderable();
 	}
 
 	public void setVisible(boolean visible) {

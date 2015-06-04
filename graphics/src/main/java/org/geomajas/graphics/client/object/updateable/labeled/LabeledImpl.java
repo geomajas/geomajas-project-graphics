@@ -17,6 +17,7 @@ import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.object.base.BaseText;
 import org.geomajas.graphics.client.object.role.Textable;
 import org.geomajas.graphics.client.object.updateable.Updateable;
+import org.geomajas.graphics.client.render.Renderable;
 import org.vaadin.gwtgraphics.client.VectorObject;
 
 /**
@@ -47,8 +48,8 @@ public class LabeledImpl extends BaseGraphicsObject implements Labeled, Updateab
 	}
 
 	@Override
-	public VectorObject asObject() {
-		return baseText.asObject();
+	public Renderable getRenderable() {
+		return baseText.getRenderable();
 	}
 	
 	@Override

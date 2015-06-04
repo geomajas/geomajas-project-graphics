@@ -10,6 +10,15 @@
  */
 package org.geomajas.graphics.client.controller.create.base;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.graphics.client.controller.create.CreateController;
+import org.geomajas.graphics.client.object.base.BaseText;
+import org.geomajas.graphics.client.operation.AddOperation;
+import org.geomajas.graphics.client.service.GraphicsService;
+
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -23,14 +32,6 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.web.bindery.event.shared.HandlerRegistration;
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.graphics.client.controller.create.CreateController;
-import org.geomajas.graphics.client.object.base.BaseText;
-import org.geomajas.graphics.client.operation.AddOperation;
-import org.geomajas.graphics.client.service.GraphicsService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Controller that creates a {@link BaseText}.

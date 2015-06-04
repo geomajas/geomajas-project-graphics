@@ -10,6 +10,7 @@
  */
 package org.geomajas.graphics.client.object;
 
+import org.geomajas.graphics.client.render.IsRenderable;
 import org.geomajas.graphics.client.render.Renderable;
 import org.vaadin.gwtgraphics.client.Transparent;
 
@@ -21,7 +22,7 @@ import org.vaadin.gwtgraphics.client.Transparent;
  * @author Jan De Moerloose
  * 
  */
-public interface GraphicsObject extends Renderable, org.geomajas.graphics.client.object.role.Cloneable, Transparent {
+public interface GraphicsObject extends IsRenderable, org.geomajas.graphics.client.object.role.Cloneable, Transparent {
 
 	boolean hasRole(RoleType<?> type);
 

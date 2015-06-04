@@ -21,7 +21,7 @@ import org.geomajas.graphics.client.util.HasStroke;
  * @author Jan Venstermans
  * 
  */
-public interface AnchoredEllipse extends HasStroke, HasFill {
+public interface AnchoredEllipse extends HasStroke, HasFill, IsRenderable {
 
 	void setUserX(double x);
 

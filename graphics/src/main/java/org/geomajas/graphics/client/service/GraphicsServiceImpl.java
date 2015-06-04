@@ -21,8 +21,8 @@ import org.geomajas.graphics.client.controller.MetaController;
 import org.geomajas.graphics.client.event.GraphicsOperationEvent;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.operation.GraphicsOperation;
+import org.geomajas.graphics.client.render.RenderContainer;
 import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer;
-import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.Event;
@@ -43,7 +43,7 @@ public class GraphicsServiceImpl implements GraphicsService, GraphicsOperationEv
 
 	private Stack<GraphicsOperation> redoStack = new Stack<GraphicsOperation>();
 
-	private GraphicsObjectContainer objectContainer;
+	private RenderContainer objectContainer;
 
 	private List<GraphicsControllerFactory> controllerFactoryList = new ArrayList<GraphicsControllerFactory>();
 
@@ -148,15 +148,15 @@ public class GraphicsServiceImpl implements GraphicsService, GraphicsOperationEv
 		this.objectContainer = objectContainer;
 	}
 
-	public VectorObjectContainer createContainer() {
+	public RenderContainer createContainer() {
 		return objectContainer.createContainer();
 	}
 
-	public void bringContainerToFront(VectorObjectContainer container) {
+	public void bringContainerToFront(RenderContainer container) {
 		objectContainer.bringContainerToFront(container);
 	}
 
-	public void removeContainer(VectorObjectContainer container) {
+	public void removeContainer(RenderContainer container) {
 		objectContainer.removeContainer(container);
 	}
 

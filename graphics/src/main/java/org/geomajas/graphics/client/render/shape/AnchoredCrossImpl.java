@@ -10,16 +10,17 @@
  */
 package org.geomajas.graphics.client.render.shape;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.graphics.client.render.AnchoredCross;
-import org.vaadin.gwtgraphics.client.VectorObject;
+import org.geomajas.graphics.client.render.Renderable;
+import org.geomajas.graphics.client.render.VectorRenderable;
 import org.vaadin.gwtgraphics.client.shape.Path;
 import org.vaadin.gwtgraphics.client.shape.path.LineTo;
 import org.vaadin.gwtgraphics.client.shape.path.MoveTo;
 import org.vaadin.gwtgraphics.client.shape.path.PathStep;
 import org.vaadin.gwtgraphics.client.shape.path.ScaleHelper;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A non-scaling cross (diagonals of a square) that is anchored to its world space location on a specific pixel or
@@ -35,6 +36,8 @@ public class AnchoredCrossImpl extends Path implements AnchoredCross {
 	
 	private List<PathStep> steps = new ArrayList<PathStep>();
 	
+	private VectorRenderable renderable;
+	
 	/**
 	 * Creates a cross (diagonals of a square) at the specified world location with a specified size and anchor point.
 	 * E.g., if (anchorX,anchorY)=(0, 0), the center of the cross will be positioned at the world
@@ -46,6 +49,7 @@ public class AnchoredCrossImpl extends Path implements AnchoredCross {
 	 */
 	public AnchoredCrossImpl(double userX, double userY, int crossHeightPixels) {
 		super(userX, userY);
+		this.renderable = new VectorRenderable(this);
 		this.crossHeightPixels = crossHeightPixels;
 	}
 
@@ -90,15 +94,9 @@ public class AnchoredCrossImpl extends Path implements AnchoredCross {
 	public void lineRelativelyTo(int x, int y) {
 		steps.add(new LineTo(true, x, y));
 	}
-
+	
 	@Override
-	public VectorObject asObject() {
-		return this;
-	}
-
-	@Override
-	public void setOpacity(double opacity) {
-		setFillOpacity(opacity);
-		setStrokeOpacity(opacity);
+	public Renderable getRenderable() {
+		return renderable;
 	}
 }

@@ -18,12 +18,14 @@ import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.user.client.DOM;
 import com.google.web.bindery.event.shared.HandlerRegistration;
+
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.object.updateable.anchored.Anchored;
 import org.geomajas.graphics.client.operation.AddOperation;
+import org.geomajas.graphics.client.render.RenderContainer;
 import org.geomajas.graphics.client.service.GraphicsService;
 import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer.Space;
 import org.geomajas.graphics.client.util.BboxPosition;
@@ -49,7 +51,7 @@ public abstract class CreateObjectByRectangleController<T extends GraphicsObject
 	/**
 	 * Our own container.
 	 */
-	private VectorObjectContainer container;
+	private RenderContainer container;
 
 	private HandlerRegistration registration;
 
@@ -91,11 +93,11 @@ public abstract class CreateObjectByRectangleController<T extends GraphicsObject
 			dragResizable = createObjectWithoutBounds();
 			dragResizable.getRole(Resizable.TYPE).setUserBounds(new Bbox(begin.getX(), begin.getY(), 0, 0));
 			setAnchor(dragResizable);
-			dragResizable.asObject().addMouseMoveHandler(this);
-			dragResizable.asObject().addMouseUpHandler(this);
-			container.add(dragResizable.asObject());
+			dragResizable.getRenderable().addMouseMoveHandler(this);
+			dragResizable.getRenderable().addMouseUpHandler(this);
+			dragResizable.getRenderable().renderInContainer(container);
 		}
-		DOM.setCapture(dragResizable.asObject().getElement());
+		dragResizable.getRenderable().capture();
 	}
 
 	@Override
@@ -103,8 +105,8 @@ public abstract class CreateObjectByRectangleController<T extends GraphicsObject
 		GraphicsObject result = createObjectWithoutBounds();
 		result.getRole(Resizable.TYPE).setUserBounds(dragResizable.getRole(Resizable.TYPE).getUserBounds());
 		setAnchor(result);
-		DOM.releaseCapture(dragResizable.asObject().getElement());
-		container.remove(dragResizable.asObject());
+		dragResizable.getRenderable().releaseCapture();
+		dragResizable.getRenderable().removeFromParent();
 		dragResizable = null;
 		execute(new AddOperation(result));
 	}

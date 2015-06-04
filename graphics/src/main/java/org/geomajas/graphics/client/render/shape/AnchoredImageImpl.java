@@ -12,6 +12,8 @@ package org.geomajas.graphics.client.render.shape;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.graphics.client.render.AnchoredImage;
+import org.geomajas.graphics.client.render.Renderable;
+import org.geomajas.graphics.client.render.VectorRenderable;
 import org.vaadin.gwtgraphics.client.Image;
 
 /**
@@ -22,6 +24,8 @@ import org.vaadin.gwtgraphics.client.Image;
  * 
  */
 public class AnchoredImageImpl extends Image implements AnchoredImage {
+	
+	private VectorRenderable renderable;
 
 	// value between 0 (left) and 1 (right)
 	private double anchorX;
@@ -46,6 +50,7 @@ public class AnchoredImageImpl extends Image implements AnchoredImage {
 		super(userX, userY, width, height, href);
 		this.anchorX = anchorX;
 		this.anchorY = anchorY;
+		this.renderable = new VectorRenderable(this);
 	}
 
 	public double getAnchorX() {
@@ -124,10 +129,10 @@ public class AnchoredImageImpl extends Image implements AnchoredImage {
 	public boolean isPreserveAspectRatio() {
 		return Boolean.parseBoolean(getElement().getAttribute("preserveAspectRatio"));
 	}
-
+	
 	@Override
-	public void setOpacity(double opacity) {
-		getElement().getStyle().setOpacity(opacity);
+	public Renderable getRenderable() {
+		return renderable;
 	}
 
 }

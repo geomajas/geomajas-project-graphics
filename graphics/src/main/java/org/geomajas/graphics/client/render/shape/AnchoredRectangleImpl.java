@@ -11,7 +11,8 @@
 package org.geomajas.graphics.client.render.shape;
 
 import org.geomajas.graphics.client.render.AnchoredRectangle;
-import org.vaadin.gwtgraphics.client.VectorObject;
+import org.geomajas.graphics.client.render.Renderable;
+import org.geomajas.graphics.client.render.VectorRenderable;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
 
 /**
@@ -22,6 +23,8 @@ import org.vaadin.gwtgraphics.client.shape.Rectangle;
  * 
  */
 public class AnchoredRectangleImpl extends Rectangle implements AnchoredRectangle {
+
+	private VectorRenderable renderable;
 
 	private int anchorX;
 
@@ -38,9 +41,10 @@ public class AnchoredRectangleImpl extends Rectangle implements AnchoredRectangl
 	 * @param anchorX x-location of the anchor point (rectangle-relative)
 	 * @param anchorY y-location of the anchor point (rectangle-relative)
 	 */
-	public AnchoredRectangleImpl(double userX, double userY, double userWidth, double userHeight,
-								 int anchorX, int anchorY) {
+	public AnchoredRectangleImpl(double userX, double userY, double userWidth, double userHeight, int anchorX,
+			int anchorY) {
 		super(userX, userY, userWidth, userHeight);
+		this.renderable = new VectorRenderable(this);
 		this.anchorX = anchorX;
 		this.anchorY = anchorY;
 	}
@@ -58,7 +62,7 @@ public class AnchoredRectangleImpl extends Rectangle implements AnchoredRectangl
 	public Object cloneObject() {
 		return new AnchoredRectangleImpl(getUserX(), getUserY(), getUserWidth(), getUserHeight(), anchorX, anchorY);
 	}
-	
+
 	public int getAnchorX() {
 		return anchorX;
 	}
@@ -68,13 +72,8 @@ public class AnchoredRectangleImpl extends Rectangle implements AnchoredRectangl
 	}
 
 	@Override
-	public VectorObject asObject() {
-		return this;
+	public Renderable getRenderable() {
+		return renderable;
 	}
 
-	@Override
-	public void setOpacity(double opacity) {
-		setFillOpacity(opacity);
-		setStrokeOpacity(opacity);
-	}
 }

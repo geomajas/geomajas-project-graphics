@@ -15,7 +15,7 @@ import org.geomajas.graphics.client.Graphics;
 import org.geomajas.graphics.client.object.BaseGraphicsObject;
 import org.geomajas.graphics.client.object.role.Strokable;
 import org.geomajas.graphics.client.render.CoordinatePath;
-import org.vaadin.gwtgraphics.client.VectorObject;
+import org.geomajas.graphics.client.render.Renderable;
 
 /**
  * Implementation of {@link BaseGraphicsObject} for a line with two points.
@@ -115,11 +115,13 @@ public class TwoPointsLine extends BaseGraphicsObject implements Strokable {
 	}
 
 	@Override
-	public VectorObject asObject() {
-		return coordinatePath.asObject();
+	public Renderable getRenderable() {
+		return coordinatePath.getRenderable();
 	}
 
 	private Coordinate getCoordinate1() {
 		return coordinatePath.getCoordinates()[0];
 	}
+	
+	
 }

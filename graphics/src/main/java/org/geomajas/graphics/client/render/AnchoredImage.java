@@ -20,7 +20,7 @@ import org.geomajas.geometry.Bbox;
  * @author Jan Venstermans
  * 
  */
-public interface AnchoredImage {
+public interface AnchoredImage extends IsRenderable {
 
 	// user bounds
 
@@ -50,8 +50,6 @@ public interface AnchoredImage {
 	Bbox getBounds();
 
 	boolean isPreserveAspectRatio();
-
-	void setOpacity(double opacity);
 
 	void setUserWidth(double width);
 

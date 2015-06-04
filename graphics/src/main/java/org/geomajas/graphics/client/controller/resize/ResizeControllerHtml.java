@@ -28,6 +28,7 @@ import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.RootPanel;
+
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.service.BboxService;
@@ -41,6 +42,7 @@ import org.geomajas.graphics.client.operation.DragOperation;
 import org.geomajas.graphics.client.operation.ResizeOperation;
 import org.geomajas.graphics.client.service.GraphicsService;
 import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer.Space;
+import org.geomajas.graphics.client.render.RenderContainer;
 import org.geomajas.graphics.client.render.shape.AnchoredRectangleImpl;
 import org.geomajas.graphics.client.util.BboxPosition;
 import org.geomajas.graphics.client.util.FlipState;
@@ -73,12 +75,12 @@ public class ResizeControllerHtml extends AbstractInterruptibleGraphicsControlle
 	/**
 	 * Our own container.
 	 */
-	private VectorObjectContainer container;
+	private RenderContainer container;
 
 	/**
 	 * Group with all handler objects.
 	 */
-	private Group handlerGroup;
+	private RenderContainer handlerGroup;
 
 	/**
 	 * List of resize handlers (small corner and mid-size squares to stretch the object)
@@ -147,18 +149,18 @@ public class ResizeControllerHtml extends AbstractInterruptibleGraphicsControlle
 		if (active != isActive()) {
 			super.setActive(active);
 			if (isActive()) {
-				if (handlerGroup == null || handlerGroup.getVectorObjectCount() < 1) {
+				if (handlerGroup == null || handlerGroup.isEmpty()) {
 					// create and (implicitly) activate the handler group
 					init();
 				} else {
 					// the group may be detached, update and reattach !
 					updateHandlers();
-					container.add(handlerGroup);
+					handlerGroup.renderInContainer(container);
 				}
 			} else {
 				// just remove the handler group
 				if (handlerGroup != null) {
-					container.remove(handlerGroup);
+					handlerGroup.removeFromParent();
 				}
 			}
 		}
@@ -227,7 +229,7 @@ public class ResizeControllerHtml extends AbstractInterruptibleGraphicsControlle
 	}
 
 	private void init() {
-		handlerGroup = new Group();
+		handlerGroup = getService().getObjectContainer().createContainer();
 		// create the drag handler and attach it
 		dragHandler = new DragHandler();
 		dragHandler.addToGroup(handlerGroup);

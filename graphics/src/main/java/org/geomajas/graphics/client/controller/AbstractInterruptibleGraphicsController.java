@@ -11,10 +11,12 @@
 package org.geomajas.graphics.client.controller;
 
 import com.google.gwt.event.dom.client.MouseEvent;
+
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.operation.GraphicsOperation;
+import org.geomajas.graphics.client.render.RenderContainer;
 import org.geomajas.graphics.client.service.GraphicsService;
 import org.geomajas.graphics.client.service.GraphicsServiceImpl;
 import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer;
@@ -160,15 +162,15 @@ public abstract class AbstractInterruptibleGraphicsController implements Graphic
 		return (GraphicsServiceImpl) graphicsService;
 	}
 
-	protected VectorObjectContainer createContainer() {
+	protected RenderContainer createContainer() {
 		return getGraphicsServiceImpl().createContainer();
 	}
 
-	protected void removeContainer(VectorObjectContainer container) {
+	protected void removeContainer(RenderContainer container) {
 		getGraphicsServiceImpl().removeContainer(container);
 	}
 
-	protected void bringContainerToFront(VectorObjectContainer container) {
+	protected void bringContainerToFront(RenderContainer container) {
 		getGraphicsServiceImpl().bringContainerToFront(container);
 	}
 }

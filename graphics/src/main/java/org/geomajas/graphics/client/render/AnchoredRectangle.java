@@ -23,7 +23,7 @@ import org.geomajas.graphics.client.util.HasStroke;
  * @author Jan Venstermans
  * 
  */
-public interface AnchoredRectangle extends Cloneable, HasStroke, HasFill, AnchorMarker {
+public interface AnchoredRectangle extends Cloneable, HasStroke, HasFill, AnchorMarker, IsRenderable {
 
 	void setUserX(double userX);
 

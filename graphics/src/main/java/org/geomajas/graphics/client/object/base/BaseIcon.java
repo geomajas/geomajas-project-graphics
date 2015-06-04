@@ -16,6 +16,7 @@ import org.geomajas.graphics.client.Graphics;
 import org.geomajas.graphics.client.object.BaseGraphicsObject;
 import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.render.AnchoredImage;
+import org.geomajas.graphics.client.render.Renderable;
 import org.vaadin.gwtgraphics.client.VectorObject;
 
 /**
@@ -40,11 +41,8 @@ public class BaseIcon extends BaseGraphicsObject implements Draggable {
 	}
 
 	@Override
-	public VectorObject asObject() {
-		if (anchoredImage instanceof VectorObject) {
-			return (VectorObject) anchoredImage;
-		}
-		return null;
+	public Renderable getRenderable() {
+		return anchoredImage.getRenderable();
 	}
 
 	@Override
@@ -61,7 +59,7 @@ public class BaseIcon extends BaseGraphicsObject implements Draggable {
 	@Override
 	public void setOpacity(double opacity) {
 		try {
-			anchoredImage.setOpacity(opacity);
+			anchoredImage.getRenderable().setOpacity(opacity);
 		} catch (Exception e) {
 			// do nothing
 		}

@@ -22,7 +22,7 @@ import org.geomajas.graphics.client.util.HasStroke;
  * @author Jan Venstermans
  * 
  */
-public interface CoordinatePath extends HasStroke, HasFill, HasBounds, Renderable {
+public interface CoordinatePath extends HasStroke, HasFill, HasBounds, IsRenderable {
 
 	boolean isClosed();
 

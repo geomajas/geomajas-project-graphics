@@ -18,6 +18,7 @@ import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.object.role.Textable;
 import org.geomajas.graphics.client.render.AnchoredText;
+import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.util.FlipState;
 import org.vaadin.gwtgraphics.client.VectorObject;
 
@@ -62,11 +63,8 @@ public class BaseText extends BaseGraphicsObject implements Draggable, Textable,
 	}
 
 	@Override
-	public VectorObject asObject() {
-		if (text instanceof VectorObject) {
-			return (VectorObject) text;
-		}
-		return null;
+	public Renderable getRenderable() {
+		return text.getRenderable();
 	}
 
 	@Override

@@ -19,8 +19,8 @@ import org.geomajas.graphics.client.render.AnchoredImage;
 import org.geomajas.graphics.client.render.AnchoredRectangle;
 import org.geomajas.graphics.client.render.AnchoredText;
 import org.geomajas.graphics.client.render.CoordinatePath;
-import org.geomajas.graphics.client.render.RenderGroup;
 import org.geomajas.graphics.client.render.RenderableList;
+import org.geomajas.graphics.client.render.VectorRenderContainer;
 
 /**
  * Default implementation of {@link RenderElementFactory} for {@link org.vaadin.gwtgraphics.client.Shape} objects.
@@ -80,7 +80,7 @@ public class ShapeRenderElementFactoryImpl implements RenderElementFactory {
 
 	@Override
 	public RenderableList createRenderableList() {
-		return new RenderGroup();
+		return new VectorRenderContainer();
 	}
 
 	@Override

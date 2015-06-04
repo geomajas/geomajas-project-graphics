@@ -20,6 +20,7 @@ import org.geomajas.graphics.client.object.role.Fillable;
 import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.object.role.Strokable;
 import org.geomajas.graphics.client.render.AnchoredEllipse;
+import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.util.CopyUtil;
 import org.geomajas.graphics.client.util.FlipState;
 import org.vaadin.gwtgraphics.client.VectorObject;
@@ -113,11 +114,8 @@ public class BaseEllipse extends BaseGraphicsObject implements Resizable, Dragga
 	}
 
 	@Override
-	public VectorObject asObject() {
-		if (anchoredEllipse instanceof VectorObject) {
-			return (VectorObject) anchoredEllipse;
-		}
-		return null;
+	public Renderable getRenderable() {
+		return anchoredEllipse.getRenderable();
 	}
 
 

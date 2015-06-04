@@ -18,9 +18,11 @@ import java.util.List;
  * @author Jan Venstermans
  *
  */
-public interface RenderableList extends Renderable {
+public interface RenderableList extends IsRenderable {
 
 	void addRenderable(Renderable renderable);
+
+	void addRenderable(IsRenderable renderable);
 
 	List<Renderable> getRenderableList();
 }

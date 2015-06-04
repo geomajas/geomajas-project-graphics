@@ -22,7 +22,7 @@ import org.geomajas.graphics.client.util.HasStroke;
  * @author Jan Venstermans
  * 
  */
-public interface AnchoredCircle extends AnchorMarker, HasStroke, HasFill {
+public interface AnchoredCircle extends AnchorMarker, HasStroke, HasFill, IsRenderable {
 
 	void setUserX(double x);
 

@@ -10,9 +10,10 @@
  */
 package org.geomajas.graphics.client.object.updateable.anchored;
 
-import org.geomajas.graphics.client.render.Renderable;
+import org.geomajas.graphics.client.render.IsRenderable;
 import org.geomajas.graphics.client.util.HasFill;
 import org.geomajas.graphics.client.util.HasStroke;
+import org.vaadin.gwtgraphics.client.VectorObject;
 
 /**
  * Interface for marker's shape.
@@ -20,7 +21,7 @@ import org.geomajas.graphics.client.util.HasStroke;
  * @author Jan Venstermans
  * 
  */
-public interface AnchorMarker extends HasFill, HasStroke, Renderable {
+public interface AnchorMarker extends HasFill, HasStroke, IsRenderable {
 
 	void setFixedSize(boolean fixedSize);
 
@@ -33,4 +34,6 @@ public interface AnchorMarker extends HasFill, HasStroke, Renderable {
 	void setUserX(double userX);
 
 	void setUserY(double userY);
+	
+	VectorObject getVectorObject();
 }

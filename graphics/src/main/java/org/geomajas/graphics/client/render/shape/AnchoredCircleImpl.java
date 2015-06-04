@@ -12,7 +12,8 @@ package org.geomajas.graphics.client.render.shape;
 
 import org.geomajas.graphics.client.object.role.Cloneable;
 import org.geomajas.graphics.client.render.AnchoredCircle;
-import org.vaadin.gwtgraphics.client.VectorObject;
+import org.geomajas.graphics.client.render.Renderable;
+import org.geomajas.graphics.client.render.VectorRenderable;
 import org.vaadin.gwtgraphics.client.shape.Circle;
 
 /**
@@ -27,6 +28,8 @@ public class AnchoredCircleImpl extends Circle implements Cloneable, AnchoredCir
 	private int anchorX;
 
 	private int anchorY;
+	
+	private VectorRenderable renderable;
 
 	/**
 	 * Creates an rectangle at the specified world location with a specified size and anchor point. E.g., if
@@ -43,6 +46,7 @@ public class AnchoredCircleImpl extends Circle implements Cloneable, AnchoredCir
 		super(userX, userY, userRadius);
 		this.anchorX = anchorX;
 		this.anchorY = anchorY;
+		this.renderable = new VectorRenderable(this);
 	}
 
 	@Override
@@ -57,15 +61,9 @@ public class AnchoredCircleImpl extends Circle implements Cloneable, AnchoredCir
 	public Object cloneObject() {
 		return new AnchoredCircleImpl(getUserX(), getUserY(), getUserRadius(), anchorX, anchorY);
 	}
-
+	
 	@Override
-	public VectorObject asObject() {
-		return this;
-	}
-
-	@Override
-	public void setOpacity(double opacity) {
-	   	setFillOpacity(opacity);
-	   	setStrokeOpacity(opacity);
+	public Renderable getRenderable() {
+		return renderable;
 	}
 }

@@ -10,7 +10,9 @@
  */
 package org.geomajas.graphics.client.controller.role;
 
+import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
+
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.controller.UpdateHandlerGraphicsController;
 import org.geomajas.graphics.client.controller.UpdateHandlerGraphicsControllerWithVisibleElement;
@@ -21,6 +23,7 @@ import org.geomajas.graphics.client.object.updateable.anchored.Anchored;
 import org.geomajas.graphics.client.object.updateable.anchored.MarkerShape;
 import org.geomajas.graphics.client.operation.AnchoredPositionOperation;
 import org.geomajas.graphics.client.operation.GraphicsOperation;
+import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.service.GraphicsService;
 import org.vaadin.gwtgraphics.client.Group;
 import org.vaadin.gwtgraphics.client.VectorObject;
@@ -103,12 +106,13 @@ public class AnchoredDragController extends UpdateHandlerGraphicsControllerWithV
 		}
 		
 		@Override
-		protected VectorObject createInvisibleMask() {
+		protected Renderable createInvisibleMask() {
 			invisibleSquareAnchor = MarkerShape.SQUARE.getMarkerShape();
 			invisibleSquareAnchor.setFixedSize(true);
 			invisibleSquareAnchor.setFillOpacity(0);
 			invisibleSquareAnchor.setStrokeOpacity(0);
-			return invisibleSquareAnchor.asObject();
+			invisibleSquareAnchor.getVectorObject().getElement().getStyle().setCursor(Cursor.MOVE);
+			return invisibleSquareAnchor.getRenderable();
 		}
 
 		@Override

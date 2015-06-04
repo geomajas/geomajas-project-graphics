@@ -61,14 +61,14 @@ public class DragController extends UpdateHandlerGraphicsController implements M
 
 	@Override
 	protected void init() {
-		setHandlerGroup(new Group());
+		setHandlerGroup(getService().getObjectContainer().createContainer());
 		// create the drag handler and attach it
 		dragHandler = new GraphicsObjectDragHandler(getObject(), getService(), this);
-		getHandlerGroup().add(dragHandler.getInvisbleMaskGraphicsObject().asObject());
+		dragHandler.getInvisbleMaskGraphicsObject().getRenderable().renderInContainer(getHandlerGroup());
 		// update positions
 		updateHandlers();
 		// add the group
-		getContainer().add(getHandlerGroup());
+		getHandlerGroup().renderInContainer(getContainer());
 	}
 
 	@Override

@@ -21,6 +21,7 @@ import org.geomajas.graphics.client.object.updateable.labeled.Labeled;
 import org.geomajas.graphics.client.object.updateable.labeled.LabeledImpl;
 import org.geomajas.graphics.client.object.updateable.wrapper.DraggableWrapperForUpdateable;
 import org.geomajas.graphics.client.object.updateable.wrapper.ResizableWrapperForUpdateable;
+import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.render.RenderableList;
 import org.geomajas.graphics.client.util.CopyUtil;
 import org.vaadin.gwtgraphics.client.VectorObject;
@@ -91,13 +92,14 @@ public class LabeledPath extends UpdateableGroupGraphicsObject {
 	// render section
 	//---------------------------------
 
+
 	@Override
-	public VectorObject asObject() {
-		return renderableList.asObject();
+	public Renderable getRenderable() {
+		return renderableList.getRenderable();
 	}
 
 	@Override
 	public void setOpacity(double opacity) {
-		renderableList.setOpacity(opacity);
+		renderableList.getRenderable().setOpacity(opacity);
 	}
 }

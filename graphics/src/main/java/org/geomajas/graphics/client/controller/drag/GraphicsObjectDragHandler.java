@@ -10,17 +10,19 @@
  */
 package org.geomajas.graphics.client.controller.drag;
 
-import com.google.gwt.event.dom.client.MouseMoveEvent;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.controller.UpdateHandlerGraphicsController;
+import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.object.base.BaseRectangle;
 import org.geomajas.graphics.client.object.role.Draggable;
-import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.operation.DragOperation;
 import org.geomajas.graphics.client.operation.GraphicsOperation;
+import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.service.GraphicsService;
-import org.vaadin.gwtgraphics.client.VectorObject;
+
+import com.google.gwt.dom.client.Style.Cursor;
+import com.google.gwt.event.dom.client.MouseMoveEvent;
 
 /**
  * Extension of {@link AbstractDragHandler} with a {@link BaseRectangle} for an invisible mask.
@@ -44,12 +46,13 @@ public class GraphicsObjectDragHandler extends AbstractDragHandler {
 	}
 
 	@Override
-	protected VectorObject createInvisibleMask() {
+	protected Renderable createInvisibleMask() {
 		// make an invisible mask that is a rectangle of the bounds of the draggable.
 		Bbox bbox = getDraggable().getBounds();
 		invisbleMaskGraphicsObject = new BaseRectangle(bbox.getX(), bbox.getY(), bbox.getWidth(), bbox.getHeight());
 		invisbleMaskGraphicsObject.setOpacity(0);
-		return invisbleMaskGraphicsObject.asObject();
+		invisbleMaskGraphicsObject.getVectorObject().getElement().getStyle().setCursor(Cursor.MOVE);	
+		return invisbleMaskGraphicsObject.getRenderable();
 	}
 
 	@Override

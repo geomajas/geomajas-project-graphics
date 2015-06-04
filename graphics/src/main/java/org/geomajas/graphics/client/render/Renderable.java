@@ -10,7 +10,10 @@
  */
 package org.geomajas.graphics.client.render;
 
+import org.geomajas.graphics.client.service.HasAllMouseAndClickHandlers;
 import org.vaadin.gwtgraphics.client.VectorObject;
+
+import com.google.gwt.event.dom.client.HasAllMouseHandlers;
 
 /**
  * Implemented by all graphical objects. Rendering happens through {@link #asObject()} method, which returns the
@@ -19,9 +22,17 @@ import org.vaadin.gwtgraphics.client.VectorObject;
  * @author Jan De Moerloose
  * 
  */
-public interface Renderable {
+public interface Renderable extends HasAllMouseAndClickHandlers {
 
-	VectorObject asObject();
+	void renderInContainer(RenderContainer container);
+	
+	void removeFromParent();
+	
+	void capture();
+	
+	void releaseCapture();
 
 	void setOpacity(double opacity);
+
+	void setVisible(boolean visible);
 }

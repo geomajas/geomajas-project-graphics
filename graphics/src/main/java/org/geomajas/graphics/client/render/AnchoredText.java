@@ -22,7 +22,7 @@ import org.geomajas.graphics.client.util.HasStroke;
  * @author Jan Venstermans
  * 
  */
-public interface AnchoredText extends HasStroke, HasFill, HasFont {
+public interface AnchoredText extends HasStroke, HasFill, HasFont, IsRenderable {
 
 	void setUserX(double userX);
 

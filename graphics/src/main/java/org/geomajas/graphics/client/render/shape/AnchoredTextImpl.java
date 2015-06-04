@@ -11,6 +11,8 @@
 package org.geomajas.graphics.client.render.shape;
 
 import org.geomajas.graphics.client.render.AnchoredText;
+import org.geomajas.graphics.client.render.Renderable;
+import org.geomajas.graphics.client.render.VectorRenderable;
 import org.vaadin.gwtgraphics.client.shape.Text;
 
 /**
@@ -21,6 +23,8 @@ import org.vaadin.gwtgraphics.client.shape.Text;
  * 
  */
 public class AnchoredTextImpl extends Text implements AnchoredText {
+
+	private VectorRenderable renderable;
 
 	private double anchorX;
 
@@ -40,6 +44,7 @@ public class AnchoredTextImpl extends Text implements AnchoredText {
 		super(userX, userY, text);
 		this.anchorX = anchorX;
 		this.anchorY = anchorY;
+		this.renderable = new VectorRenderable(this);
 		drawTransformed();
 	}
 
@@ -96,4 +101,10 @@ public class AnchoredTextImpl extends Text implements AnchoredText {
 	public String getFontColor() {
 		return getFillColor();
 	}
+
+	@Override
+	public Renderable getRenderable() {
+		return renderable;
+	}
+
 }

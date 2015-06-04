@@ -10,6 +10,30 @@
  */
 package org.geomajas.graphics.client.controller.resize;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.geometry.service.BboxService;
+import org.geomajas.graphics.client.controller.DefaultMetaController;
+import org.geomajas.graphics.client.controller.UpdateHandlerGraphicsControllerWithVisibleElement;
+import org.geomajas.graphics.client.event.GraphicsObjectContainerEvent;
+import org.geomajas.graphics.client.event.GraphicsOperationEvent;
+import org.geomajas.graphics.client.object.GraphicsObject;
+import org.geomajas.graphics.client.object.role.Resizable;
+import org.geomajas.graphics.client.operation.ResizeOperation;
+import org.geomajas.graphics.client.render.RenderContainer;
+import org.geomajas.graphics.client.render.VectorRenderContainer;
+import org.geomajas.graphics.client.render.shape.AnchoredRectangleImpl;
+import org.geomajas.graphics.client.service.GraphicsService;
+import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer.Space;
+import org.geomajas.graphics.client.util.BboxPosition;
+import org.geomajas.graphics.client.util.FlipState;
+import org.geomajas.graphics.client.util.GraphicsUtil;
+import org.vaadin.gwtgraphics.client.Shape;
+import org.vaadin.gwtgraphics.client.VectorObject;
+
 import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
@@ -24,28 +48,6 @@ import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.RootPanel;
-import org.geomajas.geometry.Bbox;
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.geometry.service.BboxService;
-import org.geomajas.graphics.client.controller.DefaultMetaController;
-import org.geomajas.graphics.client.controller.UpdateHandlerGraphicsControllerWithVisibleElement;
-import org.geomajas.graphics.client.event.GraphicsObjectContainerEvent;
-import org.geomajas.graphics.client.event.GraphicsOperationEvent;
-import org.geomajas.graphics.client.object.GraphicsObject;
-import org.geomajas.graphics.client.object.role.Resizable;
-import org.geomajas.graphics.client.operation.ResizeOperation;
-import org.geomajas.graphics.client.service.GraphicsService;
-import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer.Space;
-import org.geomajas.graphics.client.render.shape.AnchoredRectangleImpl;
-import org.geomajas.graphics.client.util.BboxPosition;
-import org.geomajas.graphics.client.util.FlipState;
-import org.geomajas.graphics.client.util.GraphicsUtil;
-import org.vaadin.gwtgraphics.client.Group;
-import org.vaadin.gwtgraphics.client.Shape;
-import org.vaadin.gwtgraphics.client.VectorObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * {@link org.geomajas.graphics.client.controller.UpdateHandlerGraphicsControllerWithVisibleElement}
@@ -112,27 +114,27 @@ public class ResizeController extends UpdateHandlerGraphicsControllerWithVisible
 
 	@Override
 	protected void init() {
-		setHandlerGroup(new Group());
+		setHandlerGroup(getService().getObjectContainer().createContainer());
 		if (resizable.isAutoHeight()) {
 			BboxPosition[] positions = new BboxPosition[] { BboxPosition.CORNER_UL, BboxPosition.CORNER_UR };
 			for (BboxPosition position : positions) {
 				ResizeHandler handler = new ResizeHandler(position);
 				handler.render();
-				handler.addToGroup(getHandlerGroup());
+				handler.renderInContainer(getHandlerGroup());
 				handlers.add(handler);
 			}
 		} else {
 			for (BboxPosition type : BboxPosition.values()) {
 				ResizeHandler handler = new ResizeHandler(type);
 				handler.render();
-				handler.addToGroup(getHandlerGroup());
+				handler.renderInContainer(getHandlerGroup());
 				handlers.add(handler);
 			}
 		}
 		// update positions
 		updateHandlers();
 		// add the group
-		getContainer().add(getHandlerGroup());
+		getHandlerGroup().renderInContainer(getContainer());
 	}
 
 	@Override
@@ -299,9 +301,9 @@ public class ResizeController extends UpdateHandlerGraphicsControllerWithVisible
 			return type;
 		}
 
-		public void addToGroup(Group group) {
-			group.add(clickableArea);
-			group.add(rectangle);
+		public void renderInContainer(RenderContainer group) {
+			((VectorRenderContainer)group).getContainer().add(clickableArea);
+			((VectorRenderContainer)group).getContainer().add(rectangle);
 			clickableArea.addMouseDownHandler(this);
 			rectangle.addMouseDownHandler(this);
 			rectangle.addMouseUpHandler(this);
@@ -316,12 +318,12 @@ public class ResizeController extends UpdateHandlerGraphicsControllerWithVisible
 				setDragging(true);
 				onDragStart(event.getClientX(), event.getClientY());
 				if (mask != null) { // may happen in unusual scenario where mouse-up is not called
-					getHandlerGroup().remove(mask.asObject());
+					mask.getRenderable().removeFromParent();
 				}
 				mask = (GraphicsObject) getObject().cloneObject();
 				mask.setOpacity(0.5);
 				mask.getRole(Resizable.TYPE).setUserBounds(beginBounds);
-				getHandlerGroup().add(mask.asObject());
+				mask.getRenderable().renderInContainer(getHandlerGroup());
 			}
 		}
 
@@ -329,7 +331,7 @@ public class ResizeController extends UpdateHandlerGraphicsControllerWithVisible
 		public void onMouseUp(MouseUpEvent event) {
 			if (dragging) {
 				setDragging(false);
-				getHandlerGroup().remove(mask.asObject());
+				mask.getRenderable().removeFromParent();
 				mask = null;
 				boolean preserveRatio = resizable.isPreserveRatio() || event.isShiftKeyDown();
 				onDragStop(event.getClientX(), event.getClientY(), preserveRatio);
@@ -387,7 +389,7 @@ public class ResizeController extends UpdateHandlerGraphicsControllerWithVisible
 		private void setDragging(boolean draggingNewValue) {
 			dragging = draggingNewValue;
 			if (!getService().isShowOriginalObjectWhileDragging()) {
-				getObject().asObject().setVisible(!dragging);
+				getObject().getRenderable().setVisible(!dragging);
 				((DefaultMetaController) getService().getMetaController()).
 				setControllersOfObjectVisible(getObject(), !dragging);
 			}

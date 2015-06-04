@@ -10,6 +10,17 @@
  */
 package org.geomajas.graphics.client.controller.create.base;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.graphics.client.controller.create.CreateController;
+import org.geomajas.graphics.client.object.role.Fillable;
+import org.geomajas.graphics.client.render.BasePathLine;
+import org.geomajas.graphics.client.render.RenderContainer;
+import org.geomajas.graphics.client.render.Renderable;
+import org.geomajas.graphics.client.service.GraphicsService;
+
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
@@ -18,19 +29,8 @@ import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.web.bindery.event.shared.HandlerRegistration;
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.graphics.client.controller.create.CreateController;
-import org.geomajas.graphics.client.render.BasePathLine;
-import org.geomajas.graphics.client.object.role.Fillable;
-import org.geomajas.graphics.client.service.GraphicsService;
-import org.vaadin.gwtgraphics.client.VectorObjectContainer;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Controller that creates a {@link BasePathLine}.
@@ -49,7 +49,7 @@ public class CreateBasePathLineController extends CreateController<BasePathLine>
 
 	private BasePathLine previewPath;
 
-	private VectorObjectContainer container;
+	private RenderContainer container;
 
 	private boolean showPreview;
 
@@ -99,7 +99,7 @@ public class CreateBasePathLineController extends CreateController<BasePathLine>
 
 	@Override
 	public void onDoubleClick(DoubleClickEvent event) {
-		release(path.asObject().getElement());
+		path.getRenderable().releaseCapture();
 		container.clear();
 		addObject(path);
 		dragLine = null;
@@ -112,14 +112,14 @@ public class CreateBasePathLineController extends CreateController<BasePathLine>
 		return true;
 	}
 
-	protected void capture(Element element, Cursor cursor) {
-		DOM.setCapture(element);
+	protected void capture(Renderable renderable, Cursor cursor) {
+		renderable.capture();
 		captureCursor = RootPanel.getBodyElement().getStyle().getCursor();
 		RootPanel.getBodyElement().getStyle().setCursor(cursor);
 	}
 
-	protected void release(Element element) {
-		DOM.releaseCapture(element);
+	protected void release(Renderable renderable) {
+		renderable.releaseCapture();
 		RootPanel.getBodyElement().getStyle().setProperty("cursor", captureCursor);
 	}
 
@@ -136,23 +136,23 @@ public class CreateBasePathLineController extends CreateController<BasePathLine>
 					// add the preview extra point !
 					previewPath.addCoordinate(new Coordinate(getUserCoordinate(event)));
 					previewPath.setFillOpacity(previewPath.getFillOpacity() * 0.7);
-					container.add(previewPath.asObject());
+					previewPath.getRenderable().renderInContainer(container);
 				}
 				// we have to show our intermediate result !
-				container.add(path.asObject());
+				path.getRenderable().renderInContainer(container);
 				// start the drag line, captures all events from now !
 				if (dragLine == null) {
 					dragLine = createPath();
 					dragLine.setStrokeOpacity(1);
-					container.add(dragLine.asObject());
+					dragLine.getRenderable().renderInContainer(container);
 				}
 				Coordinate c1 = path.getLastCoordinate();
 				Coordinate c2 = getUserCoordinate(event);
 				dragLine.setCoordinates(new Coordinate[] { c1, c2 });
-				dragLine.asObject().addMouseMoveHandler(this);
-				dragLine.asObject().addMouseDownHandler(this);
-				dragLine.asObject().addDoubleClickHandler(this);
-				capture(dragLine.asObject().getElement(), Cursor.CROSSHAIR);
+				dragLine.getRenderable().addMouseMoveHandler(this);
+				dragLine.getRenderable().addMouseDownHandler(this);
+				dragLine.getRenderable().addDoubleClickHandler(this);
+				dragLine.getRenderable().capture();
 			} else {
 				path.addCoordinate(getUserCoordinate(event));
 				if (showPreview) {

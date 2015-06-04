@@ -10,21 +10,20 @@
  */
 package org.geomajas.graphics.client.service.objectcontainer;
 
-import com.google.gwt.event.dom.client.HasAllMouseHandlers;
-import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
-import com.google.gwt.event.dom.client.MouseEvent;
-import com.google.web.bindery.event.shared.HandlerRegistration;
+import java.util.List;
+
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.event.GraphicsObjectContainerEvent;
 import org.geomajas.graphics.client.event.GraphicsOperationEvent;
 import org.geomajas.graphics.client.object.GraphicsObject;
+import org.geomajas.graphics.client.render.RenderContainer;
 import org.geomajas.graphics.client.service.HasAllMouseAndClickHandlers;
 import org.geomajas.graphics.client.util.BboxPosition;
 import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 
-import java.util.List;
+import com.google.gwt.event.dom.client.MouseEvent;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 
 /**
  * Container of graphics objects.
@@ -32,7 +31,7 @@ import java.util.List;
  * @author Jan De Moerloose
  * 
  */
-public interface GraphicsObjectContainer extends HasAllMouseHandlers, HasClickHandlers, HasDoubleClickHandlers {
+public interface GraphicsObjectContainer extends RenderContainer {
 
 	/**
 	 * User/screen space as known by GWT graphics objects.
@@ -49,21 +48,7 @@ public interface GraphicsObjectContainer extends HasAllMouseHandlers, HasClickHa
 	 * 
 	 * @return a new container
 	 */
-	VectorObjectContainer createContainer();
-
-	/**
-	 * Remove this container from the root container.
-	 * 
-	 * @param container
-	 */
-	void removeContainer(VectorObjectContainer container);
-
-	/**
-	 * Add this container from the root container.
-	 *
-	 * @param container
-	 */
-	void bringContainerToFront(VectorObjectContainer container);
+	RenderContainer createContainer();
 
 	/**
 	 * Get all the objects of this container.

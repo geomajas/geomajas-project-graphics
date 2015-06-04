@@ -15,7 +15,7 @@ import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.role.Fillable;
 import org.geomajas.graphics.client.object.role.Strokable;
 import org.geomajas.graphics.client.object.updateable.Updateable;
-import org.vaadin.gwtgraphics.client.VectorObject;
+import org.geomajas.graphics.client.render.Renderable;
 
 /**
  * Implementation of {@link Bordered} role with the {@link Updateable} interface.
@@ -47,8 +47,8 @@ public class BorderedImpl extends BaseGraphicsObject implements Bordered, Update
 	}
 
 	@Override
-	public VectorObject asObject() {
-		return borderRect.asObject();
+	public Renderable getRenderable() {
+		return borderRect.getRenderable();
 	}
 
 	@Override

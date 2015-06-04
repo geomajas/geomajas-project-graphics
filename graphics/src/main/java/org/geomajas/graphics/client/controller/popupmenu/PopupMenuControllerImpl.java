@@ -14,6 +14,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
+
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.Graphics;
 import org.geomajas.graphics.client.action.Action;
@@ -24,6 +25,7 @@ import org.geomajas.graphics.client.event.GraphicsOperationEvent;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.role.Resizable;
+import org.geomajas.graphics.client.render.VectorRenderContainer;
 import org.geomajas.graphics.client.render.shape.AnchoredImageImpl;
 import org.geomajas.graphics.client.service.GraphicsService;
 import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer.Space;
@@ -53,7 +55,7 @@ public class PopupMenuControllerImpl extends AbstractInterruptibleGraphicsContro
 	/**
 	 * Our own container.
 	 */
-	private VectorObjectContainer container;
+	private VectorRenderContainer container;
 
 	private PropertyHandler handler;
 
@@ -72,7 +74,7 @@ public class PopupMenuControllerImpl extends AbstractInterruptibleGraphicsContro
 			}
 		}
 
-		container = createContainer();
+		container = (VectorRenderContainer)createContainer();
 		// listen to changes to our object
 		service.getObjectContainer().addGraphicsObjectContainerHandler(this);
 		service.getObjectContainer().addGraphicsOperationEventHandler(this);
@@ -89,7 +91,7 @@ public class PopupMenuControllerImpl extends AbstractInterruptibleGraphicsContro
 				} else {
 					// the group may be detached, update and reattach !
 					handler.update();
-					handler.add(container);
+					handler.add(container.getContainer());
 				}
 				if (menu == null) {
 					menu = Graphics.getViewManager().createPopupMenuView();
@@ -102,7 +104,7 @@ public class PopupMenuControllerImpl extends AbstractInterruptibleGraphicsContro
 			} else {
 				// just remove the handler
 				if (handler != null) {
-					handler.remove(container);
+					handler.remove(container.getContainer());
 				}
 				if (menu != null) {
 					menu.hide();
@@ -116,7 +118,7 @@ public class PopupMenuControllerImpl extends AbstractInterruptibleGraphicsContro
 		handler = new PropertyHandler();
 		handler.update();
 		// add the handler
-		handler.add(container);
+		handler.add(container.getContainer());
 	}
 
 	@Override

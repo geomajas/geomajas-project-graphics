@@ -11,8 +11,8 @@
 package org.geomajas.graphics.client.object.updateable;
 
 import org.geomajas.graphics.client.Graphics;
-import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.base.BaseText;
+import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.role.Fillable;
 import org.geomajas.graphics.client.object.role.Strokable;
 import org.geomajas.graphics.client.object.role.Textable;
@@ -20,9 +20,9 @@ import org.geomajas.graphics.client.object.updateable.bordered.Bordered;
 import org.geomajas.graphics.client.object.updateable.bordered.BorderedImpl;
 import org.geomajas.graphics.client.object.updateable.wrapper.DraggableWrapperForUpdateable;
 import org.geomajas.graphics.client.object.updateable.wrapper.TextableWrapperForUpdateable;
+import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.render.RenderableList;
 import org.geomajas.graphics.client.util.CopyUtil;
-import org.vaadin.gwtgraphics.client.VectorObject;
 
 /**
  * Extension of {@link org.geomajas.graphics.client.object.updateable.UpdateableGroupGraphicsObject}
@@ -73,13 +73,14 @@ public class BorderedText extends UpdateableGroupGraphicsObject {
 	// render section
 	//---------------------------------
 
+
 	@Override
-	public VectorObject asObject() {
-		return renderableList.asObject();
+	public Renderable getRenderable() {
+		return renderableList.getRenderable();
 	}
 
 	@Override
 	public void setOpacity(double opacity) {
-		renderableList.setOpacity(opacity);
+		renderableList.getRenderable().setOpacity(opacity);
 	}
 }

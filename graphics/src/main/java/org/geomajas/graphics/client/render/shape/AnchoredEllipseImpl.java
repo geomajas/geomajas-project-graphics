@@ -11,6 +11,8 @@
 package org.geomajas.graphics.client.render.shape;
 
 import org.geomajas.graphics.client.render.AnchoredEllipse;
+import org.geomajas.graphics.client.render.Renderable;
+import org.geomajas.graphics.client.render.VectorRenderable;
 import org.vaadin.gwtgraphics.client.shape.Ellipse;
 
 /**
@@ -21,7 +23,17 @@ import org.vaadin.gwtgraphics.client.shape.Ellipse;
  * 
  */
 public class AnchoredEllipseImpl extends Ellipse implements AnchoredEllipse {
+	
+	private VectorRenderable renderable;
+	
 	public AnchoredEllipseImpl(double userX, double userY, double userRadiusX, double userRadiusY) {
 		super(userX, userY, userRadiusX, userRadiusY);
+		this.renderable = new VectorRenderable(this);
 	}
+	
+	@Override
+	public Renderable getRenderable() {
+		return renderable;
+	}
+	
 }

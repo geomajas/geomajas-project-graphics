@@ -17,6 +17,7 @@ import org.geomajas.graphics.client.object.BaseGraphicsObject;
 import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.render.AnchoredImage;
+import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.util.FlipState;
 import org.vaadin.gwtgraphics.client.VectorObject;
 
@@ -94,16 +95,13 @@ public class BaseImage extends BaseGraphicsObject implements Resizable, Draggabl
 	}
 
 	@Override
-	public VectorObject asObject() {
-		if (anchoredImage instanceof VectorObject) {
-			return (VectorObject) anchoredImage;
-		}
-		return null;
+	public Renderable getRenderable() {
+		return anchoredImage.getRenderable();
 	}
 
 	@Override
 	public void setOpacity(double opacity) {
-		anchoredImage.setOpacity(opacity);
+		anchoredImage.getRenderable().setOpacity(opacity);
 	}
 
 	public String getHref() {

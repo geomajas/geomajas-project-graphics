@@ -35,6 +35,8 @@ public class BasePathLine extends BasePath {
 	private CoordinatePathShape clickArea;
 
 	private Group group;
+	
+	private Renderable renderable;
 
 	/**
 	 * minimum mouse event buffer.
@@ -52,6 +54,7 @@ public class BasePathLine extends BasePath {
 	public BasePathLine(Coordinate[] coordinates) {
 		super(coordinates, false);
 		group = new Group();
+		renderable = new VectorRenderable(group);
 		group.add(((VectorObject) path));
 		clickArea = new CoordinatePathShape(coordinates, false);
 		clickArea.setStrokeWidth(pointerEventAreaminimumWidth);
@@ -60,8 +63,8 @@ public class BasePathLine extends BasePath {
 	}
 
 	@Override
-	public VectorObject asObject() {
-		return group;
+	public Renderable getRenderable(){
+		return renderable;
 	}
 
 	@Override

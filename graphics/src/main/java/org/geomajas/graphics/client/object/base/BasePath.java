@@ -20,6 +20,7 @@ import org.geomajas.graphics.client.object.role.Fillable;
 import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.object.role.Strokable;
 import org.geomajas.graphics.client.render.CoordinatePath;
+import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.util.CopyUtil;
 import org.geomajas.graphics.client.util.FlipState;
 import org.vaadin.gwtgraphics.client.VectorObject;
@@ -143,11 +144,8 @@ public class BasePath extends BaseGraphicsObject implements Resizable, Draggable
 	}
 
 	@Override
-	public VectorObject asObject() {
-		if (path instanceof VectorObject) {
-			return (VectorObject) path;
-		}
-		return null;
+	public Renderable getRenderable() {
+		return path.getRenderable();
 	}
 
 	@Override
