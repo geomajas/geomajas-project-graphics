@@ -10,13 +10,13 @@
  */
 package org.geomajas.graphics.client.controller.drag;
 
+import static org.mockito.Mockito.when;
+
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.object.role.Draggable;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
-
-import static org.mockito.Mockito.when;
 
 public class DragControllerFactoryTest {
 	

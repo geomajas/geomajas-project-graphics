@@ -10,16 +10,19 @@
  */
 package org.geomajas.graphics.client.object.base;
 
-import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.graphics.client.GraphicsMockSetup;
+import org.geomajas.graphics.client.GraphicsBaseTest;
 import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.role.Resizable;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
-public class BaseImageTest extends GraphicsMockSetup {
+import com.google.gwtmockito.GwtMockitoTestRunner;
+
+@RunWith(GwtMockitoTestRunner.class)
+public class BaseImageTest extends GraphicsBaseTest {
 
 	private BaseImage baseImage;
 

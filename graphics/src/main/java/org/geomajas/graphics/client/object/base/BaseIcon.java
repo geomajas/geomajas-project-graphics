@@ -83,8 +83,8 @@ public class BaseIcon extends BaseGraphicsObject implements Draggable {
 	}
 
 	public Object cloneObject() {
-		return new BaseIcon(anchoredImage.getUserX(), anchoredImage.getUserY(),
-				anchoredImage.getWidth(), anchoredImage.getHeight(), anchoredImage.getHref());
+		return new BaseIcon(anchoredImage.getUserX(), anchoredImage.getUserY(), (int) anchoredImage.getUserWidth(),
+				(int) anchoredImage.getUserHeight(), anchoredImage.getHref());
 	}
 
 	public String getHref() {

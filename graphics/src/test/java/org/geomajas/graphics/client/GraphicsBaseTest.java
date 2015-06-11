@@ -11,29 +11,18 @@
 package org.geomajas.graphics.client;
 
 import junit.framework.Assert;
+
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.object.role.CoordinateBased;
 import org.geomajas.graphics.client.object.role.Draggable;
-import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.object.role.Fillable;
+import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.object.role.Strokable;
 import org.geomajas.graphics.client.object.role.Textable;
 import org.geomajas.graphics.client.object.updateable.anchored.Anchored;
-import org.geomajas.graphics.client.render.shape.RenderElementFactory;
-import org.junit.Before;
 
-public class GraphicsMockSetup {
-
-	protected GraphicsViewManagerMock viewManagerMock = new GraphicsViewManagerMock();
-
-	protected RenderElementFactory renderElementFactoryMock = new RenderElementFactoryMock();
-
-	@Before
-	public void injectMock() {
-		Graphics.setViewManager(viewManagerMock);
-		Graphics.setRenderElementFactory(renderElementFactoryMock);
-	}
+public class GraphicsBaseTest {
 
 	public void assertRoleEqualityTextable(Textable textableExpected, Textable textableNew) {
 		Assert.assertNotNull(textableExpected);

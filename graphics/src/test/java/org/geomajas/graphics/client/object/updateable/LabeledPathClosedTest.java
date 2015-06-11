@@ -10,9 +10,8 @@
  */
 package org.geomajas.graphics.client.object.updateable;
 
-import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.graphics.client.GraphicsMockSetup;
+import org.geomajas.graphics.client.GraphicsBaseTest;
 import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.role.Fillable;
 import org.geomajas.graphics.client.object.role.Resizable;
@@ -21,8 +20,12 @@ import org.geomajas.graphics.client.object.role.Textable;
 import org.geomajas.graphics.client.object.updateable.labeled.Labeled;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
-public class LabeledPathClosedTest extends GraphicsMockSetup {
+import com.google.gwtmockito.GwtMockitoTestRunner;
+
+@RunWith(GwtMockitoTestRunner.class)
+public class LabeledPathClosedTest extends GraphicsBaseTest {
 
 	private LabeledPath labeledPath;
 
