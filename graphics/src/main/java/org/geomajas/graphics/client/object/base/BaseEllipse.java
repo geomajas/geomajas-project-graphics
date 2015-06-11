@@ -59,13 +59,16 @@ public class BaseEllipse extends BaseGraphicsObject implements Resizable, Dragga
 
 	@Override
 	public void setUserPosition(Coordinate position) {
-		anchoredEllipse.setUserX(position.getX());
-		anchoredEllipse.setUserY(position.getY());
+		// shift to center
+		anchoredEllipse.setUserX(position.getX() + anchoredEllipse.getRadiusX());
+		anchoredEllipse.setUserY(position.getY() + anchoredEllipse.getRadiusY());
 	}
 
 	@Override
 	public Coordinate getUserPosition() {
-		return new Coordinate(anchoredEllipse.getUserX(), anchoredEllipse.getUserY());
+		// shift to lower left corner
+		return new Coordinate(anchoredEllipse.getUserX() - anchoredEllipse.getUserRadiusX(), anchoredEllipse.getUserY()
+				- anchoredEllipse.getUserRadiusY());
 	}
 
 	public Object cloneObject() {
@@ -83,7 +86,9 @@ public class BaseEllipse extends BaseGraphicsObject implements Resizable, Dragga
 
 	@Override
 	public void setUserBounds(Bbox bounds) {
-		setUserPosition(BboxService.getCenterPoint(bounds));
+		Coordinate center = BboxService.getCenterPoint(bounds);
+		anchoredEllipse.setUserX(center.getX());
+		anchoredEllipse.setUserY(center.getY());
 		anchoredEllipse.setUserRadiusX(bounds.getWidth() / 2);
 		anchoredEllipse.setUserRadiusY(bounds.getHeight() / 2);
 	}

@@ -55,9 +55,8 @@ public class BaseImage extends BaseGraphicsObject implements Resizable, Draggabl
 
 	@Override
 	public Object cloneObject() {
-		return new BaseImage(anchoredImage.getUserX(), anchoredImage.getUserY(),
-				anchoredImage.getWidth(), anchoredImage.getHeight(), anchoredImage.getHref(),
-				anchoredImage.isPreserveAspectRatio());
+		return new BaseImage(anchoredImage.getUserX(), anchoredImage.getUserY(), (int) anchoredImage.getUserWidth(),
+				(int) anchoredImage.getUserHeight(), anchoredImage.getHref(), anchoredImage.isPreserveAspectRatio());
 	}
 
 	@Override

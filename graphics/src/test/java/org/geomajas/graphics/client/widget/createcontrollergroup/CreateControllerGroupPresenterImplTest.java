@@ -10,146 +10,112 @@
  */
 package org.geomajas.graphics.client.widget.createcontrollergroup;
 
-import com.google.gwt.event.dom.client.MouseDownHandler;
-import com.google.gwt.event.dom.client.MouseMoveHandler;
-import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.web.bindery.event.shared.SimpleEventBus;
-import org.geomajas.graphics.client.GraphicsMockSetup;
-import org.geomajas.graphics.client.controller.create.CreateController;
-import org.geomajas.graphics.client.service.GraphicsService;
-import org.geomajas.graphics.client.service.GraphicsServiceImpl;
-import org.geomajas.graphics.client.service.HasAllMouseAndClickHandlers;
-import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.stub;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-public class CreateControllerGroupPresenterImplTest extends GraphicsMockSetup {
+import org.geomajas.graphics.client.controller.MetaController;
+import org.geomajas.graphics.client.controller.create.CreateController;
+import org.geomajas.graphics.client.service.GraphicsService;
+import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer;
+import org.geomajas.graphics.client.widget.createcontrollergroup.CreateControllerGroupPresenter.View;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Answers;
+import org.mockito.Mock;
+
+import com.google.gwtmockito.GwtMockitoTestRunner;
+
+@RunWith(GwtMockitoTestRunner.class)
+public class CreateControllerGroupPresenterImplTest {
+
+	@Mock(answer = Answers.CALLS_REAL_METHODS)
+	private CreateController<?> c1;
+
+	@Mock(answer = Answers.CALLS_REAL_METHODS)
+	private CreateController<?> c2;
+
+	@Mock
+	private View view;
 	
 	@Mock
-	private GraphicsObjectContainer objectContainerMock;
-
-	@Mock
-	private HasAllMouseAndClickHandlers backgroundMock;
-
 	private GraphicsService graphicsService;
-
-	private SimpleEventBus eventBus = new SimpleEventBus();
-
-	private CreateControllerGroupPresenterImpl createControllerGroupPresenter;
-
-	@Captor
-	private ArgumentCaptor<CreateController<?>> controllerArgumentCaptor;
-
+	
 	@Mock
-	private CreateController createController1;
-
-	private String label1 = "label1";
-
+	private GraphicsObjectContainer graphicsObjectContainer;
+	
 	@Mock
-	private CreateController createController2;
-
-	private String label2 = "label2";
-
+	private MetaController metaController;
+	
 	@Before
-	public void setUp() {
-		MockitoAnnotations.initMocks(this);
-		graphicsService = new GraphicsServiceImpl(eventBus);
-		graphicsService.setObjectContainer(objectContainerMock);
-		createControllerGroupPresenter = new CreateControllerGroupPresenterImpl(graphicsService, viewManagerMock.createControllerGroupView);
-		stub(objectContainerMock.getBackGround()).toReturn(backgroundMock);
-		stub(backgroundMock.addMouseDownHandler(any(MouseDownHandler.class))).toReturn(mock(HandlerRegistration.class));
-		stub(backgroundMock.addMouseMoveHandler(any(MouseMoveHandler.class))).toReturn(mock(HandlerRegistration.class));
-		stub(backgroundMock.addMouseUpHandler(any(MouseUpHandler.class))).toReturn(mock(HandlerRegistration.class));
-		graphicsService.start();
-		reset(viewManagerMock.createControllerGroupView);
+	public void setup() {
+		when(graphicsService.getObjectContainer()).thenReturn(graphicsObjectContainer);
+		when(graphicsService.getMetaController()).thenReturn(metaController);
 	}
 
 	@Test
 	public void testViewSetHandler() throws Exception {
-		createControllerGroupPresenter = new CreateControllerGroupPresenterImpl(graphicsService, viewManagerMock.createControllerGroupView);
-		verify(viewManagerMock.createControllerGroupView).setHandler(createControllerGroupPresenter);
+		CreateControllerGroupPresenterImpl p = new CreateControllerGroupPresenterImpl(graphicsService, view);
+		p.addCreateController(c1, "label1");
+		p.addCreateController(c2, "label2");
+		verify(graphicsObjectContainer).addGraphicsObjectContainerHandler(p);
+		verify(view).setHandler(p);
+		verify(view).addCreateController(c1, "label1");
+		verify(view).addCreateController(c2, "label2");
 	}
 
-	@Test
-	public void testAddControllers() {
-		createControllerGroupPresenter.addCreateController(createController1, label1);
-		createControllerGroupPresenter.addCreateController(createController2, label2);
-
-		ArgumentCaptor<String> labelsCaptor = ArgumentCaptor.forClass(String.class);
-		verify(viewManagerMock.createControllerGroupView, times(2)).
-				addCreateController(controllerArgumentCaptor.capture(), labelsCaptor.capture());
-		List<CreateController<?>> createControllerResult = controllerArgumentCaptor.getAllValues();
-		List<String> labelsResult = labelsCaptor.getAllValues();
-		assertEquals(createController1, createControllerResult.get(0));
-		assertEquals(label1, labelsResult.get(0));
-		assertEquals(createController2, createControllerResult.get(1));
-		assertEquals(label2, labelsResult.get(1));
-	}
 
 	@Test
 	public void testOnActivateTrue() throws Exception {
-		// add controller to presenter
-		createControllerGroupPresenter.addCreateController(createController1, label1);
-		createControllerGroupPresenter.addCreateController(createController2, label2);
+		CreateControllerGroupPresenterImpl p = new CreateControllerGroupPresenterImpl(graphicsService, view);
+		p.addCreateController(c1, "label1");
+		p.addCreateController(c2, "label2");
+		p.onActivateController(c1, true);
 
-        createControllerGroupPresenter.onActivateController(createController1, true);
-
-		verify(createController1).setActive(true);
-		verify(createController2).setActive(false);
-		verify(createController2, never()).setActive(true);
-		assertFalse(graphicsService.getMetaController().isActive());
+		verify(c1).setActive(true);
+		verify(c2).setActive(false);
+		verify(c2, never()).setActive(true);
+		verify(metaController).setActive(false);
 	}
 
 	@Test
 	public void testOnActivateWhileOtherActive() throws Exception {
 		// add controller to presenter
-		createControllerGroupPresenter.addCreateController(createController1, label1);
-		createControllerGroupPresenter.addCreateController(createController2, label2);
-		createControllerGroupPresenter.onActivateController(createController1, true);
-		reset(createController1);
-		reset(createController2);
+		CreateControllerGroupPresenterImpl p = new CreateControllerGroupPresenterImpl(graphicsService, view);
+		p.addCreateController(c1, "label1");
+		p.addCreateController(c2, "label2");
+		p.onActivateController(c1, true);
+		reset(c1);
+		reset(c2);
+		reset(metaController);
 
-		createControllerGroupPresenter.onActivateController(createController2, true);
+		p.onActivateController(c2, true);
 
-		verify(createController2).setActive(true);
-		verify(createController1).setActive(false);
-		verify(createController1, never()).setActive(true);
-		assertFalse(graphicsService.getMetaController().isActive());
+		verify(c2).setActive(true);
+		verify(c1).setActive(false);
+		verify(c1, never()).setActive(true);
+		verify(metaController).setActive(false);
 	}
 
 	@Test
 	public void testOnDeActivateAfterActive() throws Exception {
 		// add controller to presenter
-		createControllerGroupPresenter.addCreateController(createController1, label1);
-		createControllerGroupPresenter.addCreateController(createController2, label2);
-		createControllerGroupPresenter.onActivateController(createController1, true);
-		reset(createController1);
-		reset(createController2);
+		CreateControllerGroupPresenterImpl p = new CreateControllerGroupPresenterImpl(graphicsService, view);
+		p.addCreateController(c1, "label1");
+		p.addCreateController(c2, "label2");
+		p.onActivateController(c1, true);
+		reset(c1);
+		reset(c2);
+		reset(metaController);
 
-		createControllerGroupPresenter.onActivateController(createController1, false);
+		p.onActivateController(c1, false);
 
-		verify(createController1).setActive(false);
-		verify(createController1, never()).setActive(true);
-		verify(createController2).setActive(false);
-		verify(createController2, never()).setActive(true);
-		assertTrue(graphicsService.getMetaController().isActive());
+		verify(c1).setActive(false);
+		verify(c1, never()).setActive(true);
+		verify(c2).setActive(false);
+		verify(c2, never()).setActive(true);
+		verify(metaController).setActive(true);
 	}
 }
