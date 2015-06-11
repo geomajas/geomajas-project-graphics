@@ -12,22 +12,20 @@ package org.geomajas.graphics.client.object.updateable;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.graphics.client.GraphicsMockSetup;
-import org.geomajas.graphics.client.object.base.BasePath;
-import org.geomajas.graphics.client.object.base.BaseText;
+import org.geomajas.graphics.client.GraphicsBaseTest;
 import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.role.Fillable;
 import org.geomajas.graphics.client.object.role.Strokable;
 import org.geomajas.graphics.client.object.role.Textable;
 import org.geomajas.graphics.client.object.updateable.bordered.Bordered;
-import org.geomajas.graphics.client.object.updateable.bordered.BorderedImpl;
-import org.geomajas.graphics.client.object.updateable.bordered.MarginBaseRectangle;
-import org.geomajas.graphics.client.object.updateable.wrapper.DraggableWrapperForUpdateable;
-import org.geomajas.graphics.client.object.updateable.wrapper.TextableWrapperForUpdateable;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
-public class BorderedTextTest extends GraphicsMockSetup {
+import com.google.gwtmockito.GwtMockitoTestRunner;
+
+@RunWith(GwtMockitoTestRunner.class)
+public class BorderedTextTest extends GraphicsBaseTest {
 
 	private BorderedText borderedText;
 

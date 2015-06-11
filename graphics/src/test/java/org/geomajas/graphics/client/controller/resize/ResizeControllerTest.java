@@ -19,20 +19,24 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.service.BboxService;
 import org.geomajas.graphics.client.controller.resize.ResizeController.ResizeHandler;
-import org.geomajas.graphics.client.object.MockResizable;
-import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer;
-import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer.Space;
+import org.geomajas.graphics.client.object.base.BaseRectangle;
 import org.geomajas.graphics.client.service.GraphicsService;
 import org.geomajas.graphics.client.service.GraphicsServiceImpl;
+import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer;
+import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer.Space;
 import org.geomajas.graphics.client.util.BboxPosition;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import com.google.gwtmockito.GwtMockitoTestRunner;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 
+
+@RunWith(GwtMockitoTestRunner.class)
 public class ResizeControllerTest {
 	
 	@Mock
@@ -40,7 +44,6 @@ public class ResizeControllerTest {
 
 	@Before
 	public void setUp() {
-		MockitoAnnotations.initMocks(this);
 		when(objectContainer.transform(new Coordinate(105, 110), Space.SCREEN, Space.USER)).thenReturn(new Coordinate(105, 110));
 		when(objectContainer.transform(new Coordinate(100, 100), Space.SCREEN, Space.USER)).thenReturn(new Coordinate(100, 100));
 		when(objectContainer.transform(BboxPosition.CORNER_LL, Space.SCREEN, Space.USER)).thenReturn(BboxPosition.CORNER_UL);
@@ -56,7 +59,7 @@ public class ResizeControllerTest {
 
 	@Test
 	public void testResize() {
-		MockResizable m = new MockResizable(new Coordinate(5, 6), new Bbox(0, 0, 50, 50));
+		BaseRectangle m = new BaseRectangle(5, 6, 50, 50);
 		SimpleEventBus eventBus = new SimpleEventBus();
 		GraphicsService service = new GraphicsServiceImpl(eventBus);
 		service.setObjectContainer(objectContainer);
@@ -70,28 +73,28 @@ public class ResizeControllerTest {
 			h.onDragStop(105, 110, false);
 			switch (h.getBboxPosition()) {
 				case CORNER_LL:
-					Assert.assertTrue(BboxService.equals(m.getUserBounds(), new Bbox(5, 0, 45, 60), 0.0001));
+					Assert.assertTrue(BboxService.equals(m.getUserBounds(), new Bbox(10, 6, 45, 60), 0.0001));
 					break;
 				case CORNER_LR:
-					Assert.assertTrue(BboxService.equals(m.getUserBounds(), new Bbox(0, 0, 55, 60), 0.0001));
+					Assert.assertTrue(BboxService.equals(m.getUserBounds(), new Bbox(5, 6, 55, 60), 0.0001));
 					break;
 				case CORNER_UL:
-					Assert.assertTrue(BboxService.equals(m.getUserBounds(), new Bbox(5, 10, 45, 40), 0.0001));
+					Assert.assertTrue(BboxService.equals(m.getUserBounds(), new Bbox(10, 16, 45, 40), 0.0001));
 					break;
 				case CORNER_UR:
-					Assert.assertTrue(BboxService.equals(m.getUserBounds(), new Bbox(0, 10, 55, 40), 0.0001));
+					Assert.assertTrue(BboxService.equals(m.getUserBounds(), new Bbox(5, 16, 55, 40), 0.0001));
 					break;
 				case MIDDLE_LEFT:
-					Assert.assertTrue(BboxService.equals(m.getUserBounds(), new Bbox(5, 0, 45, 50), 0.0001));
+					Assert.assertTrue(BboxService.equals(m.getUserBounds(), new Bbox(10, 6, 45, 50), 0.0001));
 					break;
 				case MIDDLE_LOW:
-					Assert.assertTrue(BboxService.equals(m.getUserBounds(), new Bbox(0, 0, 50, 60), 0.0001));
+					Assert.assertTrue(BboxService.equals(m.getUserBounds(), new Bbox(5, 6, 50, 60), 0.0001));
 					break;
 				case MIDDLE_RIGHT:
-					Assert.assertTrue(BboxService.equals(m.getUserBounds(), new Bbox(0, 0, 55, 50), 0.0001));
+					Assert.assertTrue(BboxService.equals(m.getUserBounds(), new Bbox(5, 6, 55, 50), 0.0001));
 					break;
 				case MIDDLE_UP:
-					Assert.assertTrue(BboxService.equals(m.getUserBounds(), new Bbox(0, 10, 50, 40), 0.0001));
+					Assert.assertTrue(BboxService.equals(m.getUserBounds(), new Bbox(5, 16, 50, 40), 0.0001));
 					break;
 			}
 			service.undo();

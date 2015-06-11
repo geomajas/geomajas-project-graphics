@@ -58,8 +58,8 @@ public class AnchoredIcon extends UpdateableGroupGraphicsObject {
 
 	@Override
 	public Object cloneObject() {
-		AnchoredIcon clone = new AnchoredIcon(baseIcon.getUserPosition(), (int) baseIcon.getBounds().getWidth(),
-				(int) baseIcon.getBounds().getHeight(), baseIcon.getHref(), anchored.getAnchorPosition(),
+		AnchoredIcon clone = new AnchoredIcon(baseIcon.getUserPosition(), (int) baseIcon.getUserBounds().getWidth(),
+				(int) baseIcon.getUserBounds().getHeight(), baseIcon.getHref(), anchored.getAnchorPosition(),
 				anchored.getMarkerShape());
 		CopyUtil.copyAnchoredProperties(this.getRole(Anchored.TYPE), clone.getRole(Anchored.TYPE));
 		return clone;

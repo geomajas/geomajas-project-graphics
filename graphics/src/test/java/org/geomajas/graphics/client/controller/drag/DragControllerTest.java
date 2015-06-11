@@ -10,25 +10,27 @@
  */
 package org.geomajas.graphics.client.controller.drag;
 
-import com.google.web.bindery.event.shared.SimpleEventBus;
-import org.geomajas.geometry.Bbox;
+import static org.mockito.Mockito.when;
+
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.controller.resize.ResizeController;
-import org.geomajas.graphics.client.object.MockDraggable;
-import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer;
-import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer.Space;
+import org.geomajas.graphics.client.object.base.BaseRectangle;
 import org.geomajas.graphics.client.service.GraphicsService;
 import org.geomajas.graphics.client.service.GraphicsServiceImpl;
+import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer;
+import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer.Space;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
-import static org.mockito.Mockito.when;
+import com.google.gwtmockito.GwtMockitoTestRunner;
+import com.google.web.bindery.event.shared.SimpleEventBus;
 
+@RunWith(GwtMockitoTestRunner.class)
 public class DragControllerTest {
-	
+
 	@Mock
 	private GraphicsObjectContainer objectContainer;
 
@@ -40,16 +42,17 @@ public class DragControllerTest {
 
 	@Before
 	public void setUp() {
-		MockitoAnnotations.initMocks(this);
-		when(objectContainer.transform(new Coordinate(105, 110), Space.SCREEN, Space.USER)).thenReturn(new Coordinate(105, 110));
-		when(objectContainer.transform(new Coordinate(100, 100), Space.SCREEN, Space.USER)).thenReturn(new Coordinate(100, 100));
+		when(objectContainer.transform(new Coordinate(105, 110), Space.SCREEN, Space.USER)).thenReturn(
+				new Coordinate(105, 110));
+		when(objectContainer.transform(new Coordinate(100, 100), Space.SCREEN, Space.USER)).thenReturn(
+				new Coordinate(100, 100));
 		service = new GraphicsServiceImpl(eventBus);
 		service.setObjectContainer(objectContainer);
 	}
 
 	@Test
 	public void testDrag() {
-		MockDraggable m = new MockDraggable(new Coordinate(5, 6), new Bbox(0, 0, 50, 50));
+		BaseRectangle m = new BaseRectangle(5, 6, 50, 50);
 		ResizeController r = new ResizeController(m, service);
 		GraphicsObjectDragHandler h = new GraphicsObjectDragHandler(m, service, r);
 

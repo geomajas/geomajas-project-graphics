@@ -10,7 +10,6 @@
  */
 package org.geomajas.graphics.client.util;
 
-
 import org.geomajas.geometry.Coordinate;
 
 /**
@@ -21,7 +20,19 @@ import org.geomajas.geometry.Coordinate;
  */
 public interface HasPosition {
 
+	/**
+	 * Get the minX/minY corner of the object in user space. This is different from userX/userY = center for
+	 * circles/ellipses, but ensures consistency when positioning overlapping objects (e.g. circle/rectangle) !
+	 * 
+	 * @return
+	 */
 	Coordinate getUserPosition();
 
+	/**
+	 * Set the minX/minY corner of the object in user space. This is different from userX/userY = center for
+	 * circles/ellipses, but ensures consistency when positioning overlapping objects (e.g. circle/rectangle) !
+	 * 
+	 * @param position
+	 */
 	void setUserPosition(Coordinate position);
 }

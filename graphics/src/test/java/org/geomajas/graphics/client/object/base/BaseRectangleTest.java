@@ -12,17 +12,19 @@ package org.geomajas.graphics.client.object.base;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.graphics.client.Graphics;
-import org.geomajas.graphics.client.GraphicsMockSetup;
+import org.geomajas.graphics.client.GraphicsBaseTest;
 import org.geomajas.graphics.client.object.role.Draggable;
-import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.object.role.Fillable;
+import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.object.role.Strokable;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
-public class BaseRectangleTest extends GraphicsMockSetup {
+import com.google.gwtmockito.GwtMockitoTestRunner;
+
+@RunWith(GwtMockitoTestRunner.class)
+public class BaseRectangleTest extends GraphicsBaseTest {
 
 	private BaseRectangle baseRectangle;
 
