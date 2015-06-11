@@ -23,17 +23,19 @@ import org.geomajas.graphics.client.event.GraphicsOperationEvent;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.operation.ResizeOperation;
+import org.geomajas.graphics.client.render.AnchoredRectangle;
+import org.geomajas.graphics.client.render.IsRenderable;
 import org.geomajas.graphics.client.render.RenderContainer;
-import org.geomajas.graphics.client.render.VectorRenderContainer;
+import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.render.shape.AnchoredRectangleImpl;
+import org.geomajas.graphics.client.render.shape.VectorRenderContainer;
 import org.geomajas.graphics.client.service.GraphicsService;
 import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer.Space;
 import org.geomajas.graphics.client.util.BboxPosition;
 import org.geomajas.graphics.client.util.FlipState;
 import org.geomajas.graphics.client.util.GraphicsUtil;
-import org.vaadin.gwtgraphics.client.Shape;
-import org.vaadin.gwtgraphics.client.VectorObject;
 
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
@@ -46,7 +48,6 @@ import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.RootPanel;
 
 /**
@@ -134,7 +135,7 @@ public class ResizeController extends UpdateHandlerGraphicsControllerWithVisible
 		// update positions
 		updateHandlers();
 		// add the group
-		getHandlerGroup().renderInContainer(getContainer());
+		getContainer().addRenderable(getHandlerGroup());
 	}
 
 	@Override
@@ -167,7 +168,7 @@ public class ResizeController extends UpdateHandlerGraphicsControllerWithVisible
 		}
 	}
 
-	protected Shape createHandlerArea(BboxPosition type) {
+	protected AnchoredRectangle createHandlerArea(BboxPosition type) {
 		Coordinate anchor = getAnchorPointCoordinate(type, HANDLER_SIZE);
 		AnchoredRectangleImpl handler = new AnchoredRectangleImpl(0, 0, HANDLER_SIZE, HANDLER_SIZE, (int) anchor.getX(),
 				(int) anchor.getY());
@@ -177,7 +178,7 @@ public class ResizeController extends UpdateHandlerGraphicsControllerWithVisible
 		return handler;
 	}
 
-	protected Shape createClickableArea(BboxPosition type) {
+	protected AnchoredRectangle createClickableArea(BboxPosition type) {
 		Coordinate anchor = getAnchorPointCoordinate(type, HANDLER_SIZE);
 		AnchoredRectangleImpl clickableArea = new AnchoredRectangleImpl(0, 0, 2 * HANDLER_SIZE, 2 * HANDLER_SIZE,
 				(int) anchor.getX(), (int) anchor.getY());
@@ -199,9 +200,9 @@ public class ResizeController extends UpdateHandlerGraphicsControllerWithVisible
 
 		private BboxPosition type;
 
-		private Shape clickableArea;
+		private AnchoredRectangle clickableArea;
 
-		private Shape rectangle;
+		private AnchoredRectangle rectangle;
 
 		private Coordinate userBegin;
 
@@ -284,8 +285,8 @@ public class ResizeController extends UpdateHandlerGraphicsControllerWithVisible
 			}
 		}
 
-		private void setCursor(VectorObject rectangle) {
-			rectangle.getElement().getStyle().setCursor(getCursor());
+		private void setCursor(IsRenderable renderable) {
+			renderable.getRenderable().setCursor(getCursor().getCssName());
 		}
 
 		public void setLocation(Coordinate location) {
@@ -302,28 +303,28 @@ public class ResizeController extends UpdateHandlerGraphicsControllerWithVisible
 		}
 
 		public void renderInContainer(RenderContainer group) {
-			((VectorRenderContainer)group).getContainer().add(clickableArea);
-			((VectorRenderContainer)group).getContainer().add(rectangle);
-			clickableArea.addMouseDownHandler(this);
-			rectangle.addMouseDownHandler(this);
-			rectangle.addMouseUpHandler(this);
-			rectangle.addMouseMoveHandler(this);
-			rectangle.addMouseOverHandler(this);
-			rectangle.addMouseOutHandler(this);
+			group.addRenderable(clickableArea);
+			group.addRenderable(rectangle);
+			clickableArea.getRenderable().addMouseDownHandler(this);
+			rectangle.getRenderable().addMouseDownHandler(this);
+			rectangle.getRenderable().addMouseUpHandler(this);
+			rectangle.getRenderable().addMouseMoveHandler(this);
+			rectangle.getRenderable().addMouseOverHandler(this);
+			rectangle.getRenderable().addMouseOutHandler(this);
 		}
 
 		public void onMouseDown(MouseDownEvent event) {
 			if (!dragging) {
-				capture(rectangle.getElement(), getCursor());
+				capture(rectangle.getRenderable(), getCursor());
 				setDragging(true);
 				onDragStart(event.getClientX(), event.getClientY());
 				if (mask != null) { // may happen in unusual scenario where mouse-up is not called
 					mask.getRenderable().removeFromParent();
 				}
 				mask = (GraphicsObject) getObject().cloneObject();
-				mask.setOpacity(0.5);
+				mask.getRenderable().setOpacity(0.5);
 				mask.getRole(Resizable.TYPE).setUserBounds(beginBounds);
-				mask.getRenderable().renderInContainer(getHandlerGroup());
+				getHandlerGroup().addRenderable(mask.getRenderable());
 			}
 		}
 
@@ -335,7 +336,7 @@ public class ResizeController extends UpdateHandlerGraphicsControllerWithVisible
 				mask = null;
 				boolean preserveRatio = resizable.isPreserveRatio() || event.isShiftKeyDown();
 				onDragStop(event.getClientX(), event.getClientY(), preserveRatio);
-				release(rectangle.getElement());
+				release(rectangle.getRenderable());
 			}
 		}
 
@@ -383,7 +384,7 @@ public class ResizeController extends UpdateHandlerGraphicsControllerWithVisible
 		}
 
 		void setVisible(boolean visible) {
-			rectangle.setVisible(visible);
+			rectangle.getRenderable().setVisible(visible);
 		}
 		
 		private void setDragging(boolean draggingNewValue) {
@@ -395,14 +396,14 @@ public class ResizeController extends UpdateHandlerGraphicsControllerWithVisible
 			}
 		}
 		
-		protected void capture(Element element, Cursor cursor) {
-			DOM.setCapture(element);
+		protected void capture(Renderable element, Cursor cursor) {
+			element.capture();
 			captureCursor = RootPanel.getBodyElement().getStyle().getCursor();
 			RootPanel.getBodyElement().getStyle().setCursor(cursor);
 		}
 
-		protected void release(Element element) {
-			DOM.releaseCapture(element);
+		protected void release(Renderable element) {
+			element.releaseCapture();
 			RootPanel.getBodyElement().getStyle().setProperty("cursor", captureCursor);
 		}
 

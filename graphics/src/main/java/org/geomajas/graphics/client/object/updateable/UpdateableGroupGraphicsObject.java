@@ -10,10 +10,10 @@
  */
 package org.geomajas.graphics.client.object.updateable;
 
-import org.geomajas.graphics.client.object.BaseGraphicsObject;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.geomajas.graphics.client.object.BaseGraphicsObject;
 
 /**
  * Extension of {@link BaseGraphicsObject} with {@link Updateable}.

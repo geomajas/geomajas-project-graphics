@@ -15,7 +15,6 @@ import java.util.List;
 
 import org.geomajas.graphics.client.render.AnchoredCross;
 import org.geomajas.graphics.client.render.Renderable;
-import org.geomajas.graphics.client.render.VectorRenderable;
 import org.vaadin.gwtgraphics.client.shape.Path;
 import org.vaadin.gwtgraphics.client.shape.path.LineTo;
 import org.vaadin.gwtgraphics.client.shape.path.MoveTo;

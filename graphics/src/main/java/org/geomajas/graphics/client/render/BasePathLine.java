@@ -11,10 +11,10 @@
 package org.geomajas.graphics.client.render;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.graphics.client.Graphics;
 import org.geomajas.graphics.client.object.base.BasePath;
 import org.geomajas.graphics.client.render.shape.CoordinatePathShape;
-import org.vaadin.gwtgraphics.client.Group;
-import org.vaadin.gwtgraphics.client.VectorObject;
+import org.geomajas.graphics.client.render.shape.VectorRenderable;
 
 /**
  * Extention of {@link org.geomajas.graphics.client.object.base.BasePath} for an unclosed path SVG object (a line),
@@ -34,9 +34,7 @@ public class BasePathLine extends BasePath {
 	 */
 	private CoordinatePathShape clickArea;
 
-	private Group group;
-	
-	private Renderable renderable;
+	private RenderContainer group;
 
 	/**
 	 * minimum mouse event buffer.
@@ -53,18 +51,17 @@ public class BasePathLine extends BasePath {
 
 	public BasePathLine(Coordinate[] coordinates) {
 		super(coordinates, false);
-		group = new Group();
-		renderable = new VectorRenderable(group);
-		group.add(((VectorObject) path));
+		group = Graphics.getRenderElementFactory().createRenderContainer();
+		group.addRenderable(path);
 		clickArea = new CoordinatePathShape(coordinates, false);
 		clickArea.setStrokeWidth(pointerEventAreaminimumWidth);
 		clickArea.setStrokeOpacity(0);  // makes it invisible, but mouse events will still be registered
-		group.add(clickArea);
+		group.addRenderable(clickArea);
 	}
 
 	@Override
 	public Renderable getRenderable(){
-		return renderable;
+		return group;
 	}
 
 	@Override

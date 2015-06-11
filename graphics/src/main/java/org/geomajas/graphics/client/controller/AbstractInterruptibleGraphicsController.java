@@ -10,8 +10,6 @@
  */
 package org.geomajas.graphics.client.controller;
 
-import com.google.gwt.event.dom.client.MouseEvent;
-
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.object.GraphicsObject;
@@ -23,7 +21,8 @@ import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContai
 import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer.Space;
 import org.geomajas.graphics.client.util.BboxPosition;
 import org.geomajas.graphics.client.util.Interruptible;
-import org.vaadin.gwtgraphics.client.VectorObjectContainer;
+
+import com.google.gwt.event.dom.client.MouseEvent;
 
 /**
  * Contains default implementations of {@link GraphicsController} and {@link Interruptible}.
@@ -162,15 +161,21 @@ public abstract class AbstractInterruptibleGraphicsController implements Graphic
 		return (GraphicsServiceImpl) graphicsService;
 	}
 
+	protected RenderContainer addContainer() {
+		RenderContainer container = createContainer();
+		getGraphicsServiceImpl().getObjectContainer().addRenderable(container);
+		return container;
+	}
+
 	protected RenderContainer createContainer() {
 		return getGraphicsServiceImpl().createContainer();
 	}
 
 	protected void removeContainer(RenderContainer container) {
-		getGraphicsServiceImpl().removeContainer(container);
+		container.removeFromParent();
 	}
 
 	protected void bringContainerToFront(RenderContainer container) {
-		getGraphicsServiceImpl().bringContainerToFront(container);
+		container.bringToFront();
 	}
 }

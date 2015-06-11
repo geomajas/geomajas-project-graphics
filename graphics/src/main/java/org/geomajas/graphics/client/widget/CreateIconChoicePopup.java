@@ -10,9 +10,30 @@
  */
 package org.geomajas.graphics.client.widget;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.graphics.client.Graphics;
+import org.geomajas.graphics.client.controller.create.CreateIconController;
+import org.geomajas.graphics.client.object.updateable.AnchoredIcon;
+import org.geomajas.graphics.client.object.updateable.anchored.AnchorMarker;
+import org.geomajas.graphics.client.object.updateable.anchored.MarkerShape;
+import org.geomajas.graphics.client.render.AnchoredRectangle;
+import org.geomajas.graphics.client.render.IsRenderable;
+import org.geomajas.graphics.client.render.RenderArea;
+import org.geomajas.graphics.client.render.RenderContainer;
+import org.geomajas.graphics.client.render.Renderable;
+import org.geomajas.graphics.client.render.shape.VectorRenderable;
+import org.geomajas.graphics.client.resource.GraphicsResource;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Cursor;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
@@ -30,24 +51,6 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.graphics.client.controller.create.CreateIconController;
-import org.geomajas.graphics.client.object.updateable.AnchoredIcon;
-import org.geomajas.graphics.client.resource.GraphicsResource;
-import org.geomajas.graphics.client.object.updateable.anchored.MarkerShape;
-import org.vaadin.gwtgraphics.client.DrawingArea;
-import org.vaadin.gwtgraphics.client.Group;
-import org.vaadin.gwtgraphics.client.Shape;
-import org.vaadin.gwtgraphics.client.VectorObject;
-import org.vaadin.gwtgraphics.client.shape.Rectangle;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Popup window with icon and marker choice.
@@ -91,7 +94,7 @@ public class CreateIconChoicePopup {
 	@UiField
 	protected CaptionPanel previewCaptionPanel;
 
-	private DrawingArea previewArea;
+	private RenderArea previewArea;
 
 	/* constructor elements */
 	private final CreateIconController controller;
@@ -110,11 +113,11 @@ public class CreateIconChoicePopup {
 
 	private String defaultIconUrl;
 
-	//TODO: put these values in a util class or default data provider
-	private final List<String> defaultIconurls = new ArrayList<String>(Arrays.asList(
-			GWT.getModuleBaseURL() + "image/sun.jpg", GWT.getModuleBaseURL() + "image/cloud.png"));
+	// TODO: put these values in a util class or default data provider
+	private final List<String> defaultIconurls = new ArrayList<String>(Arrays.asList(GWT.getModuleBaseURL()
+			+ "image/sun.jpg", GWT.getModuleBaseURL() + "image/cloud.png"));
 
-	//TODO: put these values in a util class or default data provider
+	// TODO: put these values in a util class or default data provider
 	private final List<MarkerShape> defaultMarkershapes = new ArrayList<MarkerShape>(
 			Arrays.asList(MarkerShape.values()));
 
@@ -146,13 +149,13 @@ public class CreateIconChoicePopup {
 	 * Popup for choosing icons and markers from a given list.
 	 *
 	 * @param controllerInput
-	 * @param hrefs list of url String values for icons to choose from. The first one will be default value.
-	 *                 In case of null, a default list will be used.
-	 * @param markerShapes list of marker Shapes to choose from. The first one will be default value. In case of null,
-	 *                     a default list will be used.
+	 * @param hrefs list of url String values for icons to choose from. The first one will be default value. In case of
+	 *        null, a default list will be used.
+	 * @param markerShapes list of marker Shapes to choose from. The first one will be default value. In case of null, a
+	 *        default list will be used.
 	 */
 	public CreateIconChoicePopup(CreateIconController controllerInput, List<String> hrefs,
-								 List<MarkerShape> markerShapes) {
+			List<MarkerShape> markerShapes) {
 		this.controller = controllerInput;
 		UIBINDER.createAndBindUi(this);
 		iconChoiceTablePanel.setStyleName("iconCreationChoiceTable");
@@ -168,7 +171,7 @@ public class CreateIconChoicePopup {
 		});
 
 		// preview panel
-		previewArea = new DrawingArea(40, 80);
+		previewArea = Graphics.getRenderElementFactory().createRenderArea(40, 80);
 		previewPanel.setWidget(previewArea);
 
 		// set icons choice
@@ -178,7 +181,7 @@ public class CreateIconChoicePopup {
 		setMarkerChoiceList(markerShapes);
 	}
 
-	/* popup display*/
+	/* popup display */
 
 	public void show(int clientX, int clientY) {
 		if (onlyOneChoice()) {
@@ -218,6 +221,7 @@ public class CreateIconChoicePopup {
 
 	/**
 	 * Set size of the icons and markers in the choice list. Must be at least 12.
+	 * 
 	 * @param choiceListImageSize
 	 */
 	public void setChoiceListImageSize(int choiceListImageSize) {
@@ -303,13 +307,13 @@ public class CreateIconChoicePopup {
 		markersPanel.clear();
 		markers.clear();
 
-		DrawingArea drawingArea = new DrawingArea((choiceListImageSize + 5 ) * imagePerRow, choiceListImageSize + 5);
-		drawingArea.getElement().getStyle().setMargin(5, Unit.PX);
+		RenderArea drawingArea = Graphics.getRenderElementFactory().createRenderArea(
+				(choiceListImageSize + 5) * imagePerRow, choiceListImageSize + 5);
 		int amountOfMarkers = 0;
 		Set<MarkerShape> markerSet = new LinkedHashSet<MarkerShape>(markerShapesChoiceList);
 		for (MarkerShape markerShape : markerSet) {
 			ClickableMarkerShape marker = getClickableMarkerShape(markerShape);
-			drawingArea.add(translateMarker(marker.asVectorObject(), amountOfMarkers++));
+			drawingArea.addRenderable(translateMarker(marker, amountOfMarkers++));
 			markers.put(markerShape, marker);
 		}
 		markersPanel.setWidget(drawingArea);
@@ -325,11 +329,11 @@ public class CreateIconChoicePopup {
 
 		// icon
 		Coordinate iconPosition = new Coordinate(previewArea.getWidth() / 2, 20);
-		Coordinate markerPosition  = new Coordinate(iconPosition);
+		Coordinate markerPosition = new Coordinate(iconPosition);
 		markerPosition.setY(markerPosition.getY() + 40);
-		AnchoredIcon previewIcon = new AnchoredIcon(iconPosition, previewImageWidth,
-				previewImageHeight, selectedIconUrl, markerPosition, selectedMarkerShape);
-		previewArea.add(previewIcon.asObject());
+		AnchoredIcon previewIcon = new AnchoredIcon(iconPosition, previewImageWidth, previewImageHeight,
+				selectedIconUrl, markerPosition, selectedMarkerShape);
+		previewArea.addRenderable(previewIcon.getRenderable());
 	}
 
 	/* private methods */
@@ -340,11 +344,12 @@ public class CreateIconChoicePopup {
 
 	/**
 	 * used for displaying marker SVG elements in a drawing area.
+	 * 
 	 * @param shape
 	 * @param amountOfMarkers
 	 * @return
 	 */
-	private VectorObject translateMarker(VectorObject shape, int amountOfMarkers) {
+	private ClickableMarkerShape translateMarker(ClickableMarkerShape shape, int amountOfMarkers) {
 		if (amountOfMarkers % imagePerRow != 0) {
 			int size = choiceListImageSize + 6;
 			shape.setTranslation(size * (amountOfMarkers % imagePerRow), size * (amountOfMarkers / imagePerRow));
@@ -400,7 +405,7 @@ public class CreateIconChoicePopup {
 	 * @author Jan Venstermans
 	 * 
 	 */
-	protected class ClickableMarkerShape implements MouseOverHandler, MouseOutHandler {
+	protected class ClickableMarkerShape implements MouseOverHandler, MouseOutHandler, IsRenderable {
 
 		/**
 		 * enum value refering to the shape of the marker.
@@ -410,14 +415,14 @@ public class CreateIconChoicePopup {
 		/**
 		 * the shape itself.
 		 */
-		private Shape simpleShape;
+		private AnchorMarker simpleShape;
 
 		/**
 		 * click area.
 		 */
-		private Rectangle rectangle;
+		private AnchoredRectangle rectangle;
 
-		private Group group;
+		private RenderContainer group;
 
 		private boolean selected;
 
@@ -429,13 +434,14 @@ public class CreateIconChoicePopup {
 			simpleShape.setFillColor("#FF6600");
 			simpleShape.setStrokeColor("#FF6600");
 			simpleShape.setFillOpacity(0.7);
-			
-			rectangle = new Rectangle(0, 0, choiceListImageSize, choiceListImageSize);
+
+			rectangle = Graphics.getRenderElementFactory().createAnchoredRectangle(0, 0, choiceListImageSize,
+					choiceListImageSize, 0, 0);
 			rectangle.setStrokeOpacity(0);
 			rectangle.setStrokeWidth(1);
 			rectangle.setStrokeColor("black");
 			rectangle.setFillOpacity(0);
-			rectangle.addClickHandler(new ClickHandler() {
+			rectangle.getRenderable().addClickHandler(new ClickHandler() {
 
 				@Override
 				public void onClick(ClickEvent event) {
@@ -443,13 +449,23 @@ public class CreateIconChoicePopup {
 				}
 
 			});
-			rectangle.addMouseOverHandler(this);
-			rectangle.addMouseOutHandler(this);
-			rectangle.getElement().getStyle().setCursor(Cursor.POINTER);
+			rectangle.getRenderable().addMouseOverHandler(this);
+			rectangle.getRenderable().addMouseOutHandler(this);
+			rectangle.getRenderable().setCursor(Cursor.POINTER.getCssName());
+
+			group = Graphics.getRenderElementFactory().createRenderContainer();
+			group.addRenderable(simpleShape);
+			group.addRenderable(rectangle);
+		}
+
+		public void setTranslation(int i, int j) {
+			// TODO Auto-generated method stub
 			
-			group = new Group();
-			group.add(simpleShape);
-			group.add(rectangle);
+		}
+
+		@Override
+		public Renderable getRenderable() {
+			return group;
 		}
 
 		@Override
@@ -464,10 +480,6 @@ public class CreateIconChoicePopup {
 			if (!selected) {
 				rectangle.setStrokeOpacity(0.5);
 			}
-		}
-
-		public VectorObject asVectorObject() {
-			return group;
 		}
 
 		public void setSelected(boolean selected) {

@@ -13,7 +13,6 @@ package org.geomajas.graphics.client.render.shape;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.graphics.client.render.AnchoredImage;
 import org.geomajas.graphics.client.render.Renderable;
-import org.geomajas.graphics.client.render.VectorRenderable;
 import org.vaadin.gwtgraphics.client.Image;
 
 /**

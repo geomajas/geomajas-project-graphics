@@ -10,17 +10,6 @@
  */
 package org.geomajas.graphics.client.editor;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.Widget;
-import com.mogaleaf.client.common.widgets.ColorHandler;
-import com.mogaleaf.client.common.widgets.SimpleColorPicker;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.object.role.Fillable;
@@ -34,6 +23,18 @@ import org.geomajas.graphics.client.util.textbox.ColorTextBoxValidator;
 import org.geomajas.graphics.client.util.textbox.DoubleTextBoxValidator;
 import org.geomajas.graphics.client.util.textbox.IntegerTextBoxValidator;
 import org.geomajas.graphics.client.widget.TransparencySliderBar;
+
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Widget;
+import com.mogaleaf.client.common.widgets.ColorHandler;
+import com.mogaleaf.client.common.widgets.SimpleColorPicker;
 
 /**
  * {@link org.geomajas.graphics.client.editor.Editor} for the

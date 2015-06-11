@@ -10,16 +10,16 @@
  */
 package org.geomajas.graphics.client.controller.create.updateable;
 
+import java.util.List;
+
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.controller.create.base.CreateBaseIconController;
 import org.geomajas.graphics.client.object.base.BaseIcon;
 import org.geomajas.graphics.client.object.updateable.AnchoredIcon;
+import org.geomajas.graphics.client.object.updateable.anchored.MarkerShape;
 import org.geomajas.graphics.client.operation.AddOperation;
 import org.geomajas.graphics.client.service.GraphicsService;
 import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer;
-import org.geomajas.graphics.client.object.updateable.anchored.MarkerShape;
-
-import java.util.List;
 
 /**
  * Controller that creates a {@link org.geomajas.graphics.client.object.base.BaseIcon}.

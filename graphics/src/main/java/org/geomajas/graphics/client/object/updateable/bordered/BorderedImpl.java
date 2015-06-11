@@ -62,11 +62,6 @@ public class BorderedImpl extends BaseGraphicsObject implements Bordered, Update
 	}
 
 	@Override
-	public void setOpacity(double opacity) {
-		borderRect.setOpacity(opacity);
-	}
-
-	@Override
 	public Strokable getStrokable() {
 		return borderRect.getRole(Strokable.TYPE);
 	}

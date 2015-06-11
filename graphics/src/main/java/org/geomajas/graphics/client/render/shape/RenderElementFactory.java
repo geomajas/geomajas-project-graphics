@@ -18,7 +18,9 @@ import org.geomajas.graphics.client.render.AnchoredImage;
 import org.geomajas.graphics.client.render.AnchoredRectangle;
 import org.geomajas.graphics.client.render.AnchoredText;
 import org.geomajas.graphics.client.render.CoordinatePath;
-import org.geomajas.graphics.client.render.RenderableList;
+import org.geomajas.graphics.client.render.RenderArea;
+import org.geomajas.graphics.client.render.RenderContainer;
+import org.vaadin.gwtgraphics.client.shape.Rectangle;
 
 /**
  * Interface for specific view elements.
@@ -27,6 +29,10 @@ import org.geomajas.graphics.client.render.RenderableList;
  *
  */
 public interface RenderElementFactory {
+
+	RenderContainer createRenderContainer();
+
+	RenderArea createRenderArea(int width, int height);
 
 	AnchoredText createAnchoredText(double userX, double userY, String text, double anchorX, double anchorY);
 
@@ -47,8 +53,6 @@ public interface RenderElementFactory {
 
 	AnchoredImage createAnchoredImage(double userX, double userY, int width, int height, String href,
 									  boolean preserveRatio, double anchorX, double anchorY);
-
-	RenderableList createRenderableList();
 
 	AnchorMarker createMarkerAnchoredRectangle(double userX, double userY, double userWidth, double userHeight,
 											   int anchorX, int anchorY);

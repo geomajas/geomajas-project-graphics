@@ -10,10 +10,8 @@
  */
 package org.geomajas.graphics.client.controller.popupmenu;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseDownHandler;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.Graphics;
@@ -25,16 +23,18 @@ import org.geomajas.graphics.client.event.GraphicsOperationEvent;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.role.Resizable;
-import org.geomajas.graphics.client.render.VectorRenderContainer;
+import org.geomajas.graphics.client.render.RenderContainer;
 import org.geomajas.graphics.client.render.shape.AnchoredImageImpl;
+import org.geomajas.graphics.client.render.shape.VectorRenderContainer;
 import org.geomajas.graphics.client.service.GraphicsService;
 import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer.Space;
 import org.geomajas.graphics.client.util.BboxPosition;
 import org.geomajas.graphics.client.util.GraphicsUtil;
-import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.MouseDownEvent;
+import com.google.gwt.event.dom.client.MouseDownHandler;
 
 /**
  * Controller that shows a popup menu at the upper left corner of the {@link GraphicsObject}. The menu is created only
@@ -55,7 +55,7 @@ public class PopupMenuControllerImpl extends AbstractInterruptibleGraphicsContro
 	/**
 	 * Our own container.
 	 */
-	private VectorRenderContainer container;
+	private RenderContainer container;
 
 	private PropertyHandler handler;
 
@@ -74,7 +74,7 @@ public class PopupMenuControllerImpl extends AbstractInterruptibleGraphicsContro
 			}
 		}
 
-		container = (VectorRenderContainer)createContainer();
+		container = (VectorRenderContainer)addContainer();
 		// listen to changes to our object
 		service.getObjectContainer().addGraphicsObjectContainerHandler(this);
 		service.getObjectContainer().addGraphicsOperationEventHandler(this);
@@ -91,7 +91,7 @@ public class PopupMenuControllerImpl extends AbstractInterruptibleGraphicsContro
 				} else {
 					// the group may be detached, update and reattach !
 					handler.update();
-					handler.add(container.getContainer());
+					handler.addToContainer(container);
 				}
 				if (menu == null) {
 					menu = Graphics.getViewManager().createPopupMenuView();
@@ -104,7 +104,7 @@ public class PopupMenuControllerImpl extends AbstractInterruptibleGraphicsContro
 			} else {
 				// just remove the handler
 				if (handler != null) {
-					handler.remove(container.getContainer());
+					container.removeFromParent();
 				}
 				if (menu != null) {
 					menu.hide();
@@ -118,7 +118,7 @@ public class PopupMenuControllerImpl extends AbstractInterruptibleGraphicsContro
 		handler = new PropertyHandler();
 		handler.update();
 		// add the handler
-		handler.add(container.getContainer());
+		handler.addToContainer(container);
 	}
 
 	@Override
@@ -177,12 +177,8 @@ public class PopupMenuControllerImpl extends AbstractInterruptibleGraphicsContro
 			propertyImage.setUserY(pos.getY());
 		}
 
-		public void remove(VectorObjectContainer container) {
-			container.remove(propertyImage);
-		}
-
-		public void add(VectorObjectContainer container) {
-			container.add(propertyImage);
+		public void addToContainer(RenderContainer container) {
+			container.addRenderable(propertyImage);
 		}
 
 		@Override

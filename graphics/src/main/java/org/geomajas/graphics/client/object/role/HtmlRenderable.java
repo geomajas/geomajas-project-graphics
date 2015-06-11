@@ -10,9 +10,10 @@
  */
 package org.geomajas.graphics.client.object.role;
 
-import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.graphics.client.object.RoleInterface;
 import org.geomajas.graphics.client.object.RoleType;
+
+import com.google.gwt.user.client.ui.Widget;
 
 /***
  * Role for {@link Widget}.

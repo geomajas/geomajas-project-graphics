@@ -10,9 +10,10 @@
  */
 package org.geomajas.graphics.client.widget.createcontrollergroup;
 
+import org.geomajas.graphics.client.controller.create.CreateController;
+
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
-import org.geomajas.graphics.client.controller.create.CreateController;
 
 /**
  * MVP interface(s) for a widget that contains a number of {@link CreateController}s.

@@ -11,22 +11,26 @@
 package org.geomajas.graphics.client.render;
 
 import org.geomajas.graphics.client.service.HasAllMouseAndClickHandlers;
-import org.vaadin.gwtgraphics.client.VectorObject;
 
-import com.google.gwt.event.dom.client.HasAllMouseHandlers;
+import com.google.gwt.event.shared.GwtEvent;
 
 /**
- * Implemented by all graphical objects. Rendering happens through {@link #asObject()} method, which returns the
- * {@link VectorObject} that corresponds to this graphical object (usually a group for complex objects).
+ * Implemented by all graphical objects. Rendering happens by adding to a {@link RenderContainer}.
  *
  * @author Jan De Moerloose
  * 
  */
 public interface Renderable extends HasAllMouseAndClickHandlers {
-
-	void renderInContainer(RenderContainer container);
+	
+	void setCursor(String css);
 	
 	void removeFromParent();
+	
+	void bringToFront();
+	
+	void sendToPosition(int index);
+	
+	int getPosition();
 	
 	void capture();
 	
@@ -35,4 +39,6 @@ public interface Renderable extends HasAllMouseAndClickHandlers {
 	void setOpacity(double opacity);
 
 	void setVisible(boolean visible);
+
+	boolean isSourceOf(GwtEvent<?> event);
 }

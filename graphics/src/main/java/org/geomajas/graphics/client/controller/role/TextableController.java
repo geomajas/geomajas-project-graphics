@@ -155,7 +155,7 @@ public class TextableController extends AbstractInterruptibleGraphicsController 
 
 	@Override
 	public void setControllerElementsVisible(boolean visible) {
-		getObject().asObject().setVisible(visible);
+		getObject().getRenderable().setVisible(visible);
 	}
 
 }

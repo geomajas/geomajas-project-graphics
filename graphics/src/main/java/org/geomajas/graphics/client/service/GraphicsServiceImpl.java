@@ -43,7 +43,7 @@ public class GraphicsServiceImpl implements GraphicsService, GraphicsOperationEv
 
 	private Stack<GraphicsOperation> redoStack = new Stack<GraphicsOperation>();
 
-	private RenderContainer objectContainer;
+	private GraphicsObjectContainer objectContainer;
 
 	private List<GraphicsControllerFactory> controllerFactoryList = new ArrayList<GraphicsControllerFactory>();
 
@@ -150,14 +150,6 @@ public class GraphicsServiceImpl implements GraphicsService, GraphicsOperationEv
 
 	public RenderContainer createContainer() {
 		return objectContainer.createContainer();
-	}
-
-	public void bringContainerToFront(RenderContainer container) {
-		objectContainer.bringContainerToFront(container);
-	}
-
-	public void removeContainer(RenderContainer container) {
-		objectContainer.removeContainer(container);
 	}
 
 	@Override

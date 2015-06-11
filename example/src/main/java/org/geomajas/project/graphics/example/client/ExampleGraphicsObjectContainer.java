@@ -11,7 +11,11 @@
 package org.geomajas.project.graphics.example.client;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.DomEvent.Type;
 import com.google.gwt.event.dom.client.MouseEvent;
+import com.google.gwt.event.shared.EventHandler;
+import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
@@ -21,6 +25,7 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.EventBus;
+
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.service.BboxService;
@@ -32,6 +37,10 @@ import org.geomajas.graphics.client.object.updateable.LabeledEllipse;
 import org.geomajas.graphics.client.object.updateable.LabeledImage;
 import org.geomajas.graphics.client.object.updateable.LabeledPath;
 import org.geomajas.graphics.client.object.updateable.LabeledRectangle;
+import org.geomajas.graphics.client.render.IsRenderable;
+import org.geomajas.graphics.client.render.RenderContainer;
+import org.geomajas.graphics.client.render.Renderable;
+import org.geomajas.graphics.client.render.shape.VectorRenderContainer;
 import org.geomajas.graphics.client.service.objectcontainer.AbstractGraphicsObjectContainer;
 import org.geomajas.graphics.client.object.updateable.anchored.MarkerShape;
 import org.geomajas.graphics.client.util.BboxPosition;
@@ -62,7 +71,7 @@ public class ExampleGraphicsObjectContainer extends AbstractGraphicsObjectContai
 		rootPanel.setPixelSize(canvas.getWidth(), canvas.getHeight());
 		canvas.getElement().setId("TestContainer");
 		canvas.add(rootContainer);
-		setRootContainer(rootContainer);
+		setRootContainer(new VectorRenderContainer(rootContainer));
 		setBackGround(rootPanel);
 		setWidgetContainer(rootPanel);
 		rootPanel.add(canvas);
@@ -179,5 +188,7 @@ public class ExampleGraphicsObjectContainer extends AbstractGraphicsObjectContai
 				return BboxPosition.MIDDLE_LOW;
 		}
 	}
+
+	
 
 }

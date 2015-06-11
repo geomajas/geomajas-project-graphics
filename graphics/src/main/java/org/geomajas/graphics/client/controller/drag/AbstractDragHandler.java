@@ -15,12 +15,9 @@ import org.geomajas.graphics.client.controller.DefaultMetaController;
 import org.geomajas.graphics.client.controller.UpdateHandlerGraphicsController;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.operation.GraphicsOperation;
-import org.geomajas.graphics.client.render.RenderContainer;
 import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.service.GraphicsService;
 import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer.Space;
-import org.vaadin.gwtgraphics.client.Group;
-import org.vaadin.gwtgraphics.client.VectorObject;
 
 import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -37,7 +34,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 
 /**
  * Base class for a handling drag functions. Two extra objects are
- * created: an invisible {@link VectorObject} that defines the click area; a
+ * created: an invisible {@link Renderable} that defines the click area; a
  * visible {@link GraphicsObject} that will be shown as the dragging object.
  * 
  * @author Jan De Moerloose
@@ -118,7 +115,7 @@ public abstract class AbstractDragHandler implements MouseDownHandler,
 				draggingMask.getRenderable().removeFromParent();
 			}
 			draggingMask = createDraggingMask();
-			draggingMask.getRenderable().renderInContainer(graphicsHandler.getHandlerGroup());
+			graphicsHandler.getHandlerGroup().addRenderable(draggingMask.getRenderable());
 		}
 	}
 

@@ -19,8 +19,8 @@ import org.geomajas.graphics.client.render.AnchoredImage;
 import org.geomajas.graphics.client.render.AnchoredRectangle;
 import org.geomajas.graphics.client.render.AnchoredText;
 import org.geomajas.graphics.client.render.CoordinatePath;
-import org.geomajas.graphics.client.render.RenderableList;
-import org.geomajas.graphics.client.render.VectorRenderContainer;
+import org.geomajas.graphics.client.render.RenderArea;
+import org.geomajas.graphics.client.render.RenderContainer;
 
 /**
  * Default implementation of {@link RenderElementFactory} for {@link org.vaadin.gwtgraphics.client.Shape} objects.
@@ -29,6 +29,11 @@ import org.geomajas.graphics.client.render.VectorRenderContainer;
  *
  */
 public class ShapeRenderElementFactoryImpl implements RenderElementFactory {
+
+	@Override
+	public RenderArea createRenderArea(int i, int j) {
+		return new ShapeRenderArea(i,j);
+	}
 
 	@Override
 	public AnchoredText createAnchoredText(double userX, double userY, String text, double anchorX, double anchorY) {
@@ -79,7 +84,7 @@ public class ShapeRenderElementFactoryImpl implements RenderElementFactory {
 	}
 
 	@Override
-	public RenderableList createRenderableList() {
+	public RenderContainer createRenderContainer() {
 		return new VectorRenderContainer();
 	}
 

@@ -18,7 +18,6 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.service.BboxService;
 import org.geomajas.graphics.client.render.CoordinatePath;
 import org.geomajas.graphics.client.render.Renderable;
-import org.geomajas.graphics.client.render.VectorRenderable;
 import org.vaadin.gwtgraphics.client.Shape;
 import org.vaadin.gwtgraphics.client.VectorObject;
 import org.vaadin.gwtgraphics.client.shape.Path;

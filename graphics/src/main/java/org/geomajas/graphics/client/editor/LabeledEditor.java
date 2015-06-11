@@ -10,9 +10,9 @@
  */
 package org.geomajas.graphics.client.editor;
 
-import org.geomajas.graphics.client.object.updateable.labeled.Labeled;
 import org.geomajas.graphics.client.object.RoleInterface;
 import org.geomajas.graphics.client.object.RoleType;
+import org.geomajas.graphics.client.object.updateable.labeled.Labeled;
 import org.geomajas.graphics.client.resource.GraphicsResource;
 
 /**

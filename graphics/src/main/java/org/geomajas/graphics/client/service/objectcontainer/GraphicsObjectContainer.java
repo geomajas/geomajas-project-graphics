@@ -20,7 +20,6 @@ import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.render.RenderContainer;
 import org.geomajas.graphics.client.service.HasAllMouseAndClickHandlers;
 import org.geomajas.graphics.client.util.BboxPosition;
-import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 
 import com.google.gwt.event.dom.client.MouseEvent;
 import com.google.web.bindery.event.shared.HandlerRegistration;

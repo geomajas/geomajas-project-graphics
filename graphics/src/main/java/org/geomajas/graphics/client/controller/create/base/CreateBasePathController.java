@@ -67,14 +67,14 @@ public class CreateBasePathController extends CreateController<BasePath> impleme
 		this.closedPath = closedPath;
 		fillOpacity = closedPath ? 1 : 0;
 		showPreview = closedPath;
-		container = createContainer();
+		container = addContainer();
 	}
 
 	@Override
 	public void setActive(boolean active) {
 		super.setActive(active);
 		if (isActive()) {
-			container = createContainer();
+			container = addContainer();
 			registrations.add(getObjectContainer().addMouseDownHandler(this));
 		} else {
 			for (HandlerRegistration r : registrations) {
@@ -148,15 +148,15 @@ public class CreateBasePathController extends CreateController<BasePath> impleme
 					// add the preview extra point !
 					previewPath.addCoordinate(new Coordinate(getUserCoordinate(event)));
 					previewPath.setFillOpacity(previewPath.getFillOpacity() * 0.7);
-					previewPath.getRenderable().renderInContainer(container);
+					container.addRenderable(previewPath.getRenderable());
 				}
 				// we have to show our intermediate result !
-				path.getRenderable().renderInContainer(container);
+				container.addRenderable(path.getRenderable());
 				// start the drag line, captures all events from now !
 				if (dragLine == null) {
 					dragLine = createPath();
 					dragLine.setStrokeOpacity(1);
-					dragLine.getRenderable().renderInContainer(container);
+					container.addRenderable(dragLine.getRenderable());
 				}
 				Coordinate c1 = path.getLastCoordinate();
 				Coordinate c2 = getUserCoordinate(event);

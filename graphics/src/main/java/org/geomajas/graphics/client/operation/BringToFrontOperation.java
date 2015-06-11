@@ -10,13 +10,11 @@
  */
 package org.geomajas.graphics.client.operation;
 
-import com.google.gwt.user.client.ui.Widget;
-import org.geomajas.graphics.client.object.GraphicsObject;
-import org.geomajas.graphics.client.service.GraphicsService;
-import org.vaadin.gwtgraphics.client.VectorObjectContainer;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.geomajas.graphics.client.object.GraphicsObject;
+import org.geomajas.graphics.client.service.GraphicsService;
 
 /**
  * Operation that brings an object to the front.
@@ -28,40 +26,24 @@ public class BringToFrontOperation implements GraphicsOperation {
 
 	private GraphicsObject object;
 	
-	private GraphicsService service;
-	
 	private List<GraphicsObject> externalLabels = new ArrayList<GraphicsObject>();
-
-	private VectorObjectContainer parent;
 
 	private int beforeIndex;
 
 	public BringToFrontOperation(GraphicsObject object, GraphicsService service) {
 		this.object = object;
-		this.service = service;
 	}
 
 	@Override
 	public void execute() {
 		externalLabels.clear();
-		Widget w = object.asObject().getParent();
-		if (w instanceof VectorObjectContainer) {
-			parent = (VectorObjectContainer) w;
-			beforeIndex = parent.indexOf(object.asObject());
-			parent.bringToFront(object.asObject());
-		}
+		beforeIndex = object.getRenderable().getPosition();
+		object.getRenderable().bringToFront();
 	}
 
 	@Override
 	public void undo() {
-		if (parent != null) {
-			if (externalLabels != null && externalLabels.size() > 0) {
-				for (GraphicsObject exLab : externalLabels) {
-					parent.insert(exLab.asObject(), beforeIndex);
-				}
-			}
-			parent.insert(object.asObject(), beforeIndex);
-		}
+		object.getRenderable().sendToPosition(beforeIndex);
 	}
 
 	@Override

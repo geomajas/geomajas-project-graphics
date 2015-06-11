@@ -23,7 +23,6 @@ import org.geomajas.graphics.client.render.AnchoredCircle;
 import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.util.CopyUtil;
 import org.geomajas.graphics.client.util.FlipState;
-import org.vaadin.gwtgraphics.client.VectorObject;
 
 /**
  * Extension of {@link BaseGraphicsObject} for a circle.
@@ -103,13 +102,6 @@ public class BaseCircle extends BaseGraphicsObject implements Resizable, Draggab
 	@Override
 	public Renderable getRenderable() {
 		return circle.getRenderable();
-	}
-
-
-	@Override
-	public void setOpacity(double opacity) {
-		circle.setFillOpacity(opacity);
-		circle.setStrokeOpacity(opacity);
 	}
 
 	@Override

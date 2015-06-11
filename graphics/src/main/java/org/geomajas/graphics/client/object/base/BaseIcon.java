@@ -17,7 +17,6 @@ import org.geomajas.graphics.client.object.BaseGraphicsObject;
 import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.render.AnchoredImage;
 import org.geomajas.graphics.client.render.Renderable;
-import org.vaadin.gwtgraphics.client.VectorObject;
 
 /**
  * Extension of {@link BaseGraphicsObject} for an icon.
@@ -54,15 +53,6 @@ public class BaseIcon extends BaseGraphicsObject implements Draggable {
 	@Override
 	public Coordinate getUserPosition() {
 		return new Coordinate(anchoredImage.getUserX(), anchoredImage.getUserY());
-	}
-
-	@Override
-	public void setOpacity(double opacity) {
-		try {
-			anchoredImage.getRenderable().setOpacity(opacity);
-		} catch (Exception e) {
-			// do nothing
-		}
 	}
 
 	@Override

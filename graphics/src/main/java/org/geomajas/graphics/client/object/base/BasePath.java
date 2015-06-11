@@ -23,7 +23,6 @@ import org.geomajas.graphics.client.render.CoordinatePath;
 import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.util.CopyUtil;
 import org.geomajas.graphics.client.util.FlipState;
-import org.vaadin.gwtgraphics.client.VectorObject;
 
 /**
  * Extension of {@link BaseGraphicsObject} for a path.
@@ -208,11 +207,5 @@ public class BasePath extends BaseGraphicsObject implements Resizable, Draggable
 	@Override
 	public void setStrokeOpacity(double strokeOpacity) {
 		path.setStrokeOpacity(strokeOpacity);
-	}
-
-	@Override
-	public void setOpacity(double opacity) {
-		setFillOpacity(opacity);
-		setStrokeOpacity(opacity);
 	}
 }

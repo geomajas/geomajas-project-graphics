@@ -20,10 +20,9 @@ import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.object.role.Strokable;
 import org.geomajas.graphics.client.render.AnchoredRectangle;
 import org.geomajas.graphics.client.render.Renderable;
-import org.geomajas.graphics.client.render.VectorRenderable;
+import org.geomajas.graphics.client.render.shape.VectorRenderable;
 import org.geomajas.graphics.client.util.CopyUtil;
 import org.geomajas.graphics.client.util.FlipState;
-import org.vaadin.gwtgraphics.client.VectorObject;
 
 /**
  * Extension of {@link BaseGraphicsObject} for a rectangle.
@@ -155,15 +154,5 @@ public class BaseRectangle extends BaseGraphicsObject implements Resizable, Drag
 	@Override
 	public void setStrokeOpacity(double opacity) {
 		rectangle.setStrokeOpacity(opacity);
-	}
-
-	@Override
-	public void setOpacity(double opacity) {
-		setFillOpacity(opacity);
-		setStrokeOpacity(opacity);
-	}
-
-	public VectorObject getVectorObject() {
-		return ((VectorRenderable) getRenderable()).getObject();
 	}
 }

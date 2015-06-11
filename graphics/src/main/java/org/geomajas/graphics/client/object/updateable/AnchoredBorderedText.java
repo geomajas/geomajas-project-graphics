@@ -24,8 +24,8 @@ import org.geomajas.graphics.client.object.updateable.bordered.Bordered;
 import org.geomajas.graphics.client.object.updateable.bordered.BorderedImpl;
 import org.geomajas.graphics.client.object.updateable.wrapper.DraggableWrapperForUpdateable;
 import org.geomajas.graphics.client.object.updateable.wrapper.TextableWrapperForUpdateable;
+import org.geomajas.graphics.client.render.RenderContainer;
 import org.geomajas.graphics.client.render.Renderable;
-import org.geomajas.graphics.client.render.RenderableList;
 import org.geomajas.graphics.client.util.CopyUtil;
 
 /**
@@ -38,7 +38,7 @@ import org.geomajas.graphics.client.util.CopyUtil;
  */
 public class AnchoredBorderedText extends UpdateableGroupGraphicsObject {
 
-	private RenderableList renderableList;
+	private RenderContainer renderContainer;
 
 	private BaseText baseText;
 
@@ -66,10 +66,10 @@ public class AnchoredBorderedText extends UpdateableGroupGraphicsObject {
 		addRole(Anchored.TYPE, anchored);
 
 		// register render order
-		renderableList = Graphics.getRenderElementFactory().createRenderableList();
-		renderableList.addRenderable(anchored);
-		renderableList.addRenderable(bordered);
-		renderableList.addRenderable(baseText);
+		renderContainer = Graphics.getRenderElementFactory().createRenderContainer();
+		renderContainer.addRenderable(anchored);
+		renderContainer.addRenderable(bordered);
+		renderContainer.addRenderable(baseText);
 	}
 
 	@Override
@@ -89,11 +89,7 @@ public class AnchoredBorderedText extends UpdateableGroupGraphicsObject {
 
 	@Override
 	public Renderable getRenderable() {
-		return renderableList.getRenderable();
+		return renderContainer;
 	}
 
-	@Override
-	public void setOpacity(double opacity) {
-		renderableList.getRenderable().setOpacity(opacity);
-	}
 }

@@ -12,10 +12,6 @@
 package org.geomajas.graphics.client.object.updateable.anchored;
 
 import org.geomajas.graphics.client.Graphics;
-import org.geomajas.graphics.client.render.shape.AnchoredCircleImpl;
-import org.geomajas.graphics.client.render.shape.AnchoredCrossImpl;
-import org.geomajas.graphics.client.render.shape.AnchoredRectangleImpl;
-import org.vaadin.gwtgraphics.client.Shape;
 
 /**
  * Enumeration of standard Marker Shapes.
@@ -83,15 +79,15 @@ public enum MarkerShape {
 	 * @param size
 	 * @return
 	 */
-	public Shape getMarkerShape(double posX, double posY, double size) {
+	public AnchorMarker getMarkerShape(double posX, double posY, double size) {
 		switch(this) {
 			case SQUARE:
-				return new AnchoredRectangleImpl(posX, posX,
+				return Graphics.getRenderElementFactory().createMarkerAnchoredRectangle(posX, posX,
 						size, size, (int) size / 2, (int) size / 2);
 			case CIRCLE:
-				return new AnchoredCircleImpl(posX, posY, size / 2, 0, 0);
+				return Graphics.getRenderElementFactory().createMarkerAnchoredCircle(posX, posY, size / 2, 0, 0);
 			case CROSS:
-				return new AnchoredCrossImpl(posX, posY, (int) size);
+				return Graphics.getRenderElementFactory().createMarkerAnchoredCross(posX, posY, (int) size);
 		}
 		return null;
 	}

@@ -10,13 +10,14 @@
  */
 package org.geomajas.graphics.client.widget.createcontrollergroup;
 
-import com.google.gwt.user.client.ui.Widget;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.graphics.client.controller.create.CreateController;
 import org.geomajas.graphics.client.event.GraphicsObjectContainerEvent;
 import org.geomajas.graphics.client.service.GraphicsService;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Default implementation of {@link CreateControllerGroupPresenter}.

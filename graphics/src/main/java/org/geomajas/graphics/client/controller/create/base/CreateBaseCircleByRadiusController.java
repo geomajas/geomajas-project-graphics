@@ -65,7 +65,7 @@ public class CreateBaseCircleByRadiusController
 
 	public CreateBaseCircleByRadiusController(GraphicsService graphicsService) {
 		super(graphicsService);
-		container = createContainer();
+		container = addContainer();
 		// default values of fillable, strokable
 		getCircleStrokable().setStrokeColor("black");
 		getCircleStrokable().setStrokeOpacity(1.0);
@@ -81,7 +81,7 @@ public class CreateBaseCircleByRadiusController
 	public void setActive(boolean active) {
 		super.setActive(active);
 		if (active) {
-			container = createContainer();
+			container = addContainer();
 			registration = getObjectContainer().addMouseDownHandler(this);
 		} else {
 			if (container != null) {
@@ -106,12 +106,12 @@ public class CreateBaseCircleByRadiusController
 			dragResizable.getRenderable().addMouseUpHandler(this);
 			CopyUtil.copyStrokableProperties(circleStrokable, dragResizable);
 			CopyUtil.copyFillableProperties(circleFillable, dragResizable);
-			((Renderable)dragResizable).renderInContainer(container);
+			container.addRenderable((Renderable)dragResizable);
 
 			//line
 			tempPath = new TwoPointsLine(new Coordinate(begin), new Coordinate(begin));
 			CopyUtil.copyStrokableProperties(pathStrokable, tempPath);
-			tempPath.getRenderable().renderInContainer(container);
+			container.addRenderable((Renderable)tempPath);
 		}
 		dragResizable.getRenderable().capture();
 	}

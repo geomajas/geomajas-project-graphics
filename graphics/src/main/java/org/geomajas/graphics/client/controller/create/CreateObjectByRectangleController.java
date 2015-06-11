@@ -10,15 +10,6 @@
  */
 package org.geomajas.graphics.client.controller.create;
 
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseDownHandler;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.event.dom.client.MouseMoveHandler;
-import com.google.gwt.event.dom.client.MouseUpEvent;
-import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.user.client.DOM;
-import com.google.web.bindery.event.shared.HandlerRegistration;
-
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.object.GraphicsObject;
@@ -30,7 +21,14 @@ import org.geomajas.graphics.client.service.GraphicsService;
 import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer.Space;
 import org.geomajas.graphics.client.util.BboxPosition;
 import org.geomajas.graphics.client.util.GraphicsUtil;
-import org.vaadin.gwtgraphics.client.VectorObjectContainer;
+
+import com.google.gwt.event.dom.client.MouseDownEvent;
+import com.google.gwt.event.dom.client.MouseDownHandler;
+import com.google.gwt.event.dom.client.MouseMoveEvent;
+import com.google.gwt.event.dom.client.MouseMoveHandler;
+import com.google.gwt.event.dom.client.MouseUpEvent;
+import com.google.gwt.event.dom.client.MouseUpHandler;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 
 /**
  * Generic controller that allows to drag a rectangle on the map,
@@ -65,14 +63,14 @@ public abstract class CreateObjectByRectangleController<T extends GraphicsObject
 
 	public CreateObjectByRectangleController(GraphicsService graphicsService) {
 		super(graphicsService);
-		container = createContainer();
+		container = addContainer();
 	}
 
 	@Override
 	public void setActive(boolean active) {
 		super.setActive(active);
 		if (active) {
-			container = createContainer();
+			container = addContainer();
 			registration = getObjectContainer().addMouseDownHandler(this);
 		} else {
 			if (container != null) {
@@ -95,7 +93,7 @@ public abstract class CreateObjectByRectangleController<T extends GraphicsObject
 			setAnchor(dragResizable);
 			dragResizable.getRenderable().addMouseMoveHandler(this);
 			dragResizable.getRenderable().addMouseUpHandler(this);
-			dragResizable.getRenderable().renderInContainer(container);
+			container.addRenderable(dragResizable.getRenderable());
 		}
 		dragResizable.getRenderable().capture();
 	}

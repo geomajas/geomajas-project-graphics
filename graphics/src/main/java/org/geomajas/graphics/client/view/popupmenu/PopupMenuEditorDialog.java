@@ -10,6 +10,9 @@
  */
 package org.geomajas.graphics.client.view.popupmenu;
 
+import org.geomajas.graphics.client.controller.popupmenu.PopupMenuController;
+import org.geomajas.graphics.client.editor.Editor;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -19,8 +22,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-import org.geomajas.graphics.client.controller.popupmenu.PopupMenuController;
-import org.geomajas.graphics.client.editor.Editor;
 
 /**
  * Dialog for editors spawned by popup menu.

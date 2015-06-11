@@ -23,7 +23,6 @@ import org.geomajas.graphics.client.render.AnchoredEllipse;
 import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.util.CopyUtil;
 import org.geomajas.graphics.client.util.FlipState;
-import org.vaadin.gwtgraphics.client.VectorObject;
 
 
 /**
@@ -116,13 +115,6 @@ public class BaseEllipse extends BaseGraphicsObject implements Resizable, Dragga
 	@Override
 	public Renderable getRenderable() {
 		return anchoredEllipse.getRenderable();
-	}
-
-
-	@Override
-	public void setOpacity(double opacity) {
-		anchoredEllipse.setFillOpacity(opacity);
-		anchoredEllipse.setStrokeOpacity(opacity);
 	}
 
 	@Override

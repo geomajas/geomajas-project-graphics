@@ -16,9 +16,8 @@ import org.geomajas.graphics.client.object.BaseGraphicsObject;
 import org.geomajas.graphics.client.object.role.Cloneable;
 import org.geomajas.graphics.client.object.role.Fillable;
 import org.geomajas.graphics.client.object.role.Strokable;
+import org.geomajas.graphics.client.render.RenderContainer;
 import org.geomajas.graphics.client.render.Renderable;
-import org.geomajas.graphics.client.render.RenderableList;
-import org.vaadin.gwtgraphics.client.VectorObject;
 
 /**
  * Implementation of {@link Anchored} role.
@@ -35,12 +34,12 @@ public class Marker extends BaseGraphicsObject implements Strokable, Fillable {
 
 	private MarkerShape markerShape = MarkerShape.SQUARE;
 
-	private RenderableList markerGroup;
+	private RenderContainer markerGroup;
 
 	public Marker(Coordinate markerPosition, MarkerShape markerShape) {
 		this.markerShape = (markerShape != null) ? markerShape : MarkerShape.SQUARE;
 		anchor = createAnchor(this.markerShape.getMarkerShape());
-		markerGroup = Graphics.getRenderElementFactory().createRenderableList();
+		markerGroup = Graphics.getRenderElementFactory().createRenderContainer();
 		// add a transparant but clickable background object in case of Cross Markershape
 		// The cross itself is not clickable/draggable enough
 		if (this.markerShape.equals(MarkerShape.CROSS)) {
@@ -90,12 +89,6 @@ public class Marker extends BaseGraphicsObject implements Strokable, Fillable {
 	@Override
 	public Object cloneObject() {
 		return null;
-	}
-
-	@Override
-	public void setOpacity(double opacity) {
-		setFillOpacity(opacity);
-		setStrokeOpacity(opacity);
 	}
 
 	//------------------------
@@ -162,7 +155,7 @@ public class Marker extends BaseGraphicsObject implements Strokable, Fillable {
 
 	@Override
 	public Renderable getRenderable() {
-		return markerGroup.getRenderable();
+		return markerGroup;
 	}
 
 	public void setVisible(boolean visible) {

@@ -21,10 +21,9 @@ import org.geomajas.graphics.client.object.updateable.labeled.Labeled;
 import org.geomajas.graphics.client.object.updateable.labeled.LabeledImpl;
 import org.geomajas.graphics.client.object.updateable.wrapper.DraggableWrapperForUpdateable;
 import org.geomajas.graphics.client.object.updateable.wrapper.ResizableWrapperForUpdateable;
+import org.geomajas.graphics.client.render.RenderContainer;
 import org.geomajas.graphics.client.render.Renderable;
-import org.geomajas.graphics.client.render.RenderableList;
 import org.geomajas.graphics.client.util.CopyUtil;
-import org.vaadin.gwtgraphics.client.VectorObject;
 
 /**
  * Extension of {@link UpdateableGroupGraphicsObject}
@@ -35,7 +34,7 @@ import org.vaadin.gwtgraphics.client.VectorObject;
  */
 public class LabeledRectangle extends UpdateableGroupGraphicsObject {
 
-	private RenderableList renderableList;
+	private RenderContainer renderContainer;
 
 	private BaseRectangle baseRectangle;
 
@@ -57,9 +56,9 @@ public class LabeledRectangle extends UpdateableGroupGraphicsObject {
 		addRole(Labeled.TYPE, labeled);
 
 		// register render order
-		renderableList = Graphics.getRenderElementFactory().createRenderableList();
-		renderableList.addRenderable(baseRectangle);
-		renderableList.addRenderable(labeled);
+		renderContainer = Graphics.getRenderElementFactory().createRenderContainer();
+		renderContainer.addRenderable(baseRectangle);
+		renderContainer.addRenderable(labeled);
 	}
 
 	@Override
@@ -80,11 +79,7 @@ public class LabeledRectangle extends UpdateableGroupGraphicsObject {
 
 	@Override
 	public Renderable getRenderable() {
-		return renderableList.getRenderable();
+		return renderContainer;
 	}
 
-	@Override
-	public void setOpacity(double opacity) {
-		renderableList.getRenderable().setOpacity(opacity);
-	}
 }

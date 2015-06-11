@@ -10,9 +10,6 @@
  */
 package org.geomajas.graphics.client.controller.role;
 
-import com.google.gwt.dom.client.Style.Cursor;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.controller.UpdateHandlerGraphicsController;
 import org.geomajas.graphics.client.controller.UpdateHandlerGraphicsControllerWithVisibleElement;
@@ -23,10 +20,12 @@ import org.geomajas.graphics.client.object.updateable.anchored.Anchored;
 import org.geomajas.graphics.client.object.updateable.anchored.MarkerShape;
 import org.geomajas.graphics.client.operation.AnchoredPositionOperation;
 import org.geomajas.graphics.client.operation.GraphicsOperation;
+import org.geomajas.graphics.client.render.RenderContainer;
 import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.service.GraphicsService;
-import org.vaadin.gwtgraphics.client.Group;
-import org.vaadin.gwtgraphics.client.VectorObject;
+
+import com.google.gwt.dom.client.Style.Cursor;
+import com.google.gwt.event.dom.client.MouseMoveEvent;
 
 /**
  * Controller to drag the anchor of an {@link Anchored} role.
@@ -45,7 +44,7 @@ public class AnchoredDragController extends UpdateHandlerGraphicsControllerWithV
 	/**
 	 * Handler to drag the anchor.
 	 */
-	private AbstractDragHandler dragHandler;
+	private AnchorDragHandler dragHandler;
 
 	public AnchoredDragController(GraphicsObject object, GraphicsService service) {
 		super(service, object);
@@ -56,14 +55,14 @@ public class AnchoredDragController extends UpdateHandlerGraphicsControllerWithV
 
 	@Override
 	protected void init() {
-		setHandlerGroup(new Group());
+		setHandlerGroup(getService().getObjectContainer().createContainer());
 		// create the drag handler and attach it
 		dragHandler = new AnchorDragHandler(getObject(), getService(), this);
-		dragHandler.addToGroup(getHandlerGroup());
+		dragHandler.renderInContainer(getHandlerGroup());
 		// update positions
 		updateHandlers();
 		// add the group
-		getContainer().add(getHandlerGroup());
+		getContainer().addRenderable(getHandlerGroup());
 	}
 
 	@Override
@@ -101,8 +100,8 @@ public class AnchoredDragController extends UpdateHandlerGraphicsControllerWithV
 			invisibleSquareAnchor.setUserY(anchorPointObject.getAnchorPosition().getY());
 		}
 
-		public void addToGroup(Group group) {			
-			group.add(invisibleSquareAnchor.asObject());
+		public void renderInContainer(RenderContainer group) {	
+			group.addRenderable(invisibleSquareAnchor.getRenderable());
 		}
 		
 		@Override
@@ -111,14 +110,14 @@ public class AnchoredDragController extends UpdateHandlerGraphicsControllerWithV
 			invisibleSquareAnchor.setFixedSize(true);
 			invisibleSquareAnchor.setFillOpacity(0);
 			invisibleSquareAnchor.setStrokeOpacity(0);
-			invisibleSquareAnchor.getVectorObject().getElement().getStyle().setCursor(Cursor.MOVE);
+			invisibleSquareAnchor.getRenderable().setCursor(Cursor.MOVE.getCssName());
 			return invisibleSquareAnchor.getRenderable();
 		}
 
 		@Override
 		protected GraphicsObject createDraggingMask() {
 			GraphicsObject maskObject = (GraphicsObject) getObject().cloneObject();
-			maskObject.setOpacity(0.5);
+			maskObject.getRenderable().setOpacity(0.5);
 			maskObject.getRole(Anchored.TYPE).setAnchorPosition(getBeginPositionUser());
 			return maskObject;
 		}

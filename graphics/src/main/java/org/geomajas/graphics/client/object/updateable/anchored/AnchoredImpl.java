@@ -18,9 +18,8 @@ import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.role.Fillable;
 import org.geomajas.graphics.client.object.role.Strokable;
 import org.geomajas.graphics.client.object.updateable.Updateable;
+import org.geomajas.graphics.client.render.RenderContainer;
 import org.geomajas.graphics.client.render.Renderable;
-import org.geomajas.graphics.client.render.RenderableList;
-import org.vaadin.gwtgraphics.client.VectorObject;
 
 /**
  * Implementation of {@link Anchored} with the {@link Updateable} interface.
@@ -31,7 +30,7 @@ import org.vaadin.gwtgraphics.client.VectorObject;
  */
 public class AnchoredImpl extends BaseGraphicsObject implements Anchored, Updateable {
 
-	private RenderableList renderableList;
+	private RenderContainer renderContainer;
 
 	private Marker marker;
 
@@ -50,9 +49,9 @@ public class AnchoredImpl extends BaseGraphicsObject implements Anchored, Update
 		addRole(Anchored.TYPE, this);
 
 		// register render order
-		renderableList = Graphics.getRenderElementFactory().createRenderableList();
-		renderableList.addRenderable(anchorLine);
-		renderableList.addRenderable(marker);
+		renderContainer = Graphics.getRenderElementFactory().createRenderContainer();
+		renderContainer.addRenderable(anchorLine);
+		renderContainer.addRenderable(marker);
 	}
 
 	@Override
@@ -67,12 +66,7 @@ public class AnchoredImpl extends BaseGraphicsObject implements Anchored, Update
 
 	@Override
 	public Renderable getRenderable() {
-		return renderableList.getRenderable();
-	}
-
-	@Override
-	public void setOpacity(double opacity) {
-		renderableList.getRenderable().setOpacity(opacity);
+		return renderContainer;
 	}
 
 	@Override

@@ -10,8 +10,9 @@
  */
 package org.geomajas.graphics.client.service;
 
-import org.vaadin.gwtgraphics.client.VectorObject;
-import org.vaadin.gwtgraphics.client.VectorObjectContainer;
+import org.geomajas.graphics.client.render.IsRenderable;
+import org.geomajas.graphics.client.render.RenderContainer;
+import org.geomajas.graphics.client.render.Renderable;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -34,23 +35,21 @@ import com.google.gwt.event.dom.client.MouseWheelHandler;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.Widget;
 
 /**
- * {@link VectorObjectContainer} wrapper that can stop event propagation and act as handler registrar.
+ * {@link RenderContainer} wrapper that can stop event propagation and act as handler registrar.
  * 
  * @author Jan De Moerloose
  * 
  */
-public class HasHandlerVectorObjectContainer implements HasAllMouseAndClickHandlers, VectorObjectContainer, IsWidget {
+public class CapturingRenderContainer implements RenderContainer {
 
-	private VectorObjectContainer group;
+	private RenderContainer container;
 
 	private boolean stopPropagation;
 
-	public HasHandlerVectorObjectContainer(VectorObjectContainer group, boolean stopPropagation) {
-		this.group = group;
+	public CapturingRenderContainer(RenderContainer container, boolean stopPropagation) {
+		this.container = container;
 		this.stopPropagation = stopPropagation;
 		StopPropagation s = new StopPropagation();
 		addMouseDownHandler(s);
@@ -63,47 +62,6 @@ public class HasHandlerVectorObjectContainer implements HasAllMouseAndClickHandl
 		addDoubleClickHandler(s);
 	}
 
-	@Override
-	public <H extends EventHandler> HandlerRegistration addDomHandler(H handler, Type<H> type) {
-		return ((Widget) group).addDomHandler(handler, type);
-	}
-
-	public VectorObject add(VectorObject vo) {
-		return group.add(vo);
-	}
-
-	public VectorObject insert(VectorObject vo, int beforeIndex) {
-		return group.insert(vo, beforeIndex);
-	}
-
-	public VectorObject remove(VectorObject vo) {
-		return group.remove(vo);
-	}
-
-	public VectorObject bringToFront(VectorObject vo) {
-		return group.bringToFront(vo);
-	}
-
-	public VectorObject moveToBack(VectorObject vo) {
-		return group.moveToBack(vo);
-	}
-
-	public void clear() {
-		group.clear();
-	}
-
-	public VectorObject getVectorObject(int index) {
-		return group.getVectorObject(index);
-	}
-
-	public int indexOf(VectorObject vo) {
-		return group.indexOf(vo);
-	}
-
-	public int getVectorObjectCount() {
-		return group.getVectorObjectCount();
-	}
-
 	public boolean isStopPropagation() {
 		return stopPropagation;
 	}
@@ -112,54 +70,106 @@ public class HasHandlerVectorObjectContainer implements HasAllMouseAndClickHandl
 		this.stopPropagation = stopPropagation;
 	}
 
+	public void addRenderable(Renderable renderable) {
+		container.addRenderable(renderable);
+	}
+
+	public void addRenderable(IsRenderable renderable) {
+		container.addRenderable(renderable);
+	}
+
+	public void clear() {
+		container.clear();
+	}
+
+	public boolean isEmpty() {
+		return container.isEmpty();
+	}
+
+	public void setCursor(String css) {
+		container.setCursor(css);
+	}
+
+	public void removeFromParent() {
+		container.removeFromParent();
+	}
+
+	public void bringToFront() {
+		container.bringToFront();
+	}
+
+	public void sendToPosition(int index) {
+		container.sendToPosition(index);
+	}
+
+	public int getPosition() {
+		return container.getPosition();
+	}
+
+	public void capture() {
+		container.capture();
+	}
+
+	public void releaseCapture() {
+		container.releaseCapture();
+	}
+
+	public void setOpacity(double opacity) {
+		container.setOpacity(opacity);
+	}
+
+	public void setVisible(boolean visible) {
+		container.setVisible(visible);
+	}
+
 	@Override
 	public HandlerRegistration addMouseDownHandler(MouseDownHandler handler) {
-		return ((Widget) group).addDomHandler(handler, MouseDownEvent.getType());
+		return container.addMouseDownHandler(handler);
 	}
 
 	@Override
 	public void fireEvent(GwtEvent<?> event) {
-		((Widget) group).fireEvent(event);
+		container.fireEvent(event);
 	}
 
-	@Override
-	public HandlerRegistration addMouseUpHandler(MouseUpHandler handler) {
-		return ((Widget) group).addDomHandler(handler, MouseUpEvent.getType());
+	public RenderContainer createContainer() {
+		return container.createContainer();
 	}
 
-	@Override
-	public HandlerRegistration addMouseOutHandler(MouseOutHandler handler) {
-		return ((Widget) group).addDomHandler(handler, MouseOutEvent.getType());
+	public boolean isSourceOf(GwtEvent<?> event) {
+		return container.isSourceOf(event);
 	}
 
-	@Override
-	public HandlerRegistration addMouseOverHandler(MouseOverHandler handler) {
-		return ((Widget) group).addDomHandler(handler, MouseOverEvent.getType());
-	}
-
-	@Override
-	public HandlerRegistration addMouseMoveHandler(MouseMoveHandler handler) {
-		return ((Widget) group).addDomHandler(handler, MouseMoveEvent.getType());
-	}
-
-	@Override
-	public HandlerRegistration addMouseWheelHandler(MouseWheelHandler handler) {
-		return ((Widget) group).addDomHandler(handler, MouseWheelEvent.getType());
-	}
-
-	@Override
 	public HandlerRegistration addClickHandler(ClickHandler handler) {
-		return ((Widget) group).addDomHandler(handler, ClickEvent.getType());
+		return container.addClickHandler(handler);
 	}
 
-	@Override
+	public HandlerRegistration addMouseUpHandler(MouseUpHandler handler) {
+		return container.addMouseUpHandler(handler);
+	}
+
+	public HandlerRegistration addMouseOutHandler(MouseOutHandler handler) {
+		return container.addMouseOutHandler(handler);
+	}
+
+	public HandlerRegistration addMouseMoveHandler(MouseMoveHandler handler) {
+		return container.addMouseMoveHandler(handler);
+	}
+
+	public HandlerRegistration addMouseOverHandler(MouseOverHandler handler) {
+		return container.addMouseOverHandler(handler);
+	}
+
+	public HandlerRegistration addMouseWheelHandler(MouseWheelHandler handler) {
+		return container.addMouseWheelHandler(handler);
+	}
+
 	public HandlerRegistration addDoubleClickHandler(DoubleClickHandler handler) {
-		return ((Widget) group).addDomHandler(handler, DoubleClickEvent.getType());
+		return container.addDoubleClickHandler(handler);
 	}
 
-	@Override
-	public Widget asWidget() {
-		return (Widget) group;
+	public <H extends EventHandler> HandlerRegistration addDomHandler(H handler, Type<H> type) {
+		return container.addDomHandler(handler, type);
 	}
 
 	/**

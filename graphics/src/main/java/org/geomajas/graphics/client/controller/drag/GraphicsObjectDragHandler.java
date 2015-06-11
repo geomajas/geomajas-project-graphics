@@ -50,15 +50,15 @@ public class GraphicsObjectDragHandler extends AbstractDragHandler {
 		// make an invisible mask that is a rectangle of the bounds of the draggable.
 		Bbox bbox = getDraggable().getBounds();
 		invisbleMaskGraphicsObject = new BaseRectangle(bbox.getX(), bbox.getY(), bbox.getWidth(), bbox.getHeight());
-		invisbleMaskGraphicsObject.setOpacity(0);
-		invisbleMaskGraphicsObject.getVectorObject().getElement().getStyle().setCursor(Cursor.MOVE);	
+		invisbleMaskGraphicsObject.getRenderable().setOpacity(0);
+		invisbleMaskGraphicsObject.getRenderable().setCursor(Cursor.MOVE.getCssName());	
 		return invisbleMaskGraphicsObject.getRenderable();
 	}
 
 	@Override
 	protected GraphicsObject createDraggingMask() {
 		GraphicsObject maskObject = (GraphicsObject) getObject().cloneObject();
-		maskObject.setOpacity(0.5);
+		maskObject.getRenderable().setOpacity(0.5);
 		maskObject.getRole(Draggable.TYPE).setUserPosition(getBeginPositionUser());
 		return maskObject;
 	}

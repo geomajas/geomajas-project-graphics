@@ -17,9 +17,9 @@ import org.geomajas.graphics.client.controller.GraphicsControllerFactory;
 import org.geomajas.graphics.client.event.GraphicsOperationEvent;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.operation.GraphicsOperation;
+import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer;
 
 import com.google.web.bindery.event.shared.HandlerRegistration;
-import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer;
 
 /**
  * Service that acts as a registry for

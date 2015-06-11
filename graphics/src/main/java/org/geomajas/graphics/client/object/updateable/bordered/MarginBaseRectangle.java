@@ -21,7 +21,6 @@ import org.geomajas.graphics.client.object.role.Strokable;
 import org.geomajas.graphics.client.render.AnchoredRectangle;
 import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.util.FlipState;
-import org.vaadin.gwtgraphics.client.VectorObject;
 
 /**
  * Extension of {@link org.geomajas.graphics.client.object.BaseGraphicsObject} for a rectangle.
@@ -152,9 +151,4 @@ public class MarginBaseRectangle extends BaseGraphicsObject implements Resizable
 		rectangle.setStrokeOpacity(opacity);
 	}
 
-	@Override
-	public void setOpacity(double opacity) {
-		setFillOpacity(opacity);
-		setStrokeOpacity(opacity);
-	}
 }

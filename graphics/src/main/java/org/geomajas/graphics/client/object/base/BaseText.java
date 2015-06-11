@@ -20,7 +20,6 @@ import org.geomajas.graphics.client.object.role.Textable;
 import org.geomajas.graphics.client.render.AnchoredText;
 import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.util.FlipState;
-import org.vaadin.gwtgraphics.client.VectorObject;
 
 /**
  * Extension of {@link BaseGraphicsObject} for a text.
@@ -174,10 +173,5 @@ public class BaseText extends BaseGraphicsObject implements Draggable, Textable,
 	@Override
 	public String getFontFamily() {
 		return text.getFontFamily();
-	}
-
-	@Override
-	public void setOpacity(double opacity) {
-
 	}
 }

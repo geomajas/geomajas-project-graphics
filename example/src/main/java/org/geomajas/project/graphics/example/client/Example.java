@@ -10,27 +10,10 @@
  */
 package org.geomajas.project.graphics.example.client;
 
-import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.ResizeEvent;
-import com.google.gwt.event.logical.shared.ResizeHandler;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.CaptionPanel;
-import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.RootLayoutPanel;
-import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.ToggleButton;
-import com.google.web.bindery.event.shared.SimpleEventBus;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.geomajas.graphics.client.Graphics;
 import org.geomajas.graphics.client.action.BringToFrontAction;
 import org.geomajas.graphics.client.action.DeleteAction;
@@ -66,9 +49,28 @@ import org.geomajas.graphics.client.service.GraphicsService;
 import org.geomajas.graphics.client.service.GraphicsServiceImpl;
 import org.geomajas.graphics.client.widget.createcontrollergroup.CreateButtonGroupWidget;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.CaptionPanel;
+import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.ToggleButton;
+import com.google.web.bindery.event.shared.SimpleEventBus;
 
 /**
  * Example application.
@@ -149,6 +151,13 @@ public class Example implements EntryPoint {
 
 	@Override
 	public void onModuleLoad() {
+		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+			
+			@Override
+			public void onUncaughtException(Throwable e) {
+				GWT.log("failed", e);
+			}
+		});
 		SimpleEventBus eventBus = new SimpleEventBus();
 		graphicsObjectContainer = new ExampleGraphicsObjectContainer(eventBus);
 
@@ -188,11 +197,11 @@ public class Example implements EntryPoint {
 	//-----------------------------------------------------------------------------
 
 	private void registerControllerFactories() {
-		graphicsService.registerControllerFactory(new ResizeControllerFactory());
+//		graphicsService.registerControllerFactory(new ResizeControllerFactory());
 		graphicsService.registerControllerFactory(new DragControllerFactory());
-		graphicsService.registerControllerFactory(new DeleteControllerFactory());
-		graphicsService.registerControllerFactory(new LabelControllerFactory());
-		graphicsService.registerControllerFactory(new AnchoredDragControllerFactory());
+//		graphicsService.registerControllerFactory(new DeleteControllerFactory());
+//		graphicsService.registerControllerFactory(new LabelControllerFactory());
+//		graphicsService.registerControllerFactory(new AnchoredDragControllerFactory());
 	}
 	
 	private void registerPopupFactoryActionsAndEditiors() {

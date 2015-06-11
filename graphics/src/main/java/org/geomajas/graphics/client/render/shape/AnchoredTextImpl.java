@@ -12,7 +12,6 @@ package org.geomajas.graphics.client.render.shape;
 
 import org.geomajas.graphics.client.render.AnchoredText;
 import org.geomajas.graphics.client.render.Renderable;
-import org.geomajas.graphics.client.render.VectorRenderable;
 import org.vaadin.gwtgraphics.client.shape.Text;
 
 /**

@@ -14,14 +14,12 @@ import org.geomajas.graphics.client.event.GraphicsObjectContainerEvent;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.render.RenderContainer;
 import org.geomajas.graphics.client.service.GraphicsService;
-import org.vaadin.gwtgraphics.client.Group;
-import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 
 /**
- * Extension of {@link AbstractInterruptibleGraphicsController} containing a {@link Group} of handlers
- * and s {@link VectorObjectContainer}.
+ * Extension of {@link AbstractInterruptibleGraphicsController} containing a {@link RenderContainer} of handlers
+ * and s {@link RenderContainer}.
  * This class also listens to {@link org.geomajas.graphics.client.event.GraphicsObjectContainerEvent}; upon Update,
- * the {@link VectorObjectContainer} and {@link Group} of handlers will be updated.
+ * the {@link RenderContainer} and {@link RenderContainer} of handlers will be updated.
  * 
  * @author Jan De Moerloose
  * @author Jan Venstermans
@@ -43,7 +41,7 @@ public abstract class UpdateHandlerGraphicsController extends AbstractInterrupti
 	public UpdateHandlerGraphicsController(GraphicsService graphicsService, GraphicsObject object) {
 		super(graphicsService, object);
 		// create container
-		setContainer(createContainer());
+		setContainer(addContainer());
 		// listen to changes to our object
 		getObjectContainer().addGraphicsObjectContainerHandler(this);
 	}
@@ -59,7 +57,7 @@ public abstract class UpdateHandlerGraphicsController extends AbstractInterrupti
 				} else {
 					// the group may be detached, update and reattach !
 					updateHandlers();
-					getHandlerGroup().renderInContainer(container);
+					container.addRenderable(getHandlerGroup());
 				}
 				bringContainerToFront(getContainer());
 			} else {

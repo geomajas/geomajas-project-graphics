@@ -22,8 +22,8 @@ import org.geomajas.graphics.client.object.updateable.labeled.Labeled;
 import org.geomajas.graphics.client.object.updateable.labeled.LabeledImpl;
 import org.geomajas.graphics.client.object.updateable.wrapper.DraggableWrapperForUpdateable;
 import org.geomajas.graphics.client.object.updateable.wrapper.ResizableWrapperForUpdateable;
+import org.geomajas.graphics.client.render.RenderContainer;
 import org.geomajas.graphics.client.render.Renderable;
-import org.geomajas.graphics.client.render.RenderableList;
 import org.geomajas.graphics.client.util.CopyUtil;
 
 /**
@@ -34,7 +34,7 @@ import org.geomajas.graphics.client.util.CopyUtil;
  */
 public class LabeledEllipse extends UpdateableGroupGraphicsObject {
 
-	private RenderableList renderableList;
+	private RenderContainer renderContainer;
 
 	private BaseEllipse baseEllipse;
 
@@ -62,9 +62,9 @@ public class LabeledEllipse extends UpdateableGroupGraphicsObject {
 		addRole(Labeled.TYPE, labeled);
 
 		// register render order
-		renderableList = Graphics.getRenderElementFactory().createRenderableList();
-		renderableList.addRenderable(baseEllipse);
-		renderableList.addRenderable(labeled);
+		renderContainer = Graphics.getRenderElementFactory().createRenderContainer();
+		renderContainer.addRenderable(baseEllipse);
+		renderContainer.addRenderable(labeled);
 	}
 
 	@Override
@@ -83,11 +83,7 @@ public class LabeledEllipse extends UpdateableGroupGraphicsObject {
 
 	@Override
 	public Renderable getRenderable() {
-		return renderableList.getRenderable();
+		return renderContainer;
 	}
 
-	@Override
-	public void setOpacity(double opacity) {
-		renderableList.getRenderable().setOpacity(opacity);
-	}
 }

@@ -13,12 +13,11 @@ package org.geomajas.graphics.client.object.updateable.labeled;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.service.BboxService;
 import org.geomajas.graphics.client.object.BaseGraphicsObject;
-import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.object.base.BaseText;
+import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.object.role.Textable;
 import org.geomajas.graphics.client.object.updateable.Updateable;
 import org.geomajas.graphics.client.render.Renderable;
-import org.vaadin.gwtgraphics.client.VectorObject;
 
 /**
  * Implementation of {@link Labeled} role with the {@link Updateable} interface.
@@ -61,11 +60,6 @@ public class LabeledImpl extends BaseGraphicsObject implements Labeled, Updateab
 	public Object cloneObject() {
 		LabeledImpl labeledCopy = new LabeledImpl(resizable, baseText.getLabel());
 		return labeledCopy;
-	}
-
-	@Override
-	public void setOpacity(double opacity) {
-		baseText.setOpacity(opacity);
 	}
 
 	private void centerText() {

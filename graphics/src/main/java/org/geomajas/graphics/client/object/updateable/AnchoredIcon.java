@@ -18,8 +18,8 @@ import org.geomajas.graphics.client.object.updateable.anchored.Anchored;
 import org.geomajas.graphics.client.object.updateable.anchored.AnchoredImpl;
 import org.geomajas.graphics.client.object.updateable.anchored.MarkerShape;
 import org.geomajas.graphics.client.object.updateable.wrapper.DraggableWrapperForUpdateable;
+import org.geomajas.graphics.client.render.RenderContainer;
 import org.geomajas.graphics.client.render.Renderable;
-import org.geomajas.graphics.client.render.RenderableList;
 import org.geomajas.graphics.client.util.CopyUtil;
 
 /**
@@ -31,7 +31,7 @@ import org.geomajas.graphics.client.util.CopyUtil;
  */
 public class AnchoredIcon extends UpdateableGroupGraphicsObject {
 
-	private RenderableList renderableList;
+	private RenderContainer renderContainer;
 
 	private BaseIcon baseIcon;
 
@@ -51,9 +51,9 @@ public class AnchoredIcon extends UpdateableGroupGraphicsObject {
 		addRole(Anchored.TYPE, anchored);
 
 		// register render order
-		renderableList = Graphics.getRenderElementFactory().createRenderableList();
-		renderableList.addRenderable(anchored);
-		renderableList.addRenderable(baseIcon);
+		renderContainer = Graphics.getRenderElementFactory().createRenderContainer();
+		renderContainer.addRenderable(anchored);
+		renderContainer.addRenderable(baseIcon);
 	}
 
 	@Override
@@ -72,11 +72,7 @@ public class AnchoredIcon extends UpdateableGroupGraphicsObject {
 
 	@Override
 	public Renderable getRenderable() {
-		return renderableList.getRenderable();
+		return renderContainer;
 	}
 
-	@Override
-	public void setOpacity(double opacity) {
-		renderableList.getRenderable().setOpacity(opacity);
-	}
 }

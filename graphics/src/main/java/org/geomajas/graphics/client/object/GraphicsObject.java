@@ -11,18 +11,16 @@
 package org.geomajas.graphics.client.object;
 
 import org.geomajas.graphics.client.render.IsRenderable;
-import org.geomajas.graphics.client.render.Renderable;
-import org.vaadin.gwtgraphics.client.Transparent;
 
 
 /**
- * Common interface for all graphics objects. All objects can react to mouse events through their {@link Renderable}
+ * Common interface for all graphics objects. All objects can react to mouse events through their {@link IsRenderable}
  * representation. A graphics object can support any number of roles.
  * 
  * @author Jan De Moerloose
  * 
  */
-public interface GraphicsObject extends IsRenderable, org.geomajas.graphics.client.object.role.Cloneable, Transparent {
+public interface GraphicsObject extends IsRenderable, org.geomajas.graphics.client.object.role.Cloneable {
 
 	boolean hasRole(RoleType<?> type);
 

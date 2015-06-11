@@ -10,9 +10,28 @@
  */
 package org.geomajas.graphics.client.service.objectcontainer;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.geomajas.graphics.client.event.GraphicsObjectContainerEvent;
+import org.geomajas.graphics.client.event.GraphicsObjectContainerEvent.ActionType;
+import org.geomajas.graphics.client.event.GraphicsObjectContainerEvent.Handler;
+import org.geomajas.graphics.client.event.GraphicsObjectSelectedEvent;
+import org.geomajas.graphics.client.event.GraphicsOperationEvent;
+import org.geomajas.graphics.client.object.GraphicsObject;
+import org.geomajas.graphics.client.object.role.HtmlRenderable;
+import org.geomajas.graphics.client.render.IsRenderable;
+import org.geomajas.graphics.client.render.RenderContainer;
+import org.geomajas.graphics.client.render.Renderable;
+import org.geomajas.graphics.client.render.shape.VectorRenderContainer;
+import org.geomajas.graphics.client.service.CapturingRenderContainer;
+import org.geomajas.graphics.client.service.HasAllMouseAndClickHandlers;
+import org.geomajas.graphics.client.service.HasHandlerWidget;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DomEvent;
+import com.google.gwt.event.dom.client.DomEvent.Type;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
@@ -34,39 +53,23 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.EventBus;
-import org.geomajas.graphics.client.event.GraphicsObjectContainerEvent;
-import org.geomajas.graphics.client.event.GraphicsObjectContainerEvent.ActionType;
-import org.geomajas.graphics.client.event.GraphicsObjectContainerEvent.Handler;
-import org.geomajas.graphics.client.event.GraphicsObjectSelectedEvent;
-import org.geomajas.graphics.client.event.GraphicsOperationEvent;
-import org.geomajas.graphics.client.object.GraphicsObject;
-import org.geomajas.graphics.client.object.role.HtmlRenderable;
-import org.geomajas.graphics.client.service.HasAllMouseAndClickHandlers;
-import org.geomajas.graphics.client.service.HasHandlerVectorObjectContainer;
-import org.geomajas.graphics.client.service.HasHandlerWidget;
-import org.vaadin.gwtgraphics.client.Group;
-import org.vaadin.gwtgraphics.client.VectorObject;
-import org.vaadin.gwtgraphics.client.VectorObjectContainer;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 
- * Implementation of {@link GraphicsObjectContainer} that is backed by a root {@link VectorObjectContainer}. The
- * implementation provides catch-all mouse event handlers by adding a large background rectangle as the first child of
- * the container. All objects are added to a {@link Group}.
+ * Implementation of {@link GraphicsObjectContainer} that is backed by a root {@link RenderContainer}. The
+ * implementation provides catch-all mouse event handlers by setting a background widget. All objects are added to a
+ * sub-container of the root container that can be obtained from {@link #getObjectGroup()}.
  * 
  * @author Jan De Moerloose
  * 
  */
 public abstract class AbstractGraphicsObjectContainer implements GraphicsObjectContainer {
 
-	private HasHandlerVectorObjectContainer rootGroup;
+	private CapturingRenderContainer rootGroup;
 
 	private HasHandlerWidget backGround;
 
-	private ObjectGroup objectGroup = new ObjectGroup();
+	private VectorRenderContainer objectGroup = new VectorRenderContainer();
 
 	private EventBus eventBus;
 
@@ -78,7 +81,7 @@ public abstract class AbstractGraphicsObjectContainer implements GraphicsObjectC
 		this(eventBus, null, null);
 	}
 
-	protected AbstractGraphicsObjectContainer(EventBus eventBus, VectorObjectContainer rootGroup,
+	protected AbstractGraphicsObjectContainer(EventBus eventBus, VectorRenderContainer rootGroup,
 			Widget backGroundWidget) {
 		this.eventBus = eventBus;
 		setRootContainer(rootGroup);
@@ -91,10 +94,10 @@ public abstract class AbstractGraphicsObjectContainer implements GraphicsObjectC
 		}
 	}
 
-	public void setRootContainer(VectorObjectContainer rootGroup) {
+	public void setRootContainer(VectorRenderContainer rootGroup) {
 		if (rootGroup != null) {
-			this.rootGroup = new HasHandlerVectorObjectContainer(rootGroup, true);
-			this.rootGroup.add(objectGroup);
+			this.rootGroup = new CapturingRenderContainer(rootGroup, true);
+			rootGroup.addRenderable(objectGroup);
 		}
 	}
 
@@ -108,6 +111,16 @@ public abstract class AbstractGraphicsObjectContainer implements GraphicsObjectC
 	}
 
 	@Override
+	public void addRenderable(Renderable renderable) {
+		objectGroup.addRenderable(renderable);
+	}
+
+	@Override
+	public void addRenderable(IsRenderable renderable) {
+		objectGroup.addRenderable(renderable);
+	}
+
+	@Override
 	public HasHandlerWidget getBackGround() {
 		return backGround;
 	}
@@ -115,7 +128,7 @@ public abstract class AbstractGraphicsObjectContainer implements GraphicsObjectC
 	@Override
 	public boolean isObject(MouseEvent<?> event) {
 		for (GraphicsObject object : objects) {
-			if (object.asObject() == event.getSource()) {
+			if (object.getRenderable().isSourceOf(event)) {
 				return true;
 			} else if (object.hasRole(HtmlRenderable.TYPE)) {
 				if (object.getRole(HtmlRenderable.TYPE).asWidget() == event.getSource()) {
@@ -129,7 +142,7 @@ public abstract class AbstractGraphicsObjectContainer implements GraphicsObjectC
 	@Override
 	public GraphicsObject getObject(MouseEvent<?> event) {
 		for (GraphicsObject object : objects) {
-			if (object.asObject() == event.getSource()) {
+			if (object.getRenderable().isSourceOf(event)) {
 				return object;
 			} else if (object.hasRole(HtmlRenderable.TYPE)) {
 				if (object.getRole(HtmlRenderable.TYPE).asWidget() == event.getSource()) {
@@ -204,22 +217,8 @@ public abstract class AbstractGraphicsObjectContainer implements GraphicsObjectC
 	}
 
 	@Override
-	public VectorObjectContainer createContainer() {
-		Group group = new Group();
-		objectGroup.add(group);
-		return group;
-	}
-
-	@Override
-	public void removeContainer(VectorObjectContainer container) {
-		objectGroup.remove((Group) container);
-	}
-
-	@Override
-	public void bringContainerToFront(VectorObjectContainer container) {
-		if (container instanceof VectorObject) {
-			objectGroup.bringToFront((VectorObject) container);
-		}
+	public RenderContainer createContainer() {
+		return objectGroup.createContainer();
 	}
 
 	@Override
@@ -229,7 +228,7 @@ public abstract class AbstractGraphicsObjectContainer implements GraphicsObjectC
 
 	@Override
 	public void add(GraphicsObject object) {
-		objectGroup.add(object.asObject());
+		objectGroup.addRenderable(object);
 		if (object.hasRole(HtmlRenderable.TYPE)) {
 			if (widgetContainer != null) {
 				widgetContainer.add(object.getRole(HtmlRenderable.TYPE).asWidget());
@@ -241,7 +240,7 @@ public abstract class AbstractGraphicsObjectContainer implements GraphicsObjectC
 
 	@Override
 	public void remove(GraphicsObject object) {
-		objectGroup.remove(object.asObject());
+		object.getRenderable().removeFromParent();
 		objects.remove(object);
 		eventBus.fireEvent(new GraphicsObjectContainerEvent(object, ActionType.REMOVE));
 	}
@@ -285,13 +284,64 @@ public abstract class AbstractGraphicsObjectContainer implements GraphicsObjectC
 		rootGroup.setStopPropagation(stopPropagation);
 	}
 
-	/**
-	 * The {@link Group} that contains all {@link GraphicsObject}s of this container.
-	 *
-	 * @author Jan De Moerloose
-	 *
-	 */
-	class ObjectGroup extends Group implements HasAllMouseAndClickHandlers {
-
+	@Override
+	public boolean isEmpty() {
+		return objectGroup.isEmpty();
 	}
+
+	@Override
+	public void setCursor(String css) {
+		objectGroup.setCursor(css);
+	}
+
+	@Override
+	public void removeFromParent() {
+		objectGroup.removeFromParent();
+	}
+
+	@Override
+	public void bringToFront() {
+		objectGroup.bringToFront();
+	}
+
+	@Override
+	public void sendToPosition(int index) {
+		objectGroup.sendToPosition(index);
+	}
+
+	@Override
+	public int getPosition() {
+		return objectGroup.getPosition();
+	}
+
+	@Override
+	public void capture() {
+		objectGroup.capture();
+	}
+
+	@Override
+	public void releaseCapture() {
+		objectGroup.releaseCapture();
+	}
+
+	@Override
+	public void setOpacity(double opacity) {
+		objectGroup.setOpacity(opacity);
+	}
+
+	@Override
+	public void setVisible(boolean visible) {
+		objectGroup.setVisible(visible);
+	}
+
+	@Override
+	public boolean isSourceOf(GwtEvent<?> event) {
+		return objectGroup.isSourceOf(event);
+	}
+
+	@Override
+	public <H extends EventHandler> HandlerRegistration addDomHandler(H handler, Type<H> type) {
+		return objectGroup.addDomHandler(handler, type);
+	}
+
 }

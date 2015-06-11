@@ -1,11 +1,13 @@
-package org.geomajas.graphics.client.render;
+package org.geomajas.graphics.client.render.shape;
 
 import org.geomajas.graphics.client.object.role.Fillable;
 import org.geomajas.graphics.client.object.role.Strokable;
-import org.geomajas.graphics.client.render.RenderContainer;
 import org.geomajas.graphics.client.render.Renderable;
+import org.geomajas.graphics.client.util.HasFill;
+import org.geomajas.graphics.client.util.HasStroke;
 import org.vaadin.gwtgraphics.client.Group;
 import org.vaadin.gwtgraphics.client.VectorObject;
+import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DomEvent.Type;
@@ -69,14 +71,11 @@ public class VectorRenderable implements Renderable {
 	}
 
 	@Override
-	public void renderInContainer(RenderContainer container) {
-		VectorRenderContainer vectorRenderContainer = (VectorRenderContainer) container;
-		vectorRenderContainer.getContainer().add(vectorObject);
-	}
-
-	@Override
 	public void removeFromParent() {
-		vectorObject.removeFromParent();
+		// be careful, simply vectorObject.removeFromParent() does not work !!!
+		if (vectorObject.getParent() != null) {
+			((VectorObjectContainer) vectorObject.getParent()).remove(vectorObject);
+		}
 	}
 
 	@Override
@@ -94,11 +93,11 @@ public class VectorRenderable implements Renderable {
 		if (vectorObject instanceof Group) {
 			((Group) vectorObject).setOpacity(opacity);
 		}
-		if (vectorObject instanceof Fillable) {
-			((Fillable) vectorObject).setFillOpacity(opacity);
+		if (vectorObject instanceof HasFill) {
+			((HasFill) vectorObject).setFillOpacity(opacity);
 		}
-		if (vectorObject instanceof Strokable) {
-			((Strokable) vectorObject).setStrokeOpacity(opacity);
+		if (vectorObject instanceof HasStroke) {
+			((HasStroke) vectorObject).setStrokeOpacity(opacity);
 		}
 
 	}
@@ -121,6 +120,40 @@ public class VectorRenderable implements Renderable {
 	@Override
 	public void setVisible(boolean visible) {
 		vectorObject.setVisible(visible);
+	}
+
+	@Override
+	public void setCursor(String css) {
+		vectorObject.getElement().getStyle().setProperty("cursor", css);
+
+	}
+
+	@Override
+	public void bringToFront() {
+		if (vectorObject.getParent() instanceof VectorObjectContainer) {
+			((VectorObjectContainer) vectorObject.getParent()).bringToFront(vectorObject);
+		}
+	}
+
+	@Override
+	public void sendToPosition(int index) {
+		if (vectorObject.getParent() instanceof VectorObjectContainer) {
+			((VectorObjectContainer) vectorObject.getParent()).insert(vectorObject, index);
+		}
+	}
+
+	@Override
+	public int getPosition() {
+		if (vectorObject.getParent() instanceof VectorObjectContainer) {
+			return ((VectorObjectContainer) vectorObject.getParent()).indexOf(vectorObject);
+		} else {
+			return 0;
+		}
+	}
+
+	@Override
+	public boolean isSourceOf(GwtEvent<?> event) {
+		return vectorObject == event.getSource();
 	}
 
 }

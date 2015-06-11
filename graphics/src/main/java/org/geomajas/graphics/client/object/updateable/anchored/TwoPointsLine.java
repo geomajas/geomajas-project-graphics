@@ -80,11 +80,6 @@ public class TwoPointsLine extends BaseGraphicsObject implements Strokable {
 	}
 
 	@Override
-	public void setOpacity(double opacity) {
-		setStrokeOpacity(opacity);
-	}
-
-	@Override
 	public String getStrokeColor() {
 		return coordinatePath.getStrokeColor();
 	}
