@@ -11,24 +11,24 @@
 package org.geomajas.graphics.client.controller.create.base;
 
 import org.geomajas.graphics.client.controller.create.CreateObjectByRectangleController;
-import org.geomajas.graphics.client.object.base.BaseEllipse;
+import org.geomajas.graphics.client.object.base.BaseEllipseObject;
 import org.geomajas.graphics.client.service.GraphicsService;
 
 /**
- * Controller that creates a {@link BaseEllipse}.
+ * Controller that creates a {@link BaseEllipseObject}.
  *
  * @author Jan Venstermans
  *
  */
-public class CreateBaseEllipseController extends CreateObjectByRectangleController<BaseEllipse> {
+public class CreateBaseEllipseController extends CreateObjectByRectangleController<BaseEllipseObject> {
 
 	public CreateBaseEllipseController(GraphicsService graphicsService) {
 		super(graphicsService);
 	}
 
 	@Override
-	protected BaseEllipse createObjectWithoutBounds() {
-		BaseEllipse ellipse = new BaseEllipse(0, 0, 0, 0);
+	protected BaseEllipseObject createObjectWithoutBounds() {
+		BaseEllipseObject ellipse = new BaseEllipseObject(0, 0, 0, 0);
 		return ellipse;
 	}
 }

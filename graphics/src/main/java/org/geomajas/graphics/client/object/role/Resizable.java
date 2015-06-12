@@ -10,6 +10,7 @@
  */
 package org.geomajas.graphics.client.object.role;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.graphics.client.object.RoleInterface;
 import org.geomajas.graphics.client.object.RoleType;
 import org.geomajas.graphics.client.util.FlipState;
@@ -20,10 +21,15 @@ import org.geomajas.graphics.client.util.HasPosition;
  * Implemented by resizable graphics objects. Resizing can include flipping if the resizing handle is "folded".
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
+@Api(allMethods = true)
 public interface Resizable extends RoleInterface, HasPosition, HasBounds {
 
+	/**
+	 * The role type.
+	 */
 	RoleType<Resizable> TYPE = new RoleType<Resizable>("Resizable");
 
 	/**

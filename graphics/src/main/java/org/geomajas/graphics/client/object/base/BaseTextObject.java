@@ -17,7 +17,7 @@ import org.geomajas.graphics.client.object.BaseGraphicsObject;
 import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.object.role.Textable;
-import org.geomajas.graphics.client.render.AnchoredText;
+import org.geomajas.graphics.client.render.BaseText;
 import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.util.FlipState;
 
@@ -27,28 +27,19 @@ import org.geomajas.graphics.client.util.FlipState;
  * @author Jan De Moerloose
  * @author Jan Venstermans
  */
-public class BaseText extends BaseGraphicsObject implements Draggable, Textable, Resizable {
+public class BaseTextObject extends BaseGraphicsObject implements BaseText, Draggable, Textable, Resizable {
 
-	// centered around userX, userY
-	private AnchoredText text;
+	private BaseText text;
 
-	//-------------------------------
-	// Constructors
-	//-------------------------------
-
-	public AnchoredText getAnchor() {
-		return text;
+	public BaseTextObject(double userX, double userY, String text) {
+		this(Graphics.getRenderElementFactory().createText(userX, userY, text));
 	}
 
-	public BaseText(double userX, double userY, String text) {
-		this(Graphics.getRenderElementFactory().createAnchoredText(userX, userY, text, 0.5, 0.5));
-	}
-
-	public BaseText(AnchoredText text) {
+	public BaseTextObject(BaseText text) {
 		this(text, true);
 	}
 
-	public BaseText(AnchoredText text, boolean setDefaultFontStyle) {
+	public BaseTextObject(BaseText text, boolean setDefaultFontStyle) {
 		this.text = text;
 		if (setDefaultFontStyle) {
 			text.setStrokeWidth(0);
@@ -81,13 +72,10 @@ public class BaseText extends BaseGraphicsObject implements Draggable, Textable,
 
 	@Override
 	public Object cloneObject() {
-		AnchoredText clone = Graphics.getRenderElementFactory().createAnchoredText(
-				text.getUserX(), text.getUserY(), text.getText(), text.getAnchorX(), text.getAnchorY());
-		clone.setStrokeWidth(text.getStrokeWidth());
-		clone.setFillColor(text.getFillColor()); // this is font color
+		BaseTextObject clone = new BaseTextObject(text.getUserX(), text.getUserY(), text.getText());
 		clone.setFontFamily(text.getFontFamily());
 		clone.setFontSize(text.getFontSize());
-		return new BaseText(clone, false);
+		return new BaseTextObject(clone, false);
 	}
 
 	@Override
@@ -120,8 +108,8 @@ public class BaseText extends BaseGraphicsObject implements Draggable, Textable,
 
 	@Override
 	public Bbox getUserBounds() {
-		double userX = text.getUserX() - text.getAnchorX() * text.getUserWidth();
-		double userY = text.getUserY() - text.getAnchorY() * text.getUserHeight();
+		double userX = text.getUserX();
+		double userY = text.getUserY();
 		double userWidth = text.getUserWidth();
 		double userHeight = text.getUserHeight();
 		Bbox box = new Bbox(userX, userY, userWidth, userHeight);
@@ -174,4 +162,85 @@ public class BaseText extends BaseGraphicsObject implements Draggable, Textable,
 	public String getFontFamily() {
 		return text.getFontFamily();
 	}
+
+	public void setFillColor(String fillColor) {
+		text.setFillColor(fillColor);
+	}
+
+	public String getStrokeColor() {
+		return text.getStrokeColor();
+	}
+
+	public void setStrokeColor(String strokeColor) {
+		text.setStrokeColor(strokeColor);
+	}
+
+	public void setFillOpacity(double fillOpacity) {
+		text.setFillOpacity(fillOpacity);
+	}
+
+	public int getStrokeWidth() {
+		return text.getStrokeWidth();
+	}
+
+	public String getFillColor() {
+		return text.getFillColor();
+	}
+
+	public void setStrokeWidth(int strokeWidth) {
+		text.setStrokeWidth(strokeWidth);
+	}
+
+	public double getFillOpacity() {
+		return text.getFillOpacity();
+	}
+
+	public double getStrokeOpacity() {
+		return text.getStrokeOpacity();
+	}
+
+	public void setStrokeOpacity(double strokeOpacity) {
+		text.setStrokeOpacity(strokeOpacity);
+	}
+
+	public void setUserX(double userX) {
+		text.setUserX(userX);
+	}
+
+	public void setUserY(double userY) {
+		text.setUserY(userY);
+	}
+
+	public String getText() {
+		return text.getText();
+	}
+
+	public void setText(String label) {
+		text.setText(label);
+	}
+
+	public double getUserWidth() {
+		return text.getUserWidth();
+	}
+
+	public double getUserHeight() {
+		return text.getUserHeight();
+	}
+
+	public int getX() {
+		return text.getX();
+	}
+
+	public int getY() {
+		return text.getY();
+	}
+
+	public int getTextHeight() {
+		return text.getTextHeight();
+	}
+
+	public int getTextWidth() {
+		return text.getTextWidth();
+	}
+
 }

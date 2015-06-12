@@ -10,13 +10,17 @@
  */
 package org.geomajas.graphics.client.object;
 
+import org.geomajas.annotation.Api;
+
 
 /**
  * Empty interface as super type for the different roles.
  * 
  * @author Jan Venstermans
+ * @since 1.0.0
  * 
  */
-public abstract interface RoleInterface {
+@Api
+public interface RoleInterface {
 
 }

@@ -17,7 +17,7 @@ import junit.framework.Assert;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.service.BboxService;
-import org.geomajas.graphics.client.object.base.BaseRectangle;
+import org.geomajas.graphics.client.object.base.BaseRectangleObject;
 import org.geomajas.graphics.client.operation.ResizeOperation;
 import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer;
 import org.geomajas.graphics.client.util.FlipState;
@@ -85,7 +85,7 @@ public class GraphicsServiceImplTest {
 
 	}
 
-	class TestRectangle extends BaseRectangle {
+	class TestRectangle extends BaseRectangleObject {
 
 		private FlipState state = FlipState.NONE;
 

@@ -10,6 +10,7 @@
  */
 package org.geomajas.graphics.client.event;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.graphics.client.object.GraphicsObject;
 
 import com.google.web.bindery.event.shared.Event;
@@ -18,8 +19,10 @@ import com.google.web.bindery.event.shared.Event;
  * Event to signal a graphics object selection.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
+@Api
 public class GraphicsObjectSelectedEvent extends Event<GraphicsObjectSelectedEvent.Handler> {
 
 	private GraphicsObject object;
@@ -35,10 +38,16 @@ public class GraphicsObjectSelectedEvent extends Event<GraphicsObjectSelectedEve
 	 * Get the selected object.
 	 * @return the object or null if selected = false
 	 */
+	@Api
 	public GraphicsObject getObject() {
 		return object;
 	}
 
+	/**
+	 * Is the object selected/deselected ?
+	 * @return
+	 */
+	@Api
 	public boolean isSelected() {
 		return selected;
 	}
@@ -47,8 +56,10 @@ public class GraphicsObjectSelectedEvent extends Event<GraphicsObjectSelectedEve
 	 * Handler for this event.
 	 * 
 	 * @author Jan De Moerloose
+	 * @since 1.0.0
 	 * 
 	 */
+	@Api(allMethods = true)
 	public interface Handler {
 
 		/**

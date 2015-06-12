@@ -10,7 +10,7 @@
  */
 package org.geomajas.graphics.client.object.role;
 
-
+import org.geomajas.annotation.Api;
 import org.geomajas.graphics.client.object.RoleInterface;
 import org.geomajas.graphics.client.object.RoleType;
 import org.geomajas.graphics.client.util.HasFill;
@@ -19,10 +19,15 @@ import org.geomajas.graphics.client.util.HasFill;
  * Implemented by graphics objects that can be filled.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
+@Api(allMethods = true)
 public interface Fillable extends RoleInterface, HasFill {
-	
+
+	/**
+	 * The role type.
+	 */
 	RoleType<Fillable> TYPE = new RoleType<Fillable>("Fillable");
-	
+
 }

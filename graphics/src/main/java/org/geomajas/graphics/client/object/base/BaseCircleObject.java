@@ -19,10 +19,12 @@ import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.role.Fillable;
 import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.object.role.Strokable;
-import org.geomajas.graphics.client.render.AnchoredCircle;
+import org.geomajas.graphics.client.render.BaseCircle;
 import org.geomajas.graphics.client.render.Renderable;
+import org.geomajas.graphics.client.render.shape.VectorRenderable;
 import org.geomajas.graphics.client.util.CopyUtil;
 import org.geomajas.graphics.client.util.FlipState;
+import org.vaadin.gwtgraphics.client.shape.Circle;
 
 /**
  * Extension of {@link BaseGraphicsObject} for a circle.
@@ -30,15 +32,15 @@ import org.geomajas.graphics.client.util.FlipState;
  * @author Jan De Moerloose
  * @author Jan Venstermans
  */
-public class BaseCircle extends BaseGraphicsObject implements Resizable, Draggable, Strokable, Fillable {
+public class BaseCircleObject extends BaseGraphicsObject implements BaseCircle, Resizable, Draggable, Strokable, Fillable {
 
-	private AnchoredCircle circle;
+	private BaseCircle circle;
 
-	public BaseCircle(double x, double y, double radius) {
+	public BaseCircleObject(double x, double y, double radius) {
 		this(Graphics.getRenderElementFactory().createCircle(x, y, radius));
 	}
 
-	public BaseCircle(AnchoredCircle circle) {
+	public BaseCircleObject(BaseCircle circle) {
 		this.circle = circle;
 		addRole(Resizable.TYPE, this);
 		addRole(Draggable.TYPE, this);
@@ -60,7 +62,7 @@ public class BaseCircle extends BaseGraphicsObject implements Resizable, Draggab
 	}
 
 	public Object cloneObject() {
-		BaseCircle clone = new BaseCircle(circle.getUserX(), circle.getUserY(), circle.getUserRadius());
+		BaseCircleObject clone = new BaseCircleObject(circle.getUserX(), circle.getUserY(), circle.getUserRadius());
 		CopyUtil.copyStrokableProperties(this, clone);
 		CopyUtil.copyFillableProperties(this, clone);
 		return clone;
@@ -97,8 +99,8 @@ public class BaseCircle extends BaseGraphicsObject implements Resizable, Draggab
 
 	@Override
 	public Bbox getBounds() {
-		return new Bbox(circle.getX() - circle.getRadius(), circle.getY() - circle.getRadius(),
-				2 * circle.getRadius(), 2 * circle.getRadius());
+		return new Bbox(circle.getX() - circle.getRadius(), circle.getY() - circle.getRadius(), 2 * circle.getRadius(),
+				2 * circle.getRadius());
 	}
 
 	@Override
@@ -143,7 +145,7 @@ public class BaseCircle extends BaseGraphicsObject implements Resizable, Draggab
 
 	@Override
 	public void setStrokeWidth(int strokeWidth) {
-		 circle.setStrokeWidth(strokeWidth);
+		circle.setStrokeWidth(strokeWidth);
 	}
 
 	@Override
@@ -155,4 +157,42 @@ public class BaseCircle extends BaseGraphicsObject implements Resizable, Draggab
 	public void setStrokeOpacity(double strokeOpacity) {
 		circle.setStrokeOpacity(strokeOpacity);
 	}
+
+	public int getX() {
+		return circle.getX();
+	}
+
+	public double getUserRadius() {
+		return circle.getUserRadius();
+	}
+
+	public void setUserRadius(double userRadius) {
+		circle.setUserRadius(userRadius);
+	}
+
+	public int getY() {
+		return circle.getY();
+	}
+
+	public double getUserX() {
+		return circle.getUserX();
+	}
+
+	public void setUserX(double userX) {
+		circle.setUserX(userX);
+	}
+
+	public double getUserY() {
+		return circle.getUserY();
+	}
+
+	public void setUserY(double userY) {
+		circle.setUserY(userY);
+	}
+
+	public int getRadius() {
+		return circle.getRadius();
+	}
+	
+	
 }

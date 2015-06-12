@@ -12,10 +12,10 @@ package org.geomajas.graphics.client.object.updateable;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.graphics.client.Graphics;
-import org.geomajas.graphics.client.object.base.BaseImage;
+import org.geomajas.graphics.client.object.base.BaseImageObject;
 import org.geomajas.graphics.client.object.role.Draggable;
+import org.geomajas.graphics.client.object.role.Labeled;
 import org.geomajas.graphics.client.object.role.Resizable;
-import org.geomajas.graphics.client.object.updateable.labeled.Labeled;
 import org.geomajas.graphics.client.object.updateable.labeled.LabeledImpl;
 import org.geomajas.graphics.client.object.updateable.wrapper.DraggableWrapperForUpdateable;
 import org.geomajas.graphics.client.object.updateable.wrapper.ResizableWrapperForUpdateable;
@@ -25,7 +25,7 @@ import org.geomajas.graphics.client.util.CopyUtil;
 
 /**
  * Extension of {@link org.geomajas.graphics.client.object.updateable.UpdateableGroupGraphicsObject}
- * that shows a text centered on a {@link BaseImage}.
+ * that shows a text centered on a {@link BaseImageObject}.
  *
  * @author Jan Venstermans
  *
@@ -34,13 +34,13 @@ public class LabeledImage extends UpdateableGroupGraphicsObject {
 
 	private RenderContainer renderContainer;
 
-	private BaseImage baseImage;
+	private BaseImageObject baseImage;
 
 	private LabeledImpl labeled;
 
 	public LabeledImage(int x, int y, int width, int height, String href, String text) {
 		// create base graphics objects
-		baseImage = new BaseImage(x, y, width, height, href, true);
+		baseImage = new BaseImageObject(x, y, width, height, href, true);
 		labeled = new LabeledImpl(baseImage, text);
 
 		// register updateables
@@ -53,8 +53,8 @@ public class LabeledImage extends UpdateableGroupGraphicsObject {
 
 		// register render order
 		renderContainer = Graphics.getRenderElementFactory().createRenderContainer();
-		renderContainer.addRenderable(baseImage);
-		renderContainer.addRenderable(labeled);
+		renderContainer.add(baseImage);
+		renderContainer.add(labeled);
 	}
 
 	@Override

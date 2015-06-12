@@ -10,32 +10,56 @@
  */
 package org.geomajas.graphics.client;
 
+import org.geomajas.annotation.Api;
+
 /**
  * Constants for Graphics.
  *
  * @author Jan De Moerloose
+ * @since 1.0.0
  *
  */
+@Api(allMethods = true)
 public final class GraphicsConstants {
 
 	// anchor X offset for the popupMenu icon, relative to the left top border of the Bbox of the resizable
-	private static double offsetX = 2;
+	private double offsetX = 2;
 
 	// anchor Y offset for the popupMenu icon, relative to the left top border of the Bbox of the resizable
-	private static double offsetY = 2;
+	private double offsetY = 2;
 
+	/**
+	 * Get the x offset of the popup menu icon.
+	 * 
+	 * @return
+	 */
 	public double getOffsetX() {
 		return offsetX;
 	}
 
+	/**
+	 * Set the x-offset of the popup menu icon.
+	 * 
+	 * @param offsetX
+	 */
 	public void setOffsetX(double offsetX) {
 		this.offsetX = offsetX;
 	}
 
+	/**
+	 * Get the y-offset of the popup menu icon.
+	 * 
+	 * @return
+	 */
 	public double getOffsetY() {
 		return offsetY;
 	}
 
+	/**
+	 * Set the y-offset of the popup menu icon.
+	 * 
+	 * @param offsetY
+	 */
 	public void setOffsetY(double offsetY) {
 		this.offsetY = offsetY;
 	}

@@ -24,10 +24,9 @@ import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.render.RenderContainer;
+import org.geomajas.graphics.client.render.RenderSpace;
 import org.geomajas.graphics.client.render.shape.AnchoredImageImpl;
-import org.geomajas.graphics.client.render.shape.VectorRenderContainer;
 import org.geomajas.graphics.client.service.GraphicsService;
-import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer.Space;
 import org.geomajas.graphics.client.util.BboxPosition;
 import org.geomajas.graphics.client.util.GraphicsUtil;
 
@@ -74,7 +73,7 @@ public class PopupMenuControllerImpl extends AbstractInterruptibleGraphicsContro
 			}
 		}
 
-		container = (VectorRenderContainer)addContainer();
+		container = addContainer();
 		// listen to changes to our object
 		service.getObjectContainer().addGraphicsObjectContainerHandler(this);
 		service.getObjectContainer().addGraphicsOperationEventHandler(this);
@@ -166,8 +165,8 @@ public class PopupMenuControllerImpl extends AbstractInterruptibleGraphicsContro
 		}
 
 		public void update() {
-			BboxPosition bboxPos = transform(BboxPosition.CORNER_UL, Space.SCREEN, Space.USER);
-			Coordinate pos = transform(new Coordinate(IMG_DIST, IMG_DIST), Space.SCREEN, Space.USER);
+			BboxPosition bboxPos = transform(BboxPosition.CORNER_UL, RenderSpace.SCREEN, RenderSpace.USER);
+			Coordinate pos = transform(new Coordinate(IMG_DIST, IMG_DIST), RenderSpace.SCREEN, RenderSpace.USER);
 			if (getObject().hasRole(Resizable.TYPE)) {
 				pos = GraphicsUtil.getPosition(getObject().getRole(Resizable.TYPE).getUserBounds(), bboxPos);
 			} else if (getObject().hasRole(Draggable.TYPE)) {
@@ -178,7 +177,7 @@ public class PopupMenuControllerImpl extends AbstractInterruptibleGraphicsContro
 		}
 
 		public void addToContainer(RenderContainer container) {
-			container.addRenderable(propertyImage);
+			container.add(propertyImage);
 		}
 
 		@Override

@@ -8,18 +8,20 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.graphics.client.object.updateable;
+package org.geomajas.graphics.client.render;
+
+import org.geomajas.annotation.Api;
 
 /**
- * Interface that indicates update possibility.
- *
- * @author Jan Venstermans
+ * User/screen space as known by GWT graphics objects.
+ * 
+ * @author Jan De Moerloose
+ * @since 1.0.0
+ * 
  */
-public interface Updateable {
-
-	/**
-	 * Called when object is updated.
-	 */
-	void onUpdate();
+@Api(allMethods = true)
+public enum RenderSpace {
+	USER, // user space
+	SCREEN; // screen space
 
 }

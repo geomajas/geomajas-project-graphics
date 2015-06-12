@@ -26,7 +26,7 @@ import com.google.gwtmockito.GwtMockitoTestRunner;
 @RunWith(GwtMockitoTestRunner.class)
 public class BaseEllipseTest extends GraphicsBaseTest {
 
-	private BaseEllipse baseEllipse;
+	private BaseEllipseObject baseEllipse;
 
 	@Test
 	public void testConstructorCreatesRoles() throws Exception {
@@ -65,7 +65,7 @@ public class BaseEllipseTest extends GraphicsBaseTest {
 
 		Object clone = baseEllipse.cloneObject();
 
-		BaseEllipse baseEllipseClone = assertIsCorrectObject(clone);
+		BaseEllipseObject baseEllipseClone = assertIsCorrectObject(clone);
 		Assert.assertTrue(baseEllipseClone.hasRole(Draggable.TYPE));
 		assertRoleEqualityDraggable(expected, baseEllipseClone.getRole(Draggable.TYPE));
 	}
@@ -80,7 +80,7 @@ public class BaseEllipseTest extends GraphicsBaseTest {
 
 		Object clone = baseEllipse.cloneObject();
 
-		BaseEllipse baseEllipseClone = assertIsCorrectObject(clone);
+		BaseEllipseObject baseEllipseClone = assertIsCorrectObject(clone);
 		Assert.assertTrue(baseEllipseClone.hasRole(Resizable.TYPE));
 		assertRoleEqualityResizable(expected, baseEllipseClone.getRole(Resizable.TYPE));
 	}
@@ -96,7 +96,7 @@ public class BaseEllipseTest extends GraphicsBaseTest {
 
 		Object clone = baseEllipse.cloneObject();
 
-		BaseEllipse baseEllipseClone = assertIsCorrectObject(clone);
+		BaseEllipseObject baseEllipseClone = assertIsCorrectObject(clone);
 		Assert.assertTrue(baseEllipseClone.hasRole(Strokable.TYPE));
 		assertRoleEqualityStrokable(expected, baseEllipseClone.getRole(Strokable.TYPE));
 	}
@@ -111,18 +111,18 @@ public class BaseEllipseTest extends GraphicsBaseTest {
 
 		Object clone = baseEllipse.cloneObject();
 
-		BaseEllipse baseEllipseClone = assertIsCorrectObject(clone);
+		BaseEllipseObject baseEllipseClone = assertIsCorrectObject(clone);
 		Assert.assertTrue(baseEllipseClone.hasRole(Fillable.TYPE));
 		assertRoleEqualityFillable(expected, baseEllipseClone.getRole(Fillable.TYPE));
 	}
 
-	private BaseEllipse createBaseEllipse(Bbox bbox) {
-		return new BaseEllipse(bbox);
+	private BaseEllipseObject createBaseEllipse(Bbox bbox) {
+		return new BaseEllipseObject(bbox);
 	}
 
-	private BaseEllipse assertIsCorrectObject(Object clone) {
+	private BaseEllipseObject assertIsCorrectObject(Object clone) {
 		Assert.assertNotNull(clone);
-		Assert.assertTrue(clone instanceof BaseEllipse);
-		return (BaseEllipse) clone;
+		Assert.assertTrue(clone instanceof BaseEllipseObject);
+		return (BaseEllipseObject) clone;
 	}
 }

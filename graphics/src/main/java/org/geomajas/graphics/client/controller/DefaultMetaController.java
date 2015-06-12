@@ -20,7 +20,7 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.service.BboxService;
 import org.geomajas.graphics.client.event.GraphicsObjectContainerEvent;
 import org.geomajas.graphics.client.object.GraphicsObject;
-import org.geomajas.graphics.client.object.base.BaseRectangle;
+import org.geomajas.graphics.client.object.base.BaseRectangleObject;
 import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.role.HtmlRenderable;
 import org.geomajas.graphics.client.object.role.Resizable;
@@ -217,7 +217,7 @@ public class DefaultMetaController extends AbstractInterruptibleGraphicsControll
 	 */
 	public class BackGroundHandler implements MouseDownHandler, MouseMoveHandler, MouseUpHandler {
 
-		private BaseRectangle dragRectangle;
+		private BaseRectangleObject dragRectangle;
 
 		private Coordinate begin;
 
@@ -227,14 +227,14 @@ public class DefaultMetaController extends AbstractInterruptibleGraphicsControll
 			// start a drag selection !
 			begin = getUserCoordinate(event);
 			if (dragRectangle == null) {
-				dragRectangle = new BaseRectangle(0, 0, 0, 0);
+				dragRectangle = new BaseRectangleObject(0, 0, 0, 0);
 				dragRectangle.setStrokeColor("#696969");
 				dragRectangle.setFillOpacity(0);
 				dragRectangle.setUserBounds(new Bbox(begin.getX(), begin.getY(), 0, 0));
 				dragRectangle.getRenderable().addMouseMoveHandler(this);
 				dragRectangle.getRenderable().addMouseUpHandler(this);
 				container = addContainer();
-				container.addRenderable(dragRectangle.getRenderable());
+				container.add(dragRectangle.getRenderable());
 			}
 			dragRectangle.getRenderable().capture();
 		}

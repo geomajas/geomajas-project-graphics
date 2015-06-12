@@ -18,11 +18,12 @@ import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.role.Fillable;
 import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.object.role.Strokable;
-import org.geomajas.graphics.client.render.AnchoredRectangle;
+import org.geomajas.graphics.client.render.BaseRectangle;
 import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.render.shape.VectorRenderable;
 import org.geomajas.graphics.client.util.CopyUtil;
 import org.geomajas.graphics.client.util.FlipState;
+import org.vaadin.gwtgraphics.client.shape.Rectangle;
 
 /**
  * Extension of {@link BaseGraphicsObject} for a rectangle.
@@ -30,15 +31,16 @@ import org.geomajas.graphics.client.util.FlipState;
  * @author Jan De Moerloose
  * @author Jan Venstermans
  */
-public class BaseRectangle extends BaseGraphicsObject implements Resizable, Draggable, Fillable, Strokable {
+public class BaseRectangleObject extends BaseGraphicsObject implements BaseRectangle, Resizable, Draggable, Fillable,
+		Strokable {
 
-	private AnchoredRectangle rectangle;
+	private BaseRectangle rectangle;
 
-	public BaseRectangle(double userX, double userY, double width, double height) {
-		this(Graphics.getRenderElementFactory().createAnchoredRectangle(userX, userY, width, height, 0, 0));
+	public BaseRectangleObject(double userX, double userY, double width, double height) {
+		this(Graphics.getRenderElementFactory().createRectangle(userX, userY, width, height));
 	}
 
-	public BaseRectangle(AnchoredRectangle rectangle) {
+	public BaseRectangleObject(BaseRectangle rectangle) {
 		this.rectangle = rectangle;
 		addRole(Strokable.TYPE, this);
 		addRole(Fillable.TYPE, this);
@@ -59,12 +61,11 @@ public class BaseRectangle extends BaseGraphicsObject implements Resizable, Drag
 
 	@Override
 	public Object cloneObject() {
-		AnchoredRectangle mask = Graphics.getRenderElementFactory().createAnchoredRectangle(
-				rectangle.getUserX(), rectangle.getUserY(), rectangle.getUserWidth(), rectangle.getUserHeight(), 0, 0);
-		BaseRectangle clone =  new BaseRectangle(mask);
+		BaseRectangleObject clone = new BaseRectangleObject(rectangle.getUserX(), rectangle.getUserY(),
+				rectangle.getUserWidth(), rectangle.getUserHeight());
 		CopyUtil.copyStrokableProperties(this, clone);
 		CopyUtil.copyFillableProperties(this, clone);
-		return new BaseRectangle(mask);
+		return clone;
 	}
 
 	@Override
@@ -92,8 +93,7 @@ public class BaseRectangle extends BaseGraphicsObject implements Resizable, Drag
 
 	@Override
 	public Bbox getUserBounds() {
-		return new Bbox(rectangle.getUserX(), rectangle.getUserY(), rectangle.getUserWidth(),
-				rectangle.getUserHeight());
+		return new Bbox(rectangle.getUserX(), rectangle.getUserY(), rectangle.getUserWidth(), rectangle.getUserHeight());
 	}
 
 	@Override
@@ -155,4 +155,53 @@ public class BaseRectangle extends BaseGraphicsObject implements Resizable, Drag
 	public void setStrokeOpacity(double opacity) {
 		rectangle.setStrokeOpacity(opacity);
 	}
+
+	public double getUserWidth() {
+		return rectangle.getUserWidth();
+	}
+
+	public void setUserWidth(double userWidth) {
+		rectangle.setUserWidth(userWidth);
+	}
+
+	public double getUserHeight() {
+		return rectangle.getUserHeight();
+	}
+
+	public void setUserHeight(double userHeight) {
+		rectangle.setUserHeight(userHeight);
+	}
+
+	public int getX() {
+		return rectangle.getX();
+	}
+
+	public int getY() {
+		return rectangle.getY();
+	}
+
+	public int getWidth() {
+		return rectangle.getWidth();
+	}
+
+	public int getHeight() {
+		return rectangle.getHeight();
+	}
+
+	public double getUserX() {
+		return rectangle.getUserX();
+	}
+
+	public void setUserX(double userX) {
+		rectangle.setUserX(userX);
+	}
+
+	public double getUserY() {
+		return rectangle.getUserY();
+	}
+
+	public void setUserY(double userY) {
+		rectangle.setUserY(userY);
+	}
+
 }

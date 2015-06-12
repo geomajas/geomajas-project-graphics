@@ -11,10 +11,11 @@
 package org.geomajas.graphics.client.object.updateable.bordered;
 
 import org.geomajas.graphics.client.object.BaseGraphicsObject;
+import org.geomajas.graphics.client.object.Updateable;
+import org.geomajas.graphics.client.object.role.Bordered;
 import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.role.Fillable;
 import org.geomajas.graphics.client.object.role.Strokable;
-import org.geomajas.graphics.client.object.updateable.Updateable;
 import org.geomajas.graphics.client.render.Renderable;
 
 /**

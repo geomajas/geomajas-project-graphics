@@ -10,6 +10,7 @@
  */
 package org.geomajas.graphics.client.widget.createcontrollergroup;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.graphics.client.controller.create.CreateController;
 
 import com.google.gwt.user.client.ui.IsWidget;
@@ -29,7 +30,9 @@ public interface CreateControllerGroupPresenter {
 
 	/**
 	 * Toolbar view.
+	 * @since 1.0.0
 	 */
+	@Api(allMethods = true)
 	public interface View extends IsWidget {
 
 		void setHandler(Handler handler);
@@ -43,15 +46,18 @@ public interface CreateControllerGroupPresenter {
 
 	/**
 	 * Toolbar Handler.
+	 * @since 1.0.0
 	 */
+	@Api(allMethods = true)
 	public interface Handler {
 
 		/**
 		 * The {@link CreateController} is accompanied by action create/undo.
+		 * 
 		 * @param controller
 		 * @param create
 		 */
 		void onActivateController(CreateController<?> controller, boolean create);
 	}
-	
+
 }

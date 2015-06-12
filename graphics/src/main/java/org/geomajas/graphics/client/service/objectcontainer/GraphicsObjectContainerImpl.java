@@ -13,6 +13,10 @@ package org.geomajas.graphics.client.service.objectcontainer;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.geometry.service.BboxService;
+import org.geomajas.graphics.client.Graphics;
 import org.geomajas.graphics.client.event.GraphicsObjectContainerEvent;
 import org.geomajas.graphics.client.event.GraphicsObjectContainerEvent.ActionType;
 import org.geomajas.graphics.client.event.GraphicsObjectContainerEvent.Handler;
@@ -21,12 +25,14 @@ import org.geomajas.graphics.client.event.GraphicsOperationEvent;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.object.role.HtmlRenderable;
 import org.geomajas.graphics.client.render.IsRenderable;
+import org.geomajas.graphics.client.render.RenderArea;
 import org.geomajas.graphics.client.render.RenderContainer;
+import org.geomajas.graphics.client.render.RenderSpace;
 import org.geomajas.graphics.client.render.Renderable;
-import org.geomajas.graphics.client.render.shape.VectorRenderContainer;
 import org.geomajas.graphics.client.service.CapturingRenderContainer;
+import org.geomajas.graphics.client.service.CapturingWidget;
 import org.geomajas.graphics.client.service.HasAllMouseAndClickHandlers;
-import org.geomajas.graphics.client.service.HasHandlerWidget;
+import org.geomajas.graphics.client.util.BboxPosition;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -34,6 +40,7 @@ import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.event.dom.client.DomEvent.Type;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
+import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseEvent;
@@ -58,18 +65,18 @@ import com.google.web.bindery.event.shared.EventBus;
  * 
  * Implementation of {@link GraphicsObjectContainer} that is backed by a root {@link RenderContainer}. The
  * implementation provides catch-all mouse event handlers by setting a background widget. All objects are added to a
- * sub-container of the root container that can be obtained from {@link #getObjectGroup()}.
+ * sub-container of the root container that can be obtained from {@link #getObjectContainer()}.
  * 
  * @author Jan De Moerloose
  * 
  */
-public abstract class AbstractGraphicsObjectContainer implements GraphicsObjectContainer {
+public class GraphicsObjectContainerImpl implements GraphicsObjectContainer {
 
-	private CapturingRenderContainer rootGroup;
+	private CapturingRenderContainer rootContainer;
 
-	private HasHandlerWidget backGround;
+	private CapturingWidget backGround;
 
-	private VectorRenderContainer objectGroup = new VectorRenderContainer();
+	private RenderContainer objectContainer = Graphics.getRenderElementFactory().createRenderContainer();
 
 	private EventBus eventBus;
 
@@ -77,28 +84,37 @@ public abstract class AbstractGraphicsObjectContainer implements GraphicsObjectC
 
 	private HasWidgets.ForIsWidget widgetContainer;
 
-	protected AbstractGraphicsObjectContainer(EventBus eventBus) {
+	private RenderArea renderArea;
+
+	public GraphicsObjectContainerImpl(EventBus eventBus) {
 		this(eventBus, null, null);
 	}
 
-	protected AbstractGraphicsObjectContainer(EventBus eventBus, VectorRenderContainer rootGroup,
+	public GraphicsObjectContainerImpl(EventBus eventBus, RenderArea area,
 			Widget backGroundWidget) {
 		this.eventBus = eventBus;
-		setRootContainer(rootGroup);
+		setRenderArea(area);
 		setBackGround(backGroundWidget);
 	}
 
 	public void setBackGround(Widget backGroundWidget) {
 		if (backGroundWidget != null) {
-			backGround = new HasHandlerWidget(backGroundWidget, true);
+			backGround = new CapturingWidget(backGroundWidget, true);
 		}
 	}
 
-	public void setRootContainer(VectorRenderContainer rootGroup) {
-		if (rootGroup != null) {
-			this.rootGroup = new CapturingRenderContainer(rootGroup, true);
-			rootGroup.addRenderable(objectGroup);
+	@Override
+	public void setRenderArea(RenderArea renderArea) {
+		if (renderArea != null) {
+			this.rootContainer = new CapturingRenderContainer(renderArea.getRootContainer(), true);
+			rootContainer.add(objectContainer);
 		}
+		this.renderArea = renderArea;
+	}
+	
+	@Override
+	public RenderArea getRenderArea() {
+		return renderArea;
 	}
 
 	public void setWidgetContainer(HasWidgets.ForIsWidget widgetContainer) {
@@ -106,22 +122,22 @@ public abstract class AbstractGraphicsObjectContainer implements GraphicsObjectC
 	}
 
 	@Override
-	public HasAllMouseAndClickHandlers getObjectGroup() {
-		return objectGroup;
+	public HasAllMouseAndClickHandlers getObjectContainer() {
+		return objectContainer;
 	}
 
 	@Override
-	public void addRenderable(Renderable renderable) {
-		objectGroup.addRenderable(renderable);
+	public void add(Renderable renderable) {
+		objectContainer.add(renderable);
 	}
 
 	@Override
-	public void addRenderable(IsRenderable renderable) {
-		objectGroup.addRenderable(renderable);
+	public void add(IsRenderable renderable) {
+		objectContainer.add(renderable);
 	}
 
 	@Override
-	public HasHandlerWidget getBackGround() {
+	public CapturingWidget getBackGround() {
 		return backGround;
 	}
 
@@ -203,24 +219,6 @@ public abstract class AbstractGraphicsObjectContainer implements GraphicsObjectC
 		return registerRootAndBackGround(handler, DoubleClickEvent.getType());
 	}
 
-	private <H extends EventHandler> HandlerRegistration registerRootAndBackGround(H handler, DomEvent.Type<H> type) {
-		final HandlerRegistration rootRegistration = rootGroup.addDomHandler(handler, type);
-		final HandlerRegistration bgRegistration = backGround.addDomHandler(handler, type);
-		return new HandlerRegistration() {
-
-			@Override
-			public void removeHandler() {
-				rootRegistration.removeHandler();
-				bgRegistration.removeHandler();
-			}
-		};
-	}
-
-	@Override
-	public RenderContainer createContainer() {
-		return objectGroup.createContainer();
-	}
-
 	@Override
 	public List<GraphicsObject> getObjects() {
 		return objects;
@@ -228,7 +226,7 @@ public abstract class AbstractGraphicsObjectContainer implements GraphicsObjectC
 
 	@Override
 	public void add(GraphicsObject object) {
-		objectGroup.addRenderable(object);
+		objectContainer.add(object);
 		if (object.hasRole(HtmlRenderable.TYPE)) {
 			if (widgetContainer != null) {
 				widgetContainer.add(object.getRole(HtmlRenderable.TYPE).asWidget());
@@ -240,14 +238,14 @@ public abstract class AbstractGraphicsObjectContainer implements GraphicsObjectC
 
 	@Override
 	public void remove(GraphicsObject object) {
-		object.getRenderable().removeFromParent();
+		objectContainer.remove(object.getRenderable());
 		objects.remove(object);
 		eventBus.fireEvent(new GraphicsObjectContainerEvent(object, ActionType.REMOVE));
 	}
 
 	@Override
 	public void clear() {
-		objectGroup.clear();
+		objectContainer.clear();
 		objects.clear();
 		eventBus.fireEvent(new GraphicsObjectContainerEvent(ActionType.CLEAR));
 	}
@@ -281,67 +279,156 @@ public abstract class AbstractGraphicsObjectContainer implements GraphicsObjectC
 	@Override
 	public void setStopPropagation(boolean stopPropagation) {
 		backGround.setStopPropagation(stopPropagation);
-		rootGroup.setStopPropagation(stopPropagation);
+		rootContainer.setStopPropagation(stopPropagation);
 	}
 
 	@Override
 	public boolean isEmpty() {
-		return objectGroup.isEmpty();
+		return objectContainer.isEmpty();
 	}
 
 	@Override
 	public void setCursor(String css) {
-		objectGroup.setCursor(css);
-	}
-
-	@Override
-	public void removeFromParent() {
-		objectGroup.removeFromParent();
-	}
-
-	@Override
-	public void bringToFront() {
-		objectGroup.bringToFront();
-	}
-
-	@Override
-	public void sendToPosition(int index) {
-		objectGroup.sendToPosition(index);
-	}
-
-	@Override
-	public int getPosition() {
-		return objectGroup.getPosition();
+		objectContainer.setCursor(css);
 	}
 
 	@Override
 	public void capture() {
-		objectGroup.capture();
+		objectContainer.capture();
 	}
 
 	@Override
 	public void releaseCapture() {
-		objectGroup.releaseCapture();
+		objectContainer.releaseCapture();
 	}
 
 	@Override
 	public void setOpacity(double opacity) {
-		objectGroup.setOpacity(opacity);
+		objectContainer.setOpacity(opacity);
 	}
 
 	@Override
 	public void setVisible(boolean visible) {
-		objectGroup.setVisible(visible);
+		objectContainer.setVisible(visible);
 	}
 
 	@Override
 	public boolean isSourceOf(GwtEvent<?> event) {
-		return objectGroup.isSourceOf(event);
+		return objectContainer.isSourceOf(event);
+	}
+
+	@Override
+	public boolean remove(Renderable renderable) {
+		return objectContainer.remove(renderable);
+	}
+
+	@Override
+	public boolean remove(IsRenderable renderable) {
+		return objectContainer.remove(renderable);
+	}
+
+	@Override
+	public void bringToFront(Renderable renderable) {
+		objectContainer.bringToFront(renderable);
+	}
+
+	@Override
+	public void bringToFront(IsRenderable renderable) {
+		objectContainer.bringToFront(renderable);
+	}
+
+	@Override
+	public RenderContainer getParent() {
+		return objectContainer.getParent();
+	}
+
+	@Override
+	public void removeFromParent() {
+		objectContainer.removeFromParent();
+	}
+
+	@Override
+	public void insert(Renderable renderable, int index) {
+		objectContainer.insert(renderable, index);
+	}
+
+	@Override
+	public void insert(IsRenderable renderable, int index) {
+		objectContainer.insert(renderable, index);
+	}
+
+	@Override
+	public int indexOf(Renderable renderable) {
+		return objectContainer.indexOf(renderable);
+	}
+
+	@Override
+	public int indexOf(IsRenderable renderable) {
+		return objectContainer.indexOf(renderable);
 	}
 
 	@Override
 	public <H extends EventHandler> HandlerRegistration addDomHandler(H handler, Type<H> type) {
-		return objectGroup.addDomHandler(handler, type);
+		return objectContainer.addDomHandler(handler, type);
+	}
+
+	private <H extends EventHandler> HandlerRegistration registerRootAndBackGround(H handler, DomEvent.Type<H> type) {
+		final HandlerRegistration rootRegistration = rootContainer.addDomHandler(handler, type);
+		final HandlerRegistration bgRegistration = backGround.addDomHandler(handler, type);
+		return new HandlerRegistration() {
+
+			@Override
+			public void removeHandler() {
+				rootRegistration.removeHandler();
+				bgRegistration.removeHandler();
+			}
+		};
+	}
+
+	@Override
+	public RenderContainer createContainer() {
+		return Graphics.getRenderElementFactory().createRenderContainer();
+	}
+
+	@Override
+	public Coordinate getScreenCoordinate(HumanInputEvent<?> event) {
+		return renderArea.getScreenCoordinate(event);
+	}
+
+	@Override
+	public Coordinate transform(Coordinate coordinate, RenderSpace from, RenderSpace to) {
+		return renderArea.transform(coordinate, from, to);
+	}
+
+	@Override
+	public Bbox transform(Bbox bounds, RenderSpace from, RenderSpace to) {
+		Coordinate p1 = transform(BboxService.getOrigin(bounds), from, to);
+		Coordinate p2 = transform(BboxService.getEndPoint(bounds), from, to);
+		return new Bbox(Math.min(p1.getX(), p2.getX()), Math.min(p1.getY(), p2.getY()),
+				Math.abs(p1.getX() - p2.getX()), Math.abs(p1.getY() - p2.getY()));
+	}
+
+	@Override
+	public BboxPosition transform(BboxPosition position, RenderSpace from, RenderSpace to) {
+		switch (position) {
+			case CORNER_LL:
+				return BboxPosition.CORNER_UL;
+			case CORNER_LR:
+				return BboxPosition.CORNER_UR;
+			case CORNER_UL:
+				return BboxPosition.CORNER_LL;
+			case CORNER_UR:
+				return BboxPosition.CORNER_LR;
+			case MIDDLE_LEFT:
+				return BboxPosition.MIDDLE_LEFT;
+			case MIDDLE_LOW:
+				return BboxPosition.MIDDLE_UP;
+			case MIDDLE_RIGHT:
+				return BboxPosition.MIDDLE_RIGHT;
+			case MIDDLE_UP:
+			default:
+				return BboxPosition.MIDDLE_LOW;
+		}
 	}
 
 }

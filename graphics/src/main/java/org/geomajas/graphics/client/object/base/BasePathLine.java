@@ -8,13 +8,13 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.graphics.client.render;
+package org.geomajas.graphics.client.object.base;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.Graphics;
-import org.geomajas.graphics.client.object.base.BasePath;
+import org.geomajas.graphics.client.render.RenderContainer;
+import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.render.shape.CoordinatePathShape;
-import org.geomajas.graphics.client.render.shape.VectorRenderable;
 
 /**
  * Extention of {@link org.geomajas.graphics.client.object.base.BasePath} for an unclosed path SVG object (a line),
@@ -52,15 +52,15 @@ public class BasePathLine extends BasePath {
 	public BasePathLine(Coordinate[] coordinates) {
 		super(coordinates, false);
 		group = Graphics.getRenderElementFactory().createRenderContainer();
-		group.addRenderable(path);
+		group.add(path);
 		clickArea = new CoordinatePathShape(coordinates, false);
 		clickArea.setStrokeWidth(pointerEventAreaminimumWidth);
 		clickArea.setStrokeOpacity(0);  // makes it invisible, but mouse events will still be registered
-		group.addRenderable(clickArea);
+		group.add(clickArea);
 	}
 
 	@Override
-	public Renderable getRenderable(){
+	public Renderable getRenderable() {
 		return group;
 	}
 

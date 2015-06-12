@@ -148,15 +148,15 @@ public class CreateBasePathController extends CreateController<BasePath> impleme
 					// add the preview extra point !
 					previewPath.addCoordinate(new Coordinate(getUserCoordinate(event)));
 					previewPath.setFillOpacity(previewPath.getFillOpacity() * 0.7);
-					container.addRenderable(previewPath.getRenderable());
+					container.add(previewPath.getRenderable());
 				}
 				// we have to show our intermediate result !
-				container.addRenderable(path.getRenderable());
+				container.add(path.getRenderable());
 				// start the drag line, captures all events from now !
 				if (dragLine == null) {
 					dragLine = createPath();
 					dragLine.setStrokeOpacity(1);
-					container.addRenderable(dragLine.getRenderable());
+					container.add(dragLine.getRenderable());
 				}
 				Coordinate c1 = path.getLastCoordinate();
 				Coordinate c2 = getUserCoordinate(event);

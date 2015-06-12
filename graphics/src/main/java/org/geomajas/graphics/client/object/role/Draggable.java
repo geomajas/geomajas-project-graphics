@@ -10,6 +10,7 @@
  */
 package org.geomajas.graphics.client.object.role;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.graphics.client.object.RoleInterface;
 import org.geomajas.graphics.client.object.RoleType;
 import org.geomajas.graphics.client.util.HasBounds;
@@ -19,9 +20,14 @@ import org.geomajas.graphics.client.util.HasPosition;
  * Implemented by objects that can be dragged.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
+@Api(allMethods = true)
 public interface Draggable extends RoleInterface, HasBounds, HasPosition {
 	
+	/**
+	 * The role type.
+	 */
 	RoleType<Draggable> TYPE = new RoleType<Draggable>("Draggable");
 }

@@ -17,6 +17,7 @@ import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.role.Fillable;
 import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.object.role.Strokable;
+import org.geomajas.graphics.client.render.BaseCircle;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,7 +27,7 @@ import com.google.gwtmockito.GwtMockitoTestRunner;
 @RunWith(GwtMockitoTestRunner.class)
 public class BaseCircleTest extends GraphicsBaseTest {
 
-	private BaseCircle baseCircle;
+	private BaseCircleObject baseCircle;
 
 	@Test
 	public void testConstructorCreatesRoles() throws Exception {
@@ -63,7 +64,7 @@ public class BaseCircleTest extends GraphicsBaseTest {
 
 		Object clone = baseCircle.cloneObject();
 
-		BaseCircle baseCircleClone = assertIsCorrectObject(clone);
+		BaseCircleObject baseCircleClone = assertIsCorrectObject(clone);
 		Assert.assertTrue(baseCircleClone.hasRole(Draggable.TYPE));
 		assertRoleEqualityDraggable(expected, baseCircleClone.getRole(Draggable.TYPE));
 	}
@@ -77,7 +78,7 @@ public class BaseCircleTest extends GraphicsBaseTest {
 
 		Object clone = baseCircle.cloneObject();
 
-		BaseCircle baseCircleClone = assertIsCorrectObject(clone);
+		BaseCircleObject baseCircleClone = assertIsCorrectObject(clone);
 		Assert.assertTrue(baseCircleClone.hasRole(Resizable.TYPE));
 		assertRoleEqualityResizable(expected, baseCircleClone.getRole(Resizable.TYPE));
 	}
@@ -92,7 +93,7 @@ public class BaseCircleTest extends GraphicsBaseTest {
 
 		Object clone = baseCircle.cloneObject();
 
-		BaseCircle baseCircleClone = assertIsCorrectObject(clone);
+		BaseCircleObject baseCircleClone = assertIsCorrectObject(clone);
 		Assert.assertTrue(baseCircleClone.hasRole(Strokable.TYPE));
 		assertRoleEqualityStrokable(expected, baseCircleClone.getRole(Strokable.TYPE));
 	}
@@ -106,18 +107,18 @@ public class BaseCircleTest extends GraphicsBaseTest {
 
 		Object clone = baseCircle.cloneObject();
 
-		BaseCircle baseCircleClone = assertIsCorrectObject(clone);
+		BaseCircleObject baseCircleClone = assertIsCorrectObject(clone);
 		Assert.assertTrue(baseCircleClone.hasRole(Fillable.TYPE));
 		assertRoleEqualityFillable(expected, baseCircleClone.getRole(Fillable.TYPE));
 	}
 
-	private BaseCircle createBaseCircle(double x, double y, double radius) {
-		return new BaseCircle(x, y, radius);
+	private BaseCircleObject createBaseCircle(double x, double y, double radius) {
+		return new BaseCircleObject(x, y, radius);
 	}
 
-	private BaseCircle assertIsCorrectObject(Object clone) {
+	private BaseCircleObject assertIsCorrectObject(Object clone) {
 		Assert.assertNotNull(clone);
-		Assert.assertTrue(clone instanceof BaseCircle);
-		return (BaseCircle) clone;
+		Assert.assertTrue(clone instanceof BaseCircleObject);
+		return (BaseCircleObject) clone;
 	}
 }

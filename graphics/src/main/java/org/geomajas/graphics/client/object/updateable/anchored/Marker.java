@@ -20,7 +20,7 @@ import org.geomajas.graphics.client.render.RenderContainer;
 import org.geomajas.graphics.client.render.Renderable;
 
 /**
- * Implementation of {@link Anchored} role.
+ * Implementation of marker for anchored role.
  *
  * @author Jan De Moerloose
  * @author Jan Venstermans
@@ -46,9 +46,9 @@ public class Marker extends BaseGraphicsObject implements Strokable, Fillable {
 			background = MarkerShape.SQUARE.getMarkerShape();
 			background.setFillOpacity(0);
 			background.setStrokeOpacity(0);
-			markerGroup.addRenderable(background);
+			markerGroup.add(background);
 		}
-		markerGroup.addRenderable(anchor);
+		markerGroup.add(anchor);
 		setPosition(markerPosition);
 
 		addRole(Strokable.TYPE, this);
@@ -77,7 +77,7 @@ public class Marker extends BaseGraphicsObject implements Strokable, Fillable {
 			anchor = (AnchorMarker) ((Cloneable) shape).cloneObject();
 		} else {
 			// standard marker shape: rectangle
-			anchor =  Graphics.getRenderElementFactory().createAnchoredRectangle(0, 0, 8, 8, 4, 4);
+			anchor = Graphics.getRenderElementFactory().createAnchoredRectangle(0, 0, 8, 8, 4, 4);
 		}
 		anchor.setFixedSize(true);
 		anchor.setFillColor("#FF6600");
@@ -91,9 +91,9 @@ public class Marker extends BaseGraphicsObject implements Strokable, Fillable {
 		return null;
 	}
 
-	//------------------------
+	// ------------------------
 	// fillable methods
-	//------------------------
+	// ------------------------
 
 	@Override
 	public void setFillColor(String fillColor) {
@@ -115,9 +115,9 @@ public class Marker extends BaseGraphicsObject implements Strokable, Fillable {
 		return anchor.getFillOpacity();
 	}
 
-	//------------------------
+	// ------------------------
 	// strokable methods
-	//------------------------
+	// ------------------------
 
 	@Override
 	public String getStrokeColor() {
@@ -149,9 +149,9 @@ public class Marker extends BaseGraphicsObject implements Strokable, Fillable {
 		anchor.setStrokeOpacity(strokeOpacity);
 	}
 
-	//------------------------
+	// ------------------------
 	// render
-	//------------------------
+	// ------------------------
 
 	@Override
 	public Renderable getRenderable() {

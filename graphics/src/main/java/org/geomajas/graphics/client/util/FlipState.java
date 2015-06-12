@@ -10,11 +10,15 @@
  */
 package org.geomajas.graphics.client.util;
 
+import org.geomajas.annotation.Api;
+
 /**
  * flip around X-axis, Y-axis, none or both.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  */
+@Api
 public enum FlipState {
 	/**
 	 * Flip around x-axis.

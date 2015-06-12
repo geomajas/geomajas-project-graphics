@@ -12,12 +12,12 @@ package org.geomajas.graphics.client.object.updateable.wrapper;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.graphics.client.object.Updateable;
 import org.geomajas.graphics.client.object.role.Draggable;
-import org.geomajas.graphics.client.object.updateable.Updateable;
 
 /**
  * Wrapper around a {@link Draggable} that will trigger
- * {@link org.geomajas.graphics.client.object.updateable.Updateable#onUpdate()}
+ * {@link org.geomajas.graphics.client.object.Updateable#onUpdate()}
  * on certain {@link Draggable} method calls.
  *
  * @author Jan Venstermans

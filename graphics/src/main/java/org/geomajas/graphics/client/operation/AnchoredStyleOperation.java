@@ -11,7 +11,7 @@
 package org.geomajas.graphics.client.operation;
 
 import org.geomajas.graphics.client.object.GraphicsObject;
-import org.geomajas.graphics.client.object.updateable.anchored.Anchored;
+import org.geomajas.graphics.client.object.role.Anchored;
 
 /**
  * Operation that anchors an object.

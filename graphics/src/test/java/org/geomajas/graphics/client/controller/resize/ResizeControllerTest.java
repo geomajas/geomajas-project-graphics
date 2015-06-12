@@ -19,18 +19,17 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.service.BboxService;
 import org.geomajas.graphics.client.controller.resize.ResizeController.ResizeHandler;
-import org.geomajas.graphics.client.object.base.BaseRectangle;
+import org.geomajas.graphics.client.object.base.BaseRectangleObject;
+import org.geomajas.graphics.client.render.RenderSpace;
 import org.geomajas.graphics.client.service.GraphicsService;
 import org.geomajas.graphics.client.service.GraphicsServiceImpl;
 import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer;
-import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer.Space;
 import org.geomajas.graphics.client.util.BboxPosition;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import com.google.web.bindery.event.shared.SimpleEventBus;
@@ -44,22 +43,22 @@ public class ResizeControllerTest {
 
 	@Before
 	public void setUp() {
-		when(objectContainer.transform(new Coordinate(105, 110), Space.SCREEN, Space.USER)).thenReturn(new Coordinate(105, 110));
-		when(objectContainer.transform(new Coordinate(100, 100), Space.SCREEN, Space.USER)).thenReturn(new Coordinate(100, 100));
-		when(objectContainer.transform(BboxPosition.CORNER_LL, Space.SCREEN, Space.USER)).thenReturn(BboxPosition.CORNER_UL);
-		when(objectContainer.transform(BboxPosition.CORNER_LR, Space.SCREEN, Space.USER)).thenReturn(BboxPosition.CORNER_UR);
-		when(objectContainer.transform(BboxPosition.CORNER_UL, Space.SCREEN, Space.USER)).thenReturn(BboxPosition.CORNER_LL);
-		when(objectContainer.transform(BboxPosition.CORNER_UR, Space.SCREEN, Space.USER)).thenReturn(BboxPosition.CORNER_LR);
-		when(objectContainer.transform(BboxPosition.MIDDLE_LEFT, Space.SCREEN, Space.USER)).thenReturn(BboxPosition.MIDDLE_LEFT);
-		when(objectContainer.transform(BboxPosition.MIDDLE_LOW, Space.SCREEN, Space.USER)).thenReturn(BboxPosition.MIDDLE_UP);
-		when(objectContainer.transform(BboxPosition.MIDDLE_RIGHT, Space.SCREEN, Space.USER)).thenReturn(BboxPosition.MIDDLE_RIGHT);
-		when(objectContainer.transform(BboxPosition.MIDDLE_UP, Space.SCREEN, Space.USER)).thenReturn(BboxPosition.MIDDLE_LOW);		
+		when(objectContainer.transform(new Coordinate(105, 110), RenderSpace.SCREEN, RenderSpace.USER)).thenReturn(new Coordinate(105, 110));
+		when(objectContainer.transform(new Coordinate(100, 100), RenderSpace.SCREEN, RenderSpace.USER)).thenReturn(new Coordinate(100, 100));
+		when(objectContainer.transform(BboxPosition.CORNER_LL, RenderSpace.SCREEN, RenderSpace.USER)).thenReturn(BboxPosition.CORNER_UL);
+		when(objectContainer.transform(BboxPosition.CORNER_LR, RenderSpace.SCREEN, RenderSpace.USER)).thenReturn(BboxPosition.CORNER_UR);
+		when(objectContainer.transform(BboxPosition.CORNER_UL, RenderSpace.SCREEN, RenderSpace.USER)).thenReturn(BboxPosition.CORNER_LL);
+		when(objectContainer.transform(BboxPosition.CORNER_UR, RenderSpace.SCREEN, RenderSpace.USER)).thenReturn(BboxPosition.CORNER_LR);
+		when(objectContainer.transform(BboxPosition.MIDDLE_LEFT, RenderSpace.SCREEN, RenderSpace.USER)).thenReturn(BboxPosition.MIDDLE_LEFT);
+		when(objectContainer.transform(BboxPosition.MIDDLE_LOW, RenderSpace.SCREEN, RenderSpace.USER)).thenReturn(BboxPosition.MIDDLE_UP);
+		when(objectContainer.transform(BboxPosition.MIDDLE_RIGHT, RenderSpace.SCREEN, RenderSpace.USER)).thenReturn(BboxPosition.MIDDLE_RIGHT);
+		when(objectContainer.transform(BboxPosition.MIDDLE_UP, RenderSpace.SCREEN, RenderSpace.USER)).thenReturn(BboxPosition.MIDDLE_LOW);		
 	}
 
 
 	@Test
 	public void testResize() {
-		BaseRectangle m = new BaseRectangle(5, 6, 50, 50);
+		BaseRectangleObject m = new BaseRectangleObject(5, 6, 50, 50);
 		SimpleEventBus eventBus = new SimpleEventBus();
 		GraphicsService service = new GraphicsServiceImpl(eventBus);
 		service.setObjectContainer(objectContainer);

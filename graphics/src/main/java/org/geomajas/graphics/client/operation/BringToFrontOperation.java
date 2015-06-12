@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.graphics.client.object.GraphicsObject;
+import org.geomajas.graphics.client.render.RenderContainer;
 import org.geomajas.graphics.client.service.GraphicsService;
 
 /**
@@ -37,13 +38,19 @@ public class BringToFrontOperation implements GraphicsOperation {
 	@Override
 	public void execute() {
 		externalLabels.clear();
-		beforeIndex = object.getRenderable().getPosition();
-		object.getRenderable().bringToFront();
+		RenderContainer parent = object.getRenderable().getParent();
+		if (parent != null) {
+			beforeIndex = parent.indexOf(object.getRenderable());
+			parent.bringToFront(object.getRenderable());
+		}
 	}
 
 	@Override
 	public void undo() {
-		object.getRenderable().sendToPosition(beforeIndex);
+		RenderContainer parent = object.getRenderable().getParent();
+		if (parent != null) {
+			parent.insert(object.getRenderable(), beforeIndex);
+		}
 	}
 
 	@Override

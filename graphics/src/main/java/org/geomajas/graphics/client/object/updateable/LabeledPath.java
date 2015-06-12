@@ -15,9 +15,9 @@ import org.geomajas.graphics.client.Graphics;
 import org.geomajas.graphics.client.object.base.BasePath;
 import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.role.Fillable;
+import org.geomajas.graphics.client.object.role.Labeled;
 import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.object.role.Strokable;
-import org.geomajas.graphics.client.object.updateable.labeled.Labeled;
 import org.geomajas.graphics.client.object.updateable.labeled.LabeledImpl;
 import org.geomajas.graphics.client.object.updateable.wrapper.DraggableWrapperForUpdateable;
 import org.geomajas.graphics.client.object.updateable.wrapper.ResizableWrapperForUpdateable;
@@ -59,8 +59,8 @@ public class LabeledPath extends UpdateableGroupGraphicsObject {
 
 		// register render order
 		renderContainer = Graphics.getRenderElementFactory().createRenderContainer();
-		renderContainer.addRenderable(basePath);
-		renderContainer.addRenderable(labeled);
+		renderContainer.add(basePath);
+		renderContainer.add(labeled);
 	}
 
 	@Override

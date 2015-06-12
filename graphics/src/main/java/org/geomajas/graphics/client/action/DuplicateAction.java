@@ -15,8 +15,8 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.role.Resizable;
+import org.geomajas.graphics.client.render.RenderSpace;
 import org.geomajas.graphics.client.resource.GraphicsResource;
-import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer;
 
 /**
  * Action to duplicate a {@link GraphicsObject}.
@@ -53,7 +53,7 @@ public class DuplicateAction extends AbstractAction {
 	private Coordinate translateUserCoordinate(Coordinate userPosition) {
 		return getService().getObjectContainer().transform(
 				new Coordinate(userPosition.getX() + 40, userPosition.getY() + 10),
-				GraphicsObjectContainer.Space.SCREEN, GraphicsObjectContainer.Space.USER);
+				RenderSpace.SCREEN, RenderSpace.USER);
 	}
 
 	private Bbox translateUserBounds(Bbox userBounds) {
@@ -61,7 +61,7 @@ public class DuplicateAction extends AbstractAction {
 				userBounds.getHeight());
 		Coordinate screenLowLeftPosition = getService().getObjectContainer().transform(
 				new Coordinate(userBounds.getX(), userBounds.getY()),
-				GraphicsObjectContainer.Space.USER, GraphicsObjectContainer.Space.SCREEN);
+				RenderSpace.USER, RenderSpace.SCREEN);
 		Coordinate newLowLeftPosition = translateUserCoordinate(screenLowLeftPosition);
 		newUserBounds.setX(newLowLeftPosition.getX());
 		newUserBounds.setY(newLowLeftPosition.getY());

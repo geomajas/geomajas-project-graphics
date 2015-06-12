@@ -11,6 +11,7 @@
 package org.geomajas.project.graphics.example.client;
 
 import org.geomajas.graphics.client.controller.GraphicsController;
+import org.geomajas.graphics.client.render.RenderArea;
 import org.geomajas.graphics.client.service.GraphicsService;
 import org.vaadin.gwtgraphics.client.Group;
 
@@ -28,7 +29,7 @@ public class NavigationController implements GraphicsController, MouseWheelHandl
 
 	private boolean active;
 
-	private Group rootContainer;
+	private RenderArea renderArea;
 
 	private HandlerRegistration registration;
 
@@ -36,8 +37,8 @@ public class NavigationController implements GraphicsController, MouseWheelHandl
 
 	private GraphicsService service;
 
-	public NavigationController(GraphicsService service, Group rootContainer) {
-		this.rootContainer = rootContainer;
+	public NavigationController(GraphicsService service, RenderArea renderArea) {
+		this.renderArea = renderArea;
 		this.service = service;
 	}
 
@@ -63,12 +64,12 @@ public class NavigationController implements GraphicsController, MouseWheelHandl
 	public void onMouseWheel(MouseWheelEvent event) {
 		if (event.isNorth()) {
 			scale *= 2;
-			rootContainer.setScale(scale, scale);
+			renderArea.setScale(scale, scale);
 		} else {
 			if (scale > 1) {
 				scale /= 2;
 			}
-			rootContainer.setScale(scale, scale);
+			renderArea.setScale(scale, scale);
 		}
 	}
 

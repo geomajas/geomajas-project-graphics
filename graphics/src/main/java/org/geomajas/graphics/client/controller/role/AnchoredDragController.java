@@ -15,8 +15,8 @@ import org.geomajas.graphics.client.controller.UpdateHandlerGraphicsController;
 import org.geomajas.graphics.client.controller.UpdateHandlerGraphicsControllerWithVisibleElement;
 import org.geomajas.graphics.client.controller.drag.AbstractDragHandler;
 import org.geomajas.graphics.client.object.GraphicsObject;
+import org.geomajas.graphics.client.object.role.Anchored;
 import org.geomajas.graphics.client.object.updateable.anchored.AnchorMarker;
-import org.geomajas.graphics.client.object.updateable.anchored.Anchored;
 import org.geomajas.graphics.client.object.updateable.anchored.MarkerShape;
 import org.geomajas.graphics.client.operation.AnchoredPositionOperation;
 import org.geomajas.graphics.client.operation.GraphicsOperation;
@@ -62,7 +62,7 @@ public class AnchoredDragController extends UpdateHandlerGraphicsControllerWithV
 		// update positions
 		updateHandlers();
 		// add the group
-		getContainer().addRenderable(getHandlerGroup());
+		getContainer().add(getHandlerGroup());
 	}
 
 	@Override
@@ -101,7 +101,7 @@ public class AnchoredDragController extends UpdateHandlerGraphicsControllerWithV
 		}
 
 		public void renderInContainer(RenderContainer group) {	
-			group.addRenderable(invisibleSquareAnchor.getRenderable());
+			group.add(invisibleSquareAnchor.getRenderable());
 		}
 		
 		@Override

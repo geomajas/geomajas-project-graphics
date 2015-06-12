@@ -13,7 +13,7 @@ package org.geomajas.graphics.client.controller.create.base;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.controller.create.CreateController;
-import org.geomajas.graphics.client.object.base.BaseCircle;
+import org.geomajas.graphics.client.object.base.BaseCircleObject;
 import org.geomajas.graphics.client.object.role.Fillable;
 import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.object.role.Strokable;
@@ -21,8 +21,8 @@ import org.geomajas.graphics.client.object.role.cache.FillableCache;
 import org.geomajas.graphics.client.object.role.cache.StrokableCache;
 import org.geomajas.graphics.client.object.updateable.anchored.TwoPointsLine;
 import org.geomajas.graphics.client.operation.AddOperation;
+import org.geomajas.graphics.client.render.BaseCircle;
 import org.geomajas.graphics.client.render.RenderContainer;
-import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.service.GraphicsService;
 import org.geomajas.graphics.client.util.CopyUtil;
 
@@ -42,9 +42,9 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
  *
  */
 public class CreateBaseCircleByRadiusController
-		extends CreateController<BaseCircle> implements MouseDownHandler, MouseMoveHandler, MouseUpHandler {
+		extends CreateController<BaseCircleObject> implements MouseDownHandler, MouseMoveHandler, MouseUpHandler {
 
-	private BaseCircle dragResizable;
+	private BaseCircleObject dragResizable;
 
 	private Coordinate begin;
 
@@ -106,12 +106,12 @@ public class CreateBaseCircleByRadiusController
 			dragResizable.getRenderable().addMouseUpHandler(this);
 			CopyUtil.copyStrokableProperties(circleStrokable, dragResizable);
 			CopyUtil.copyFillableProperties(circleFillable, dragResizable);
-			container.addRenderable((Renderable)dragResizable);
+			container.add(dragResizable);
 
 			//line
 			tempPath = new TwoPointsLine(new Coordinate(begin), new Coordinate(begin));
 			CopyUtil.copyStrokableProperties(pathStrokable, tempPath);
-			container.addRenderable((Renderable)tempPath);
+			container.add(tempPath);
 		}
 		dragResizable.getRenderable().capture();
 	}
@@ -125,7 +125,7 @@ public class CreateBaseCircleByRadiusController
 
 	@Override
 	public void onMouseUp(MouseUpEvent event) {
-		BaseCircle result = createObjectWithoutBounds();
+		BaseCircleObject result = createObjectWithoutBounds();
 		result.getRole(Resizable.TYPE).setUserBounds(dragResizable.getRole(Resizable.TYPE).getUserBounds());
 		CopyUtil.copyStrokableProperties(circleStrokable, result);
 		CopyUtil.copyFillableProperties(circleFillable, result);
@@ -153,8 +153,8 @@ public class CreateBaseCircleByRadiusController
 	// private methods
 	//--------------------------------------------------------------
 
-	private BaseCircle createObjectWithoutBounds() {
-		BaseCircle ellipse = new BaseCircle(0, 0, 0);
+	private BaseCircleObject createObjectWithoutBounds() {
+		BaseCircleObject ellipse = new BaseCircleObject(0, 0, 0);
 		return ellipse;
 	}
 

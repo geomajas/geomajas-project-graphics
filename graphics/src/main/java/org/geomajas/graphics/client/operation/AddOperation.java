@@ -10,19 +10,27 @@
  */
 package org.geomajas.graphics.client.operation;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.graphics.client.object.GraphicsObject;
 
 /**
  * Operation that adds an object.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
+@Api
 public class AddOperation implements GraphicsOperation {
 
 	private GraphicsObject object;
-	
 
+	/**
+	 * Create a new operation to add an object.
+	 * 
+	 * @param object
+	 */
+	@Api
 	public AddOperation(GraphicsObject object) {
 		this.object = object;
 	}

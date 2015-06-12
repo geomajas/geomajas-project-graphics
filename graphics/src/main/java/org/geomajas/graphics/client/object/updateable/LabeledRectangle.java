@@ -12,12 +12,12 @@ package org.geomajas.graphics.client.object.updateable;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.graphics.client.Graphics;
-import org.geomajas.graphics.client.object.base.BaseRectangle;
+import org.geomajas.graphics.client.object.base.BaseRectangleObject;
 import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.role.Fillable;
+import org.geomajas.graphics.client.object.role.Labeled;
 import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.object.role.Strokable;
-import org.geomajas.graphics.client.object.updateable.labeled.Labeled;
 import org.geomajas.graphics.client.object.updateable.labeled.LabeledImpl;
 import org.geomajas.graphics.client.object.updateable.wrapper.DraggableWrapperForUpdateable;
 import org.geomajas.graphics.client.object.updateable.wrapper.ResizableWrapperForUpdateable;
@@ -27,7 +27,7 @@ import org.geomajas.graphics.client.util.CopyUtil;
 
 /**
  * Extension of {@link UpdateableGroupGraphicsObject}
- * that shows a text centered on a {@link org.geomajas.graphics.client.object.base.BaseRectangle}.
+ * that shows a text centered on a {@link org.geomajas.graphics.client.object.base.BaseRectangleObject}.
  *
  * @author Jan Venstermans
  *
@@ -36,13 +36,13 @@ public class LabeledRectangle extends UpdateableGroupGraphicsObject {
 
 	private RenderContainer renderContainer;
 
-	private BaseRectangle baseRectangle;
+	private BaseRectangleObject baseRectangle;
 
 	private LabeledImpl labeled;
 
 	public LabeledRectangle(double userX, double userY, double width, double height, String text) {
 		// create base graphics objects
-		baseRectangle = new BaseRectangle(userX, userY, width, height);
+		baseRectangle = new BaseRectangleObject(userX, userY, width, height);
 		labeled = new LabeledImpl(baseRectangle, text);
 
 		// register updateables
@@ -57,8 +57,8 @@ public class LabeledRectangle extends UpdateableGroupGraphicsObject {
 
 		// register render order
 		renderContainer = Graphics.getRenderElementFactory().createRenderContainer();
-		renderContainer.addRenderable(baseRectangle);
-		renderContainer.addRenderable(labeled);
+		renderContainer.add(baseRectangle);
+		renderContainer.add(labeled);
 	}
 
 	@Override

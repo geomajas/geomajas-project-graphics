@@ -10,35 +10,69 @@
  */
 package org.geomajas.graphics.client.render;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.graphics.client.service.HasAllMouseAndClickHandlers;
 
 import com.google.gwt.event.shared.GwtEvent;
 
 /**
- * Implemented by all graphical objects. Rendering happens by adding to a {@link RenderContainer}.
+ * Implemented by all graphical objects. Rendering happens by adding the object to a {@link RenderContainer}.
  *
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
+@Api(allMethods = true)
 public interface Renderable extends HasAllMouseAndClickHandlers {
-	
-	void setCursor(String css);
-	
+
+	/**
+	 * Get the parent container.
+	 * 
+	 * @return the container or null if the object is not rendered or it is the root container.
+	 */
+	RenderContainer getParent();
+
+	/**
+	 * Detaches the object from its parent.
+	 */
 	void removeFromParent();
-	
-	void bringToFront();
-	
-	void sendToPosition(int index);
-	
-	int getPosition();
-	
+
+	/**
+	 * Set the cursor when hovering this object.
+	 * 
+	 * @param css css name of the cursor
+	 */
+	void setCursor(String css);
+
+	/**
+	 * Let this object capture all mouse events.
+	 */
 	void capture();
-	
+
+	/**
+	 * Release capturing of all events to this object.
+	 */
 	void releaseCapture();
 
+	/**
+	 * Set the opacity of the object.
+	 * 
+	 * @param opacity
+	 */
 	void setOpacity(double opacity);
 
+	/**
+	 * Set the visibility of the object.
+	 * 
+	 * @param visible
+	 */
 	void setVisible(boolean visible);
 
+	/**
+	 * Determine if the object is the source of this event.
+	 * 
+	 * @param event
+	 * @return true if the object is the source.
+	 */
 	boolean isSourceOf(GwtEvent<?> event);
 }

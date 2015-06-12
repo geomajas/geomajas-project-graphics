@@ -10,19 +10,34 @@
  */
 package org.geomajas.graphics.client.controller;
 
-
+import org.geomajas.annotation.Api;
 
 /**
  * Controller for graphics objects.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
+@Api(allMethods = true)
 public interface GraphicsController {
 
+	/**
+	 * Activate the controller. Typically renders the GUI handlers.
+	 * 
+	 * @param active
+	 */
 	void setActive(boolean active);
-	
+
+	/**
+	 * Is the controller active ?
+	 * 
+	 * @return
+	 */
 	boolean isActive();
 
+	/**
+	 * Destroy any GUI resources associated with this controller.
+	 */
 	void destroy();
 }

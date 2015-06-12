@@ -10,6 +10,7 @@
  */
 package org.geomajas.graphics.client.service;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.graphics.client.controller.MetaController;
 
 /**
@@ -17,8 +18,10 @@ import org.geomajas.graphics.client.controller.MetaController;
  * controllers. 
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
+@Api(allMethods = true)
 public interface MetaControllerFactory {
 
 	MetaController createController(GraphicsService graphicsService);

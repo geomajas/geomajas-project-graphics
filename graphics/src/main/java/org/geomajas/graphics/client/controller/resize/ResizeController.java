@@ -26,16 +26,14 @@ import org.geomajas.graphics.client.operation.ResizeOperation;
 import org.geomajas.graphics.client.render.AnchoredRectangle;
 import org.geomajas.graphics.client.render.IsRenderable;
 import org.geomajas.graphics.client.render.RenderContainer;
+import org.geomajas.graphics.client.render.RenderSpace;
 import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.render.shape.AnchoredRectangleImpl;
-import org.geomajas.graphics.client.render.shape.VectorRenderContainer;
 import org.geomajas.graphics.client.service.GraphicsService;
-import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer.Space;
 import org.geomajas.graphics.client.util.BboxPosition;
 import org.geomajas.graphics.client.util.FlipState;
 import org.geomajas.graphics.client.util.GraphicsUtil;
 
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
@@ -47,7 +45,6 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.RootPanel;
 
 /**
@@ -135,7 +132,7 @@ public class ResizeController extends UpdateHandlerGraphicsControllerWithVisible
 		// update positions
 		updateHandlers();
 		// add the group
-		getContainer().addRenderable(getHandlerGroup());
+		getContainer().add(getHandlerGroup());
 	}
 
 	@Override
@@ -233,16 +230,16 @@ public class ResizeController extends UpdateHandlerGraphicsControllerWithVisible
 		public void update() {
 			Bbox userBounds = resizable.getUserBounds();
 			Bbox screenBounds = transform(userBounds,
-					Space.USER, Space.SCREEN);
+					RenderSpace.USER, RenderSpace.SCREEN);
 			Coordinate screenCenter = BboxService.getCenterPoint(screenBounds);
 			// minimal screen width/height + increase with half handler size so handlers don't overlap
 			double minSize = 3 * HANDLER_SIZE;
 			double width = Math.max(screenBounds.getWidth(), minSize);
 			double height = Math.max(screenBounds.getHeight(), minSize);
 			screenBounds = new Bbox(screenCenter.getX() - width / 2, screenCenter.getY() - height / 2, width, height);
-			userBounds = transform(screenBounds, Space.SCREEN, Space.USER);
+			userBounds = transform(screenBounds, RenderSpace.SCREEN, RenderSpace.USER);
 			Coordinate location = GraphicsUtil.getPosition(userBounds,
-					transform(getBboxPosition(), Space.SCREEN, Space.USER));
+					transform(getBboxPosition(), RenderSpace.SCREEN, RenderSpace.USER));
 			setLocation(location);
 		}
 
@@ -303,8 +300,8 @@ public class ResizeController extends UpdateHandlerGraphicsControllerWithVisible
 		}
 
 		public void renderInContainer(RenderContainer group) {
-			group.addRenderable(clickableArea);
-			group.addRenderable(rectangle);
+			group.add(clickableArea);
+			group.add(rectangle);
 			clickableArea.getRenderable().addMouseDownHandler(this);
 			rectangle.getRenderable().addMouseDownHandler(this);
 			rectangle.getRenderable().addMouseUpHandler(this);
@@ -324,7 +321,7 @@ public class ResizeController extends UpdateHandlerGraphicsControllerWithVisible
 				mask = (GraphicsObject) getObject().cloneObject();
 				mask.getRenderable().setOpacity(0.5);
 				mask.getRole(Resizable.TYPE).setUserBounds(beginBounds);
-				getHandlerGroup().addRenderable(mask.getRenderable());
+				getHandlerGroup().add(mask.getRenderable());
 			}
 		}
 
@@ -356,7 +353,7 @@ public class ResizeController extends UpdateHandlerGraphicsControllerWithVisible
 		}
 
 		protected void onDragStart(int x, int y) {
-			userBegin = transform(new Coordinate(x, y), Space.SCREEN, Space.USER);
+			userBegin = transform(new Coordinate(x, y), RenderSpace.SCREEN, RenderSpace.USER);
 			beginBounds = GraphicsUtil.clone(resizable.getUserBounds());
 		}
 
@@ -370,10 +367,10 @@ public class ResizeController extends UpdateHandlerGraphicsControllerWithVisible
 		}
 
 		private Bbox getNewBounds(int x, int y, boolean preserveRatio) {
-			Coordinate userEnd = transform(new Coordinate(x, y), Space.SCREEN, Space.USER);
+			Coordinate userEnd = transform(new Coordinate(x, y), RenderSpace.SCREEN, RenderSpace.USER);
 			double dx = userEnd.getX() - userBegin.getX();
 			double dy = userEnd.getY() - userBegin.getY();
-			BboxPosition userPosition = transform(getBboxPosition(), Space.SCREEN, Space.USER);
+			BboxPosition userPosition = transform(getBboxPosition(), RenderSpace.SCREEN, RenderSpace.USER);
 			Bbox newBounds = GraphicsUtil.translatePosition(beginBounds, userPosition, dx, dy);
 			flipstate = GraphicsUtil.getFlipState(beginBounds, userPosition, dx, dy);
 			if (preserveRatio) {

@@ -14,13 +14,18 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.object.updateable.anchored.AnchorMarker;
 import org.geomajas.graphics.client.object.updateable.bordered.MarginAnchoredRectangleImpl;
 import org.geomajas.graphics.client.render.AnchoredCircle;
-import org.geomajas.graphics.client.render.AnchoredEllipse;
 import org.geomajas.graphics.client.render.AnchoredImage;
 import org.geomajas.graphics.client.render.AnchoredRectangle;
 import org.geomajas.graphics.client.render.AnchoredText;
+import org.geomajas.graphics.client.render.BaseCircle;
+import org.geomajas.graphics.client.render.BaseEllipse;
+import org.geomajas.graphics.client.render.BaseImage;
+import org.geomajas.graphics.client.render.BaseRectangle;
+import org.geomajas.graphics.client.render.BaseText;
 import org.geomajas.graphics.client.render.CoordinatePath;
 import org.geomajas.graphics.client.render.RenderArea;
 import org.geomajas.graphics.client.render.RenderContainer;
+import org.geomajas.graphics.client.render.RenderElementFactory;
 
 /**
  * Default implementation of {@link RenderElementFactory} for {@link org.vaadin.gwtgraphics.client.Shape} objects.
@@ -28,11 +33,11 @@ import org.geomajas.graphics.client.render.RenderContainer;
  * @author Jan Venstermans
  *
  */
-public class ShapeRenderElementFactoryImpl implements RenderElementFactory {
+public class VectorRenderElementFactoryImpl implements RenderElementFactory {
 
 	@Override
 	public RenderArea createRenderArea(int i, int j) {
-		return new ShapeRenderArea(i,j);
+		return new VectorRenderArea(i, j);
 	}
 
 	@Override
@@ -42,13 +47,13 @@ public class ShapeRenderElementFactoryImpl implements RenderElementFactory {
 
 	@Override
 	public AnchoredRectangle createAnchoredRectangle(double userX, double userY, double userWidth, double userHeight,
-													 int anchorX, int anchorY) {
+			int anchorX, int anchorY) {
 		return new AnchoredRectangleImpl(userX, userY, userWidth, userHeight, anchorX, anchorY);
 	}
 
 	@Override
-	public AnchoredRectangle createMarginAnchoredRectangle(double userX, double userY,
-														   double width, double height, int margin) {
+	public AnchoredRectangle createMarginAnchoredRectangle(double userX, double userY, double width, double height,
+			int margin) {
 		return new MarginAnchoredRectangleImpl(userX, userY, width, height, 0, 0, margin);
 	}
 
@@ -58,26 +63,40 @@ public class ShapeRenderElementFactoryImpl implements RenderElementFactory {
 	}
 
 	@Override
-	public AnchoredEllipse createEllipse(double ellipseCenterX,
-										 double ellipseCenterY, double userRadiusX, double userRadiusY) {
-		return new AnchoredEllipseImpl(ellipseCenterX, ellipseCenterY, userRadiusX, userRadiusY);
+	public BaseEllipse createEllipse(double ellipseCenterX, double ellipseCenterY, double userRadiusX,
+			double userRadiusY) {
+		return new BaseEllipseImpl(ellipseCenterX, ellipseCenterY, userRadiusX, userRadiusY);
 	}
 
 	@Override
-	public AnchoredCircle createCircle(double circleCenterX, double circleCenterY, double radius) {
-		return createAnchoredCircle(circleCenterX, circleCenterY, radius, 0, 0);
+	public BaseCircle createCircle(double circleCenterX, double circleCenterY, double radius) {
+		return new BaseCircleImpl(circleCenterX, circleCenterY, radius);
 	}
 
 	@Override
-	public AnchoredCircle createAnchoredCircle(double circleCenterX, double circleCenterY, double radius,
-											   int anchorX, int anchorY) {
+	public BaseRectangle createRectangle(double userX, double userY, double userWidth, double userHeight) {
+		return new BaseRectangleImpl(userX, userY, userWidth, userHeight);
+	}
+
+	@Override
+	public BaseImage createImage(double userX, double userY, int width, int height, String href, boolean preserveRatio) {
+		return new BaseImageImpl(userX, userY, width, height, href);
+	}
+
+	@Override
+	public BaseText createText(double userX, double userY, String text) {
+		return new BaseTextImpl(userX, userY, text);
+	}
+
+	@Override
+	public AnchoredCircle createAnchoredCircle(double circleCenterX, double circleCenterY, double radius, int anchorX,
+			int anchorY) {
 		return new AnchoredCircleImpl(circleCenterX, circleCenterY, radius, anchorX, anchorY);
 	}
 
 	@Override
-	public AnchoredImage createAnchoredImage(double userX, double userY, int width, int height,
-											 String href, boolean preserveRatio,
-											 double anchorX, double anchorY) {
+	public AnchoredImage createAnchoredImage(double userX, double userY, int width, int height, String href,
+			boolean preserveRatio, double anchorX, double anchorY) {
 		AnchoredImageImpl anchoredImage = new AnchoredImageImpl(userX, userY, width, height, href, anchorX, anchorY);
 		anchoredImage.setPreserveAspectRatio(preserveRatio);
 		return anchoredImage;
@@ -89,14 +108,14 @@ public class ShapeRenderElementFactoryImpl implements RenderElementFactory {
 	}
 
 	@Override
-	public AnchorMarker createMarkerAnchoredRectangle(double userX, double userY, double userWidth,
-													  double userHeight, int anchorX, int anchorY) {
+	public AnchorMarker createMarkerAnchoredRectangle(double userX, double userY, double userWidth, double userHeight,
+			int anchorX, int anchorY) {
 		return new AnchoredRectangleImpl(userX, userY, userWidth, userHeight, anchorX, anchorY);
 	}
 
 	@Override
-	public AnchorMarker createMarkerAnchoredCircle(double circleCenterX, double circleCenterY,
-												   double radius, int anchorX, int anchorY) {
+	public AnchorMarker createMarkerAnchoredCircle(double circleCenterX, double circleCenterY, double radius,
+			int anchorX, int anchorY) {
 		return new AnchoredCircleImpl(circleCenterX, circleCenterY, radius, anchorX, anchorY);
 	}
 

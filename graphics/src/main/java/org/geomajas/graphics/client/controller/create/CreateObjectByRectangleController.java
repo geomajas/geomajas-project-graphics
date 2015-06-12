@@ -13,12 +13,12 @@ package org.geomajas.graphics.client.controller.create;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.object.GraphicsObject;
+import org.geomajas.graphics.client.object.role.Anchored;
 import org.geomajas.graphics.client.object.role.Resizable;
-import org.geomajas.graphics.client.object.updateable.anchored.Anchored;
 import org.geomajas.graphics.client.operation.AddOperation;
 import org.geomajas.graphics.client.render.RenderContainer;
+import org.geomajas.graphics.client.render.RenderSpace;
 import org.geomajas.graphics.client.service.GraphicsService;
-import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer.Space;
 import org.geomajas.graphics.client.util.BboxPosition;
 import org.geomajas.graphics.client.util.GraphicsUtil;
 
@@ -93,7 +93,7 @@ public abstract class CreateObjectByRectangleController<T extends GraphicsObject
 			setAnchor(dragResizable);
 			dragResizable.getRenderable().addMouseMoveHandler(this);
 			dragResizable.getRenderable().addMouseUpHandler(this);
-			container.addRenderable(dragResizable.getRenderable());
+			container.add(dragResizable.getRenderable());
 		}
 		dragResizable.getRenderable().capture();
 	}
@@ -126,9 +126,9 @@ public abstract class CreateObjectByRectangleController<T extends GraphicsObject
 		if (object.hasRole(Anchored.TYPE)) {
 			Bbox userBounds = object.getRole(Resizable.TYPE).getUserBounds();
 			Coordinate midLow = GraphicsUtil.getPosition(userBounds, BboxPosition.MIDDLE_LOW);
-			Coordinate midLowScreen = getObjectContainer().transform(midLow, Space.USER, Space.SCREEN);
+			Coordinate midLowScreen = getObjectContainer().transform(midLow, RenderSpace.USER, RenderSpace.SCREEN);
 			Coordinate anchorPos = getObjectContainer().transform(
-					new Coordinate(midLowScreen.getX(), midLowScreen.getY() + 20), Space.SCREEN, Space.USER);
+					new Coordinate(midLowScreen.getX(), midLowScreen.getY() + 20), RenderSpace.SCREEN, RenderSpace.USER);
 			object.getRole(Anchored.TYPE).setAnchorPosition(anchorPos);
 		}
 

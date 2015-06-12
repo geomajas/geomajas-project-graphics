@@ -70,12 +70,52 @@ public class CapturingRenderContainer implements RenderContainer {
 		this.stopPropagation = stopPropagation;
 	}
 
-	public void addRenderable(Renderable renderable) {
-		container.addRenderable(renderable);
+	public RenderContainer getParent() {
+		return container.getParent();
 	}
 
-	public void addRenderable(IsRenderable renderable) {
-		container.addRenderable(renderable);
+	public void removeFromParent() {
+		container.removeFromParent();
+	}
+
+	public boolean remove(Renderable renderable) {
+		return container.remove(renderable);
+	}
+
+	public boolean remove(IsRenderable renderable) {
+		return container.remove(renderable);
+	}
+
+	public void bringToFront(Renderable renderable) {
+		container.bringToFront(renderable);
+	}
+
+	public void bringToFront(IsRenderable renderable) {
+		container.bringToFront(renderable);
+	}
+
+	public void insert(Renderable renderable, int index) {
+		container.insert(renderable, index);
+	}
+
+	public void insert(IsRenderable renderable, int index) {
+		container.insert(renderable, index);
+	}
+
+	public int indexOf(Renderable renderable) {
+		return container.indexOf(renderable);
+	}
+
+	public int indexOf(IsRenderable renderable) {
+		return container.indexOf(renderable);
+	}
+
+	public void add(Renderable renderable) {
+		container.add(renderable);
+	}
+
+	public void add(IsRenderable renderable) {
+		container.add(renderable);
 	}
 
 	public void clear() {
@@ -88,22 +128,6 @@ public class CapturingRenderContainer implements RenderContainer {
 
 	public void setCursor(String css) {
 		container.setCursor(css);
-	}
-
-	public void removeFromParent() {
-		container.removeFromParent();
-	}
-
-	public void bringToFront() {
-		container.bringToFront();
-	}
-
-	public void sendToPosition(int index) {
-		container.sendToPosition(index);
-	}
-
-	public int getPosition() {
-		return container.getPosition();
 	}
 
 	public void capture() {
@@ -130,10 +154,6 @@ public class CapturingRenderContainer implements RenderContainer {
 	@Override
 	public void fireEvent(GwtEvent<?> event) {
 		container.fireEvent(event);
-	}
-
-	public RenderContainer createContainer() {
-		return container.createContainer();
 	}
 
 	public boolean isSourceOf(GwtEvent<?> event) {

@@ -11,12 +11,12 @@
 package org.geomajas.graphics.client.object.updateable;
 
 import org.geomajas.graphics.client.Graphics;
-import org.geomajas.graphics.client.object.base.BaseText;
+import org.geomajas.graphics.client.object.base.BaseTextObject;
+import org.geomajas.graphics.client.object.role.Bordered;
 import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.role.Fillable;
 import org.geomajas.graphics.client.object.role.Strokable;
 import org.geomajas.graphics.client.object.role.Textable;
-import org.geomajas.graphics.client.object.updateable.bordered.Bordered;
 import org.geomajas.graphics.client.object.updateable.bordered.BorderedImpl;
 import org.geomajas.graphics.client.object.updateable.wrapper.DraggableWrapperForUpdateable;
 import org.geomajas.graphics.client.object.updateable.wrapper.TextableWrapperForUpdateable;
@@ -26,7 +26,7 @@ import org.geomajas.graphics.client.util.CopyUtil;
 
 /**
  * Extension of {@link org.geomajas.graphics.client.object.updateable.UpdateableGroupGraphicsObject}
- * that shows a text centered on a {@link org.geomajas.graphics.client.object.base.BaseRectangle}.
+ * that shows a text centered on a {@link org.geomajas.graphics.client.object.base.BaseRectangleObject}.
  *
  * @author Jan Venstermans
  *
@@ -35,13 +35,13 @@ public class BorderedText extends UpdateableGroupGraphicsObject {
 
 	private RenderContainer renderContainer;
 
-	private BaseText baseText;
+	private BaseTextObject baseText;
 
 	private BorderedImpl bordered;
 
 	public BorderedText(double userX, double userY, String text, int margin) {
 		// create base graphics objects
-		baseText = new BaseText(userX, userY, text);
+		baseText = new BaseTextObject(userX, userY, text);
 		bordered = new BorderedImpl(baseText, margin);
 
 		// register updateables
@@ -56,8 +56,8 @@ public class BorderedText extends UpdateableGroupGraphicsObject {
 
 		// register render order
 		renderContainer = Graphics.getRenderElementFactory().createRenderContainer();
-		renderContainer.addRenderable(bordered);
-		renderContainer.addRenderable(baseText);
+		renderContainer.add(bordered);
+		renderContainer.add(baseText);
 	}
 
 	@Override

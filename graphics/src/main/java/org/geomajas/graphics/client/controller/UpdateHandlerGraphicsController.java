@@ -57,13 +57,13 @@ public abstract class UpdateHandlerGraphicsController extends AbstractInterrupti
 				} else {
 					// the group may be detached, update and reattach !
 					updateHandlers();
-					container.addRenderable(getHandlerGroup());
+					container.add(getHandlerGroup());
 				}
 				bringContainerToFront(getContainer());
 			} else {
 				// just remove the handler group
 				if (getHandlerGroup() != null) {
-					getHandlerGroup().removeFromParent();;
+					getHandlerGroup().removeFromParent();
 				}
 			}
 		}

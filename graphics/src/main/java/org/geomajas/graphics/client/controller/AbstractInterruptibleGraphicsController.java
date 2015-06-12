@@ -15,10 +15,10 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.operation.GraphicsOperation;
 import org.geomajas.graphics.client.render.RenderContainer;
+import org.geomajas.graphics.client.render.RenderSpace;
 import org.geomajas.graphics.client.service.GraphicsService;
 import org.geomajas.graphics.client.service.GraphicsServiceImpl;
 import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer;
-import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer.Space;
 import org.geomajas.graphics.client.util.BboxPosition;
 import org.geomajas.graphics.client.util.Interruptible;
 
@@ -138,18 +138,18 @@ public abstract class AbstractInterruptibleGraphicsController implements Graphic
 	}
 
 	protected Coordinate getUserCoordinate(MouseEvent<?> event) {
-		return transform(getObjectContainer().getScreenCoordinate(event), Space.SCREEN, Space.USER);
+		return transform(getObjectContainer().getScreenCoordinate(event), RenderSpace.SCREEN, RenderSpace.USER);
 	}
 
-	protected Coordinate transform(Coordinate coordinate, Space from, Space to) {
+	protected Coordinate transform(Coordinate coordinate, RenderSpace from, RenderSpace to) {
 		return getObjectContainer().transform(coordinate, from, to);
 	}
 
-	protected Bbox transform(Bbox bbox, Space from, Space to) {
+	protected Bbox transform(Bbox bbox, RenderSpace from, RenderSpace to) {
 		return getObjectContainer().transform(bbox, from, to);
 	}
 
-	protected BboxPosition transform(BboxPosition position, Space from, Space to) {
+	protected BboxPosition transform(BboxPosition position, RenderSpace from, RenderSpace to) {
 		return getObjectContainer().transform(position, from, to);
 	}
 
@@ -163,7 +163,7 @@ public abstract class AbstractInterruptibleGraphicsController implements Graphic
 
 	protected RenderContainer addContainer() {
 		RenderContainer container = createContainer();
-		getGraphicsServiceImpl().getObjectContainer().addRenderable(container);
+		getGraphicsServiceImpl().getObjectContainer().add(container);
 		return container;
 	}
 
@@ -176,6 +176,6 @@ public abstract class AbstractInterruptibleGraphicsController implements Graphic
 	}
 
 	protected void bringContainerToFront(RenderContainer container) {
-		container.bringToFront();
+		container.getParent().bringToFront(container);
 	}
 }

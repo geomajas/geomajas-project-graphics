@@ -15,9 +15,9 @@ import org.geomajas.graphics.client.controller.DefaultMetaController;
 import org.geomajas.graphics.client.controller.UpdateHandlerGraphicsController;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.operation.GraphicsOperation;
+import org.geomajas.graphics.client.render.RenderSpace;
 import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.service.GraphicsService;
-import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer.Space;
 
 import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -115,7 +115,7 @@ public abstract class AbstractDragHandler implements MouseDownHandler,
 				draggingMask.getRenderable().removeFromParent();
 			}
 			draggingMask = createDraggingMask();
-			graphicsHandler.getHandlerGroup().addRenderable(draggingMask.getRenderable());
+			graphicsHandler.getHandlerGroup().add(draggingMask.getRenderable());
 		}
 	}
 
@@ -202,7 +202,7 @@ public abstract class AbstractDragHandler implements MouseDownHandler,
 	protected void onDragStart(int x, int y) {
 		beginPositionScreenX = x;
 		beginPositionScreenY = y;
-		userBegin = service.getObjectContainer().transform(new Coordinate(x, y), Space.SCREEN, Space.USER);
+		userBegin = service.getObjectContainer().transform(new Coordinate(x, y), RenderSpace.SCREEN, RenderSpace.USER);
 		beginPositionUser = (Coordinate) getObjectPosition().clone();
 	}
 
@@ -222,7 +222,7 @@ public abstract class AbstractDragHandler implements MouseDownHandler,
 	}
 
 	protected Coordinate getNewPosition(int x, int y) {
-		Coordinate userEnd = service.getObjectContainer().transform(new Coordinate(x, y), Space.SCREEN, Space.USER);
+		Coordinate userEnd = service.getObjectContainer().transform(new Coordinate(x, y), RenderSpace.SCREEN, RenderSpace.USER);
 		double dx = userEnd.getX() - userBegin.getX();
 		double dy = userEnd.getY() - userBegin.getY();
 		return new Coordinate(beginPositionUser.getX() + dx, beginPositionUser.getY() + dy);

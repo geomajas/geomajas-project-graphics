@@ -10,6 +10,7 @@
  */
 package org.geomajas.graphics.client.editor;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.service.GraphicsService;
 
@@ -19,8 +20,10 @@ import com.google.gwt.user.client.ui.IsWidget;
  * Wraps editor invocation in an {@link org.geomajas.graphics.client.action.Action}.
  *
  * @author Jan De Moerloose
+ * @since 1.0.0
  *
  */
+@Api(allMethods = true)
 public interface Editor extends IsWidget {
 
 	/**

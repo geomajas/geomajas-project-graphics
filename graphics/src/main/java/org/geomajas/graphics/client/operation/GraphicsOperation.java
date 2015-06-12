@@ -10,6 +10,8 @@
  */
 package org.geomajas.graphics.client.operation;
 
+import org.geomajas.annotation.Api;
+import org.geomajas.annotation.UserImplemented;
 import org.geomajas.graphics.client.object.GraphicsObject;
 
 /**
@@ -17,18 +19,32 @@ import org.geomajas.graphics.client.object.GraphicsObject;
  * 
  * @author Jan De Moerloose
  * @author Jan Venstermans
+ * @since 1.0.0
  * 
  */
+@Api(allMethods = true)
+@UserImplemented
 public interface GraphicsOperation {
 
+	/**
+	 * Called by the service when the operation is executed.
+	 */
 	void execute();
 
+	/**
+	 * Called by the service when the operation should be undone.
+	 */
 	void undo();
-	
+
 	GraphicsObject getObject();
-	
+
+	/**
+	 * Get the type of operation.
+	 * 
+	 * @return
+	 */
 	Type getType();
-	
+
 	/**
 	 * Different types of Graphics Operation.
 	 * 
@@ -36,8 +52,8 @@ public interface GraphicsOperation {
 	 * 
 	 */
 	public enum Type {
-		UPDATE,
-		ADD,
-		REMOVE
+		UPDATE, // update an object
+		ADD, // add an object
+		REMOVE // remove an object
 	}
 }

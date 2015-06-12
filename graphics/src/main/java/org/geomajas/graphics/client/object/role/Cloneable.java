@@ -10,14 +10,23 @@
  */
 package org.geomajas.graphics.client.object.role;
 
+import org.geomajas.annotation.Api;
+
 /**
  * Implemented by all objects that can be deep-cloned.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
+@Api(allMethods = true)
 public interface Cloneable {
 
+	/**
+	 * Clone the object (deep clone).
+	 * 
+	 * @return
+	 */
 	Object cloneObject();
 
 }

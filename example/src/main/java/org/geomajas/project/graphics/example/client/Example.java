@@ -162,7 +162,7 @@ public class Example implements EntryPoint {
 		graphicsObjectContainer = new ExampleGraphicsObjectContainer(eventBus);
 
 		//graphics service configuration
-		graphicsService = new GraphicsServiceImpl(eventBus);
+		graphicsService = Graphics.createGraphicsService(eventBus);
 		graphicsService.setUndoKeys(true);
 		graphicsService.setShowOriginalObjectWhileDragging(true);
 		graphicsService.setObjectContainer(graphicsObjectContainer);
@@ -176,7 +176,7 @@ public class Example implements EntryPoint {
 		registerBaseCreateControllersToWidget(createBaseButtonGroupWidget);
 		createUpdateableGroupButtonGroupWidget = new CreateButtonGroupWidget(graphicsService);
 		registerUpdateableGroupCreateControllersToWidget(createUpdateableGroupButtonGroupWidget);
-		navigationController = new NavigationController(graphicsService, graphicsObjectContainer.getRootContainer());
+		navigationController = new NavigationController(graphicsService, graphicsObjectContainer.getRenderArea());
 
 		//layout
 		UIBINDER.createAndBindUi(this);
@@ -197,11 +197,11 @@ public class Example implements EntryPoint {
 	//-----------------------------------------------------------------------------
 
 	private void registerControllerFactories() {
-//		graphicsService.registerControllerFactory(new ResizeControllerFactory());
+		graphicsService.registerControllerFactory(new ResizeControllerFactory());
 		graphicsService.registerControllerFactory(new DragControllerFactory());
-//		graphicsService.registerControllerFactory(new DeleteControllerFactory());
-//		graphicsService.registerControllerFactory(new LabelControllerFactory());
-//		graphicsService.registerControllerFactory(new AnchoredDragControllerFactory());
+		graphicsService.registerControllerFactory(new DeleteControllerFactory());
+		graphicsService.registerControllerFactory(new LabelControllerFactory());
+		graphicsService.registerControllerFactory(new AnchoredDragControllerFactory());
 	}
 	
 	private void registerPopupFactoryActionsAndEditiors() {

@@ -13,12 +13,18 @@ package org.geomajas.graphics.client.object;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.geomajas.annotation.Api;
+import org.geomajas.annotation.UserImplemented;
+
 /**
  * Base class for {@link GraphicsObject} implementations. Keeps track of the object's roles.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
+@Api
+@UserImplemented
 public abstract class BaseGraphicsObject implements GraphicsObject {
 
 	private Map<RoleType<?>, Object> roles = new HashMap<RoleType<?>, Object>();

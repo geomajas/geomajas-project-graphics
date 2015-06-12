@@ -10,20 +10,34 @@
  */
 package org.geomajas.graphics.client.object;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.graphics.client.render.IsRenderable;
-
 
 /**
  * Common interface for all graphics objects. All objects can react to mouse events through their {@link IsRenderable}
  * representation. A graphics object can support any number of roles.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
+@Api(allMethods = true)
 public interface GraphicsObject extends IsRenderable, org.geomajas.graphics.client.object.role.Cloneable {
 
+	/**
+	 * Check if object has this role.
+	 * 
+	 * @param type
+	 * @return
+	 */
 	boolean hasRole(RoleType<?> type);
 
+	/**
+	 * Get the role of this type.
+	 * 
+	 * @param type
+	 * @return the role or null (if object has no such role)
+	 */
 	<T extends RoleInterface> T getRole(RoleType<T> type);
-	
+
 }

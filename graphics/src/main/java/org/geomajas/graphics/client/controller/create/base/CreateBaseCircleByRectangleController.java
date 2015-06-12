@@ -11,7 +11,7 @@
 package org.geomajas.graphics.client.controller.create.base;
 
 import org.geomajas.graphics.client.controller.create.CreateObjectByRectangleController;
-import org.geomajas.graphics.client.object.base.BaseCircle;
+import org.geomajas.graphics.client.object.base.BaseCircleObject;
 import org.geomajas.graphics.client.service.GraphicsService;
 
 /**
@@ -20,15 +20,15 @@ import org.geomajas.graphics.client.service.GraphicsService;
  * @author Jan Venstermans
  *
  */
-public class CreateBaseCircleByRectangleController extends CreateObjectByRectangleController<BaseCircle> {
+public class CreateBaseCircleByRectangleController extends CreateObjectByRectangleController<BaseCircleObject> {
 
 	public CreateBaseCircleByRectangleController(GraphicsService graphicsService) {
 		super(graphicsService);
 	}
 
 	@Override
-	protected BaseCircle createObjectWithoutBounds() {
-		BaseCircle ellipse = new BaseCircle(0, 0, 0);
+	protected BaseCircleObject createObjectWithoutBounds() {
+		BaseCircleObject ellipse = new BaseCircleObject(0, 0, 0);
 		return ellipse;
 	}
 }

@@ -26,7 +26,7 @@ import com.google.gwtmockito.GwtMockitoTestRunner;
 @RunWith(GwtMockitoTestRunner.class)
 public class BaseRectangleTest extends GraphicsBaseTest {
 
-	private BaseRectangle baseRectangle;
+	private BaseRectangleObject baseRectangle;
 
 	@Test
 	public void testConstructorCreatesRoles() throws Exception {
@@ -66,8 +66,8 @@ public class BaseRectangleTest extends GraphicsBaseTest {
 		Object clone = baseRectangle.cloneObject();
 
 		Assert.assertNotNull(clone);
-		Assert.assertTrue(clone instanceof BaseRectangle);
-		BaseRectangle baseRectangleClone = (BaseRectangle) clone;
+		Assert.assertTrue(clone instanceof BaseRectangleObject);
+		BaseRectangleObject baseRectangleClone = (BaseRectangleObject) clone;
 		Assert.assertTrue(baseRectangleClone.hasRole(Draggable.TYPE));
 		assertRoleEqualityDraggable(expected, baseRectangleClone.getRole(Draggable.TYPE));
 	}
@@ -83,8 +83,8 @@ public class BaseRectangleTest extends GraphicsBaseTest {
 		Object clone = baseRectangle.cloneObject();
 
 		Assert.assertNotNull(clone);
-		Assert.assertTrue(clone instanceof BaseRectangle);
-		BaseRectangle baseRectangleClone = (BaseRectangle) clone;
+		Assert.assertTrue(clone instanceof BaseRectangleObject);
+		BaseRectangleObject baseRectangleClone = (BaseRectangleObject) clone;
 		Assert.assertTrue(baseRectangleClone.hasRole(Resizable.TYPE));
 		assertRoleEqualityResizable(expected, baseRectangleClone.getRole(Resizable.TYPE));
 	}
@@ -101,8 +101,8 @@ public class BaseRectangleTest extends GraphicsBaseTest {
 		Object clone = baseRectangle.cloneObject();
 
 		Assert.assertNotNull(clone);
-		Assert.assertTrue(clone instanceof BaseRectangle);
-		BaseRectangle baseRectangleClone = (BaseRectangle) clone;
+		Assert.assertTrue(clone instanceof BaseRectangleObject);
+		BaseRectangleObject baseRectangleClone = (BaseRectangleObject) clone;
 		Assert.assertTrue(baseRectangleClone.hasRole(Strokable.TYPE));
 		assertRoleEqualityStrokable(expected, baseRectangleClone.getRole(Strokable.TYPE));
 	}
@@ -118,14 +118,14 @@ public class BaseRectangleTest extends GraphicsBaseTest {
 		Object clone = baseRectangle.cloneObject();
 
 		Assert.assertNotNull(clone);
-		Assert.assertTrue(clone instanceof BaseRectangle);
-		BaseRectangle baseRectangleClone = (BaseRectangle) clone;
+		Assert.assertTrue(clone instanceof BaseRectangleObject);
+		BaseRectangleObject baseRectangleClone = (BaseRectangleObject) clone;
 		Assert.assertTrue(baseRectangleClone.hasRole(Fillable.TYPE));
 		assertRoleEqualityFillable(expected, baseRectangleClone.getRole(Fillable.TYPE));
 	}
 
-	private BaseRectangle createRectangleText(double userX, double userY, double width, double height) {
-		return new BaseRectangle(userX, userY, width, height);
+	private BaseRectangleObject createRectangleText(double userX, double userY, double width, double height) {
+		return new BaseRectangleObject(userX, userY, width, height);
 	}
 
 }

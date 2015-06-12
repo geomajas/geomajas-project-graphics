@@ -12,9 +12,9 @@ package org.geomajas.graphics.client.editor;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.object.GraphicsObject;
+import org.geomajas.graphics.client.object.role.Anchored;
 import org.geomajas.graphics.client.object.role.Fillable;
 import org.geomajas.graphics.client.object.role.Strokable;
-import org.geomajas.graphics.client.object.updateable.anchored.Anchored;
 import org.geomajas.graphics.client.operation.AnchoredPositionOperation;
 import org.geomajas.graphics.client.operation.AnchoredStyleOperation;
 import org.geomajas.graphics.client.resource.GraphicsResource;
@@ -38,7 +38,7 @@ import com.mogaleaf.client.common.widgets.SimpleColorPicker;
 
 /**
  * {@link org.geomajas.graphics.client.editor.Editor} for the
- * {@link org.geomajas.graphics.client.object.updateable.anchored.Anchored} role.
+ * {@link org.geomajas.graphics.client.object.role.Anchored} role.
  *
  * @author Jan De Moerloose
  * @author Jan Venstermans

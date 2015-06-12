@@ -29,7 +29,6 @@ import org.geomajas.graphics.client.render.IsRenderable;
 import org.geomajas.graphics.client.render.RenderArea;
 import org.geomajas.graphics.client.render.RenderContainer;
 import org.geomajas.graphics.client.render.Renderable;
-import org.geomajas.graphics.client.render.shape.VectorRenderable;
 import org.geomajas.graphics.client.resource.GraphicsResource;
 
 import com.google.gwt.core.client.GWT;
@@ -313,7 +312,7 @@ public class CreateIconChoicePopup {
 		Set<MarkerShape> markerSet = new LinkedHashSet<MarkerShape>(markerShapesChoiceList);
 		for (MarkerShape markerShape : markerSet) {
 			ClickableMarkerShape marker = getClickableMarkerShape(markerShape);
-			drawingArea.addRenderable(translateMarker(marker, amountOfMarkers++));
+			drawingArea.add(translateMarker(marker, amountOfMarkers++));
 			markers.put(markerShape, marker);
 		}
 		markersPanel.setWidget(drawingArea);
@@ -333,7 +332,7 @@ public class CreateIconChoicePopup {
 		markerPosition.setY(markerPosition.getY() + 40);
 		AnchoredIcon previewIcon = new AnchoredIcon(iconPosition, previewImageWidth, previewImageHeight,
 				selectedIconUrl, markerPosition, selectedMarkerShape);
-		previewArea.addRenderable(previewIcon.getRenderable());
+		previewArea.add(previewIcon.getRenderable());
 	}
 
 	/* private methods */
@@ -454,8 +453,8 @@ public class CreateIconChoicePopup {
 			rectangle.getRenderable().setCursor(Cursor.POINTER.getCssName());
 
 			group = Graphics.getRenderElementFactory().createRenderContainer();
-			group.addRenderable(simpleShape);
-			group.addRenderable(rectangle);
+			group.add(simpleShape);
+			group.add(rectangle);
 		}
 
 		public void setTranslation(int i, int j) {

@@ -8,26 +8,33 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.graphics.client.object.updateable.bordered;
+package org.geomajas.graphics.client.object.role;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.graphics.client.object.RoleInterface;
 import org.geomajas.graphics.client.object.RoleType;
-import org.geomajas.graphics.client.object.role.Fillable;
-import org.geomajas.graphics.client.object.role.Strokable;
 
 /**
- * Interface for a border.
- *
+ * Interface for a label.
+ * 
  * @author Jan De Moerloose
  * @author Jan Venstermans
+ * @since 1.0.0
  * 
  */
-public interface Bordered extends RoleInterface {
+@Api(allMethods = true)
+public interface Labeled extends RoleInterface {
 
-	RoleType<Bordered> TYPE = new RoleType<Bordered>("Bordered");
+	/**
+	 * The role type.
+	 */
+	RoleType<Labeled> TYPE = new RoleType<Labeled>("Labeled");
 
-	Strokable getStrokable();
-
-	Fillable getFillable();
+	/**
+	 * Get the text accessor.
+	 * 
+	 * @return
+	 */
+	Textable getTextable();
 
 }

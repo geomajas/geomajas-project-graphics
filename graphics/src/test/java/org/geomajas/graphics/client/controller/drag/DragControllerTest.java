@@ -14,11 +14,11 @@ import static org.mockito.Mockito.when;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.controller.resize.ResizeController;
-import org.geomajas.graphics.client.object.base.BaseRectangle;
+import org.geomajas.graphics.client.object.base.BaseRectangleObject;
+import org.geomajas.graphics.client.render.RenderSpace;
 import org.geomajas.graphics.client.service.GraphicsService;
 import org.geomajas.graphics.client.service.GraphicsServiceImpl;
 import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer;
-import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer.Space;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,9 +42,9 @@ public class DragControllerTest {
 
 	@Before
 	public void setUp() {
-		when(objectContainer.transform(new Coordinate(105, 110), Space.SCREEN, Space.USER)).thenReturn(
+		when(objectContainer.transform(new Coordinate(105, 110), RenderSpace.SCREEN, RenderSpace.USER)).thenReturn(
 				new Coordinate(105, 110));
-		when(objectContainer.transform(new Coordinate(100, 100), Space.SCREEN, Space.USER)).thenReturn(
+		when(objectContainer.transform(new Coordinate(100, 100), RenderSpace.SCREEN, RenderSpace.USER)).thenReturn(
 				new Coordinate(100, 100));
 		service = new GraphicsServiceImpl(eventBus);
 		service.setObjectContainer(objectContainer);
@@ -52,7 +52,7 @@ public class DragControllerTest {
 
 	@Test
 	public void testDrag() {
-		BaseRectangle m = new BaseRectangle(5, 6, 50, 50);
+		BaseRectangleObject m = new BaseRectangleObject(5, 6, 50, 50);
 		ResizeController r = new ResizeController(m, service);
 		GraphicsObjectDragHandler h = new GraphicsObjectDragHandler(m, service, r);
 

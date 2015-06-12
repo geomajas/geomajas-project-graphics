@@ -40,13 +40,13 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Jan De Moerloose
  * 
  */
-public class HasHandlerWidget implements HasAllMouseAndClickHandlers, IsWidget {
+public class CapturingWidget implements HasAllMouseAndClickHandlers, IsWidget {
 
 	private Widget widget;
 
 	private boolean stopPropagation;
 
-	public HasHandlerWidget(Widget widget, boolean stopPropagation) {
+	public CapturingWidget(Widget widget, boolean stopPropagation) {
 		this.widget = widget;
 		this.stopPropagation = stopPropagation;
 		StopPropagation s = new StopPropagation();

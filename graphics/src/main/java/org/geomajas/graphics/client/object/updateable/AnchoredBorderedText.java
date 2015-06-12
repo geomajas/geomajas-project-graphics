@@ -12,15 +12,15 @@ package org.geomajas.graphics.client.object.updateable;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.Graphics;
-import org.geomajas.graphics.client.object.base.BaseText;
+import org.geomajas.graphics.client.object.base.BaseTextObject;
+import org.geomajas.graphics.client.object.role.Anchored;
+import org.geomajas.graphics.client.object.role.Bordered;
 import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.role.Fillable;
 import org.geomajas.graphics.client.object.role.Strokable;
 import org.geomajas.graphics.client.object.role.Textable;
-import org.geomajas.graphics.client.object.updateable.anchored.Anchored;
 import org.geomajas.graphics.client.object.updateable.anchored.AnchoredImpl;
 import org.geomajas.graphics.client.object.updateable.anchored.MarkerShape;
-import org.geomajas.graphics.client.object.updateable.bordered.Bordered;
 import org.geomajas.graphics.client.object.updateable.bordered.BorderedImpl;
 import org.geomajas.graphics.client.object.updateable.wrapper.DraggableWrapperForUpdateable;
 import org.geomajas.graphics.client.object.updateable.wrapper.TextableWrapperForUpdateable;
@@ -30,7 +30,7 @@ import org.geomajas.graphics.client.util.CopyUtil;
 
 /**
  * Extension of {@link UpdateableGroupGraphicsObject}
- * that shows a text centered on a {@link org.geomajas.graphics.client.object.base.BaseRectangle},
+ * that shows a text centered on a {@link org.geomajas.graphics.client.object.base.BaseRectangleObject},
  * and with an {@link org.geomajas.graphics.client.object.updateable.anchored.AnchoredImpl}.
  *
  * @author Jan Venstermans
@@ -40,7 +40,7 @@ public class AnchoredBorderedText extends UpdateableGroupGraphicsObject {
 
 	private RenderContainer renderContainer;
 
-	private BaseText baseText;
+	private BaseTextObject baseText;
 
 	private BorderedImpl bordered;
 
@@ -49,7 +49,7 @@ public class AnchoredBorderedText extends UpdateableGroupGraphicsObject {
 	public AnchoredBorderedText(Coordinate textPosition, String text, int margin,  Coordinate anchorCoordinate,
 								MarkerShape markerShape) {
 		// create base graphics objects
-		baseText = new BaseText(textPosition.getX(), textPosition.getY(), text);
+		baseText = new BaseTextObject(textPosition.getX(), textPosition.getY(), text);
 		bordered = new BorderedImpl(baseText, margin);
 		anchored = new AnchoredImpl(baseText, anchorCoordinate, markerShape);
 
@@ -67,9 +67,9 @@ public class AnchoredBorderedText extends UpdateableGroupGraphicsObject {
 
 		// register render order
 		renderContainer = Graphics.getRenderElementFactory().createRenderContainer();
-		renderContainer.addRenderable(anchored);
-		renderContainer.addRenderable(bordered);
-		renderContainer.addRenderable(baseText);
+		renderContainer.add(anchored);
+		renderContainer.add(bordered);
+		renderContainer.add(baseText);
 	}
 
 	@Override

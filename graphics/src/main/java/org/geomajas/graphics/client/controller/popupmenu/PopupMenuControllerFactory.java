@@ -15,7 +15,6 @@ import java.util.List;
 
 import org.geomajas.graphics.client.Graphics;
 import org.geomajas.graphics.client.action.Action;
-import org.geomajas.graphics.client.controller.GraphicsController;
 import org.geomajas.graphics.client.controller.GraphicsControllerFactory;
 import org.geomajas.graphics.client.editor.Editor;
 import org.geomajas.graphics.client.editor.EditorAction;
@@ -29,7 +28,7 @@ import org.geomajas.graphics.client.util.Interruptible;
  * @author Jan De Moerloose
  * 
  */
-public class PopupMenuControllerFactory implements GraphicsControllerFactory {
+public class PopupMenuControllerFactory implements GraphicsControllerFactory<PopupMenuController> {
 
 	private List<Action> actions = new ArrayList<Action>();
 	
@@ -51,7 +50,7 @@ public class PopupMenuControllerFactory implements GraphicsControllerFactory {
 	}
 
 	@Override
-	public GraphicsController createController(GraphicsService graphicsService, GraphicsObject object) {
+	public PopupMenuController createController(GraphicsService graphicsService, GraphicsObject object) {
 		for (Action action : actions) {
 			action.setService(graphicsService);
 		}

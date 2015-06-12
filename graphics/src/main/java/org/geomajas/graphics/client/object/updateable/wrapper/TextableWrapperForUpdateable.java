@@ -10,12 +10,12 @@
  */
 package org.geomajas.graphics.client.object.updateable.wrapper;
 
+import org.geomajas.graphics.client.object.Updateable;
 import org.geomajas.graphics.client.object.role.Textable;
-import org.geomajas.graphics.client.object.updateable.Updateable;
 
 /**
  * Wrapper around a {@link Textable} that will trigger
- * {@link org.geomajas.graphics.client.object.updateable.Updateable#onUpdate()}
+ * {@link org.geomajas.graphics.client.object.Updateable#onUpdate()}
  * on certain {@link Textable} method calls.
  *
  * @author Jan Venstermans

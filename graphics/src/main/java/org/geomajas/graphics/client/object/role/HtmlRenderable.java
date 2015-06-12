@@ -10,6 +10,7 @@
  */
 package org.geomajas.graphics.client.object.role;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.graphics.client.object.RoleInterface;
 import org.geomajas.graphics.client.object.RoleType;
 
@@ -19,11 +20,21 @@ import com.google.gwt.user.client.ui.Widget;
  * Role for {@link Widget}.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
+@Api(allMethods = true)
 public interface HtmlRenderable extends RoleInterface {
 
+	/**
+	 * The role type.
+	 */
 	RoleType<HtmlRenderable> TYPE = new RoleType<HtmlRenderable>("HtmlRenderable");
 
+	/**
+	 * Get the GWT widget.
+	 * 
+	 * @return
+	 */
 	Widget asWidget();
 }

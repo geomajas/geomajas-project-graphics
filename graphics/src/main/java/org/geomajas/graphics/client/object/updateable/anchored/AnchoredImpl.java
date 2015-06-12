@@ -14,10 +14,11 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.service.BboxService;
 import org.geomajas.graphics.client.Graphics;
 import org.geomajas.graphics.client.object.BaseGraphicsObject;
+import org.geomajas.graphics.client.object.Updateable;
+import org.geomajas.graphics.client.object.role.Anchored;
 import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.role.Fillable;
 import org.geomajas.graphics.client.object.role.Strokable;
-import org.geomajas.graphics.client.object.updateable.Updateable;
 import org.geomajas.graphics.client.render.RenderContainer;
 import org.geomajas.graphics.client.render.Renderable;
 
@@ -50,8 +51,8 @@ public class AnchoredImpl extends BaseGraphicsObject implements Anchored, Update
 
 		// register render order
 		renderContainer = Graphics.getRenderElementFactory().createRenderContainer();
-		renderContainer.addRenderable(anchorLine);
-		renderContainer.addRenderable(marker);
+		renderContainer.add(anchorLine);
+		renderContainer.add(marker);
 	}
 
 	@Override

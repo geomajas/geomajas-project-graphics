@@ -11,8 +11,8 @@
 package org.geomajas.graphics.client.operation;
 
 import org.geomajas.graphics.client.object.GraphicsObject;
+import org.geomajas.graphics.client.object.role.Labeled;
 import org.geomajas.graphics.client.object.role.Textable;
-import org.geomajas.graphics.client.object.updateable.labeled.Labeled;
 import org.geomajas.graphics.client.service.GraphicsService;
 
 /**

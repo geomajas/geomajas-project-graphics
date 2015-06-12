@@ -56,8 +56,6 @@ public class GraphicsServiceImpl implements GraphicsService, GraphicsOperationEv
 	private HandlerRegistration standardGraphicsOperationEventRegistration;
 	
 	private boolean showOriginalObjectWhileDragging;
-	
-	private boolean externalizableLabeledOriginallyExternal;
 
 	private boolean undoKeys;
 	private HandlerRegistration undoKeysHandlerRegistration;
@@ -70,6 +68,9 @@ public class GraphicsServiceImpl implements GraphicsService, GraphicsOperationEv
 	
 	@Override
 	public void start() {
+		if(objectContainer == null) {
+			throw new IllegalStateException("Cannot start service. Did you forget to set the object container ?");
+		}
 		if (metaController == null) {
 			metaController = metaControllerFactory.createController(this);
 		}
@@ -205,17 +206,6 @@ public class GraphicsServiceImpl implements GraphicsService, GraphicsOperationEv
 	@Override
 	public void setShowOriginalObjectWhileDragging(boolean showOriginalObjectWhileDragging) {
 		this.showOriginalObjectWhileDragging = showOriginalObjectWhileDragging;
-	}
-
-	@Override
-	public boolean isExternalizableLabeledOriginallyExternal() {
-		return externalizableLabeledOriginallyExternal;
-	}
-
-	@Override
-	public void setExternalizableLabeledOriginallyExternal(
-			boolean externalizableLabeledOriginallyExternal) {
-		this.externalizableLabeledOriginallyExternal = externalizableLabeledOriginallyExternal;
 	}
 
 	private void updateUndoKeysHandler() {

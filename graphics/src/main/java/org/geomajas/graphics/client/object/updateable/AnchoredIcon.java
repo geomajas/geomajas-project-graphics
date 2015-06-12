@@ -13,8 +13,8 @@ package org.geomajas.graphics.client.object.updateable;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.Graphics;
 import org.geomajas.graphics.client.object.base.BaseIcon;
+import org.geomajas.graphics.client.object.role.Anchored;
 import org.geomajas.graphics.client.object.role.Draggable;
-import org.geomajas.graphics.client.object.updateable.anchored.Anchored;
 import org.geomajas.graphics.client.object.updateable.anchored.AnchoredImpl;
 import org.geomajas.graphics.client.object.updateable.anchored.MarkerShape;
 import org.geomajas.graphics.client.object.updateable.wrapper.DraggableWrapperForUpdateable;
@@ -52,8 +52,8 @@ public class AnchoredIcon extends UpdateableGroupGraphicsObject {
 
 		// register render order
 		renderContainer = Graphics.getRenderElementFactory().createRenderContainer();
-		renderContainer.addRenderable(anchored);
-		renderContainer.addRenderable(baseIcon);
+		renderContainer.add(anchored);
+		renderContainer.add(baseIcon);
 	}
 
 	@Override

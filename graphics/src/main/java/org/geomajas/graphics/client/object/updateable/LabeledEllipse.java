@@ -13,12 +13,12 @@ package org.geomajas.graphics.client.object.updateable;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.service.BboxService;
 import org.geomajas.graphics.client.Graphics;
-import org.geomajas.graphics.client.object.base.BaseEllipse;
+import org.geomajas.graphics.client.object.base.BaseEllipseObject;
 import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.role.Fillable;
+import org.geomajas.graphics.client.object.role.Labeled;
 import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.object.role.Strokable;
-import org.geomajas.graphics.client.object.updateable.labeled.Labeled;
 import org.geomajas.graphics.client.object.updateable.labeled.LabeledImpl;
 import org.geomajas.graphics.client.object.updateable.wrapper.DraggableWrapperForUpdateable;
 import org.geomajas.graphics.client.object.updateable.wrapper.ResizableWrapperForUpdateable;
@@ -27,7 +27,7 @@ import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.util.CopyUtil;
 
 /**
- * Extension of {@link UpdateableGroupGraphicsObject} that shows a text centered on a {@link BaseEllipse}.
+ * Extension of {@link UpdateableGroupGraphicsObject} that shows a text centered on a {@link BaseEllipseObject}.
  *
  * @author Jan Venstermans
  *
@@ -36,7 +36,7 @@ public class LabeledEllipse extends UpdateableGroupGraphicsObject {
 
 	private RenderContainer renderContainer;
 
-	private BaseEllipse baseEllipse;
+	private BaseEllipseObject baseEllipse;
 
 	private LabeledImpl labeled;
 
@@ -48,7 +48,7 @@ public class LabeledEllipse extends UpdateableGroupGraphicsObject {
 	public LabeledEllipse(double ellipseCenterX, double ellipseCenterY,
 						  double userRadiusX, double userRadiusY, String text) {
 		// create base graphics objects
-		baseEllipse = new BaseEllipse(ellipseCenterX, ellipseCenterY, userRadiusX, userRadiusY);
+		baseEllipse = new BaseEllipseObject(ellipseCenterX, ellipseCenterY, userRadiusX, userRadiusY);
 		labeled = new LabeledImpl(baseEllipse, text);
 
 		// register updateables
@@ -63,8 +63,8 @@ public class LabeledEllipse extends UpdateableGroupGraphicsObject {
 
 		// register render order
 		renderContainer = Graphics.getRenderElementFactory().createRenderContainer();
-		renderContainer.addRenderable(baseEllipse);
-		renderContainer.addRenderable(labeled);
+		renderContainer.add(baseEllipse);
+		renderContainer.add(labeled);
 	}
 
 	@Override
