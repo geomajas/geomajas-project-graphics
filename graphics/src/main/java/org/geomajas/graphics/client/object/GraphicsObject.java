@@ -12,6 +12,7 @@ package org.geomajas.graphics.client.object;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.graphics.client.render.IsRenderable;
+import org.geomajas.graphics.client.object.role.Cloneable;
 
 /**
  * Common interface for all graphics objects. All objects can react to mouse events through their {@link IsRenderable}
@@ -22,7 +23,7 @@ import org.geomajas.graphics.client.render.IsRenderable;
  * 
  */
 @Api(allMethods = true)
-public interface GraphicsObject extends IsRenderable, org.geomajas.graphics.client.object.role.Cloneable {
+public interface GraphicsObject extends IsRenderable, Cloneable {
 
 	/**
 	 * Check if object has this role.

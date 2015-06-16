@@ -33,16 +33,15 @@ import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.user.client.ui.RootPanel;
 
 /**
- * Base class for a handling drag functions. Two extra objects are
- * created: an invisible {@link Renderable} that defines the click area; a
- * visible {@link GraphicsObject} that will be shown as the dragging object.
+ * Base class for a handling drag functions. Two extra objects are created: an invisible {@link Renderable} that defines
+ * the click area; a visible {@link GraphicsObject} that will be shown as the dragging object.
  * 
  * @author Jan De Moerloose
  * @author Jan Venstermans
  * 
  */
-public abstract class AbstractDragHandler implements MouseDownHandler,
-		MouseUpHandler, MouseMoveHandler, ClickHandler, DoubleClickHandler {
+public abstract class AbstractDragHandler implements MouseDownHandler, MouseUpHandler, MouseMoveHandler, ClickHandler,
+		DoubleClickHandler {
 
 	/**
 	 * Original object, will not be dragged.
@@ -55,15 +54,14 @@ public abstract class AbstractDragHandler implements MouseDownHandler,
 	private GraphicsObject draggingMask;
 
 	/**
-	 * VectorObject that will be set invisible. It contains the area where you
-	 * can click for starting to drag.
+	 * VectorObject that will be set invisible. It contains the area where you can click for starting to drag.
 	 */
 	private Renderable invisibleClickArea;
 
 	private GraphicsService service;
 
 	/**
-	 *  begin position in user coordinates (double, double)
+	 * begin position in user coordinates (double, double)
 	 */
 	private Coordinate beginPositionUser;
 
@@ -140,9 +138,9 @@ public abstract class AbstractDragHandler implements MouseDownHandler,
 		}
 	}
 
-	//--------------------------------------------
+	// --------------------------------------------
 	// getter methods
-	//--------------------------------------------
+	// --------------------------------------------
 
 	public Renderable getInvisibleMask() {
 		return invisibleClickArea;
@@ -168,9 +166,9 @@ public abstract class AbstractDragHandler implements MouseDownHandler,
 		return dragging;
 	}
 
-	//--------------------------------------------
+	// --------------------------------------------
 	// abstract methods
-	//--------------------------------------------
+	// --------------------------------------------
 
 	protected abstract Renderable createInvisibleMask();
 
@@ -184,9 +182,9 @@ public abstract class AbstractDragHandler implements MouseDownHandler,
 
 	protected abstract void mouseMoveContent(MouseMoveEvent event);
 
-	//--------------------------------------------
+	// --------------------------------------------
 	// protected methods
-	//--------------------------------------------
+	// --------------------------------------------
 
 	protected void render() {
 		if (graphicsHandler.getHandlerGroup() != null) {
@@ -222,7 +220,8 @@ public abstract class AbstractDragHandler implements MouseDownHandler,
 	}
 
 	protected Coordinate getNewPosition(int x, int y) {
-		Coordinate userEnd = service.getObjectContainer().transform(new Coordinate(x, y), RenderSpace.SCREEN, RenderSpace.USER);
+		Coordinate userEnd = service.getObjectContainer().transform(new Coordinate(x, y), RenderSpace.SCREEN,
+				RenderSpace.USER);
 		double dx = userEnd.getX() - userBegin.getX();
 		double dy = userEnd.getY() - userBegin.getY();
 		return new Coordinate(beginPositionUser.getX() + dx, beginPositionUser.getY() + dy);

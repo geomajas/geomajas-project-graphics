@@ -10,7 +10,9 @@
  */
 package org.geomajas.graphics.client.render;
 
+import org.geomajas.graphics.client.util.HasBounds;
 import org.geomajas.graphics.client.util.HasFill;
+import org.geomajas.graphics.client.util.HasPosition;
 import org.geomajas.graphics.client.util.HasStroke;
 
 /**
@@ -20,30 +22,6 @@ import org.geomajas.graphics.client.util.HasStroke;
  * @author Jan Venstermans
  * 
  */
-public interface BaseRectangle extends HasStroke, HasFill, IsRenderable {
-
-	void setUserX(double userX);
-
-	void setUserY(double userY);
-
-	double getUserX();
-
-	double getUserY();
-
-	double getUserWidth();
-
-	double getUserHeight();
-
-	void setUserWidth(double width);
-
-	void setUserHeight(double height);
-
-	int getX();
-
-	int getY();
-
-	int getWidth();
-
-	int getHeight();
+public interface BaseRectangle extends HasPosition, HasBounds, HasStroke, HasFill, IsRenderable {
 
 }

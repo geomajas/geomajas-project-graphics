@@ -21,16 +21,20 @@ import org.geomajas.geometry.Coordinate;
 public interface HasPosition {
 
 	/**
-	 * Get the minX/minY corner of the object in user space. This is different from userX/userY = center for
-	 * circles/ellipses, but ensures consistency when positioning overlapping objects (e.g. circle/rectangle) !
+	 * Get a representative point of the object in user space. Usually this point is the center of the object. For
+	 * anchored objects (fixed size), the user position is the position in user space that corresponds to the anchor
+	 * location in screen space, i.e the natural user location of the object. For path-based objects, this is the first
+	 * point of the object. Consult the javadoc of the object for the exact interpretation.
 	 * 
 	 * @return
 	 */
 	Coordinate getUserPosition();
 
 	/**
-	 * Set the minX/minY corner of the object in user space. This is different from userX/userY = center for
-	 * circles/ellipses, but ensures consistency when positioning overlapping objects (e.g. circle/rectangle) !
+	 * Set a representative point of the object in user space. Usually this point is the center of the object. For
+	 * anchored objects (fixed size), the user position is the position in user space that corresponds to the anchor
+	 * location in screen space, i.e the natural user location of the object. For path-based objects, this is the first
+	 * point of the object. Consult the javadoc of the object for the exact interpretation.
 	 * 
 	 * @param position
 	 */

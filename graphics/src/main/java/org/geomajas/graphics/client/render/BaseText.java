@@ -10,8 +10,11 @@
  */
 package org.geomajas.graphics.client.render;
 
+import org.geomajas.graphics.client.object.role.Textable;
+import org.geomajas.graphics.client.util.HasBounds;
 import org.geomajas.graphics.client.util.HasFill;
 import org.geomajas.graphics.client.util.HasFont;
+import org.geomajas.graphics.client.util.HasPosition;
 import org.geomajas.graphics.client.util.HasStroke;
 
 /**
@@ -21,30 +24,6 @@ import org.geomajas.graphics.client.util.HasStroke;
  * @author Jan Venstermans
  * 
  */
-public interface BaseText extends HasStroke, HasFill, HasFont, IsRenderable {
-
-	void setUserX(double userX);
-
-	void setUserY(double userY);
-
-	double getUserX();
-
-	double getUserY();
-
-	String getText();
-
-	void setText(String label);
-
-	double getUserWidth();
-
-	double getUserHeight();
-
-	int getX();
-
-	int getY();
-
-	int getTextHeight();
-
-	int getTextWidth();
+public interface BaseText extends HasPosition, HasBounds, HasStroke, HasFill, HasFont, Textable, IsRenderable {
 
 }

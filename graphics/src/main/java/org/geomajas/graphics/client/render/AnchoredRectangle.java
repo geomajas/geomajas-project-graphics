@@ -10,43 +10,14 @@
  */
 package org.geomajas.graphics.client.render;
 
-import org.geomajas.graphics.client.object.role.Cloneable;
-import org.geomajas.graphics.client.object.updateable.anchored.AnchorMarker;
-import org.geomajas.graphics.client.util.HasFill;
-import org.geomajas.graphics.client.util.HasStroke;
 
 /**
- * A non-scaling rectangle that is anchored to its world space location on a specific pixel or anchor location (useful
- * for location markers).
+ * An anchored rectangle.
  * 
  * @author Jan De Moerloose
  * @author Jan Venstermans
  * 
  */
-public interface AnchoredRectangle extends Cloneable, HasStroke, HasFill, AnchorMarker, IsRenderable {
-
-	void setUserX(double userX);
-
-	void setUserY(double userY);
-
-	double getUserX();
-
-	double getUserY();
-
-	double getUserWidth();
-
-	double getUserHeight();
-
-	void setUserWidth(double width);
-
-	void setUserHeight(double height);
-
-	int getX();
-
-	int getY();
-
-	int getWidth();
-
-	int getHeight();
-
+public interface AnchoredRectangle extends Anchored, BaseRectangle {
+	
 }

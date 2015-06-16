@@ -10,7 +10,9 @@
  */
 package org.geomajas.graphics.client.render;
 
-import org.geomajas.geometry.Bbox;
+import org.geomajas.graphics.client.util.HasBounds;
+import org.geomajas.graphics.client.util.HasPosition;
+
 
 /**
  * A non-scaling text that is anchored to its world space location on a specific pixel or anchor location (useful for
@@ -20,35 +22,9 @@ import org.geomajas.geometry.Bbox;
  * @author Jan Venstermans
  * 
  */
-public interface BaseImage extends IsRenderable {
-
-	// user bounds
-
-	void setUserX(double x);
-
-	void setUserY(double y);
-
-	double getUserX();
-
-	double getUserY();
-
-	double getUserWidth();
-
-	double getUserHeight();
-
-	int getX();
-
-	int getY();
-
-	int getWidth();
-
-	int getHeight();
+public interface BaseImage extends HasPosition, HasBounds, IsRenderable {
 
 	String getHref();
 
 	boolean isPreserveAspectRatio();
-
-	void setUserWidth(double width);
-
-	void setUserHeight(double height);
 }

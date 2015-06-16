@@ -12,7 +12,6 @@ package org.geomajas.graphics.client.object.base;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.geometry.service.BboxService;
 import org.geomajas.graphics.client.Graphics;
 import org.geomajas.graphics.client.object.BaseGraphicsObject;
 import org.geomajas.graphics.client.object.role.Draggable;
@@ -21,10 +20,8 @@ import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.object.role.Strokable;
 import org.geomajas.graphics.client.render.BaseCircle;
 import org.geomajas.graphics.client.render.Renderable;
-import org.geomajas.graphics.client.render.shape.VectorRenderable;
 import org.geomajas.graphics.client.util.CopyUtil;
 import org.geomajas.graphics.client.util.FlipState;
-import org.vaadin.gwtgraphics.client.shape.Circle;
 
 /**
  * Extension of {@link BaseGraphicsObject} for a circle.
@@ -32,7 +29,8 @@ import org.vaadin.gwtgraphics.client.shape.Circle;
  * @author Jan De Moerloose
  * @author Jan Venstermans
  */
-public class BaseCircleObject extends BaseGraphicsObject implements BaseCircle, Resizable, Draggable, Strokable, Fillable {
+public class BaseCircleObject extends BaseGraphicsObject implements BaseCircle, Resizable, Draggable, Strokable, 
+		Fillable {
 
 	private BaseCircle circle;
 
@@ -50,19 +48,17 @@ public class BaseCircleObject extends BaseGraphicsObject implements BaseCircle, 
 
 	@Override
 	public void setUserPosition(Coordinate position) {
-		// shift to center
-		circle.setUserX(position.getX() + circle.getUserRadius());
-		circle.setUserY(position.getY() + circle.getUserRadius());
+		circle.setUserPosition(position);
 	}
 
 	@Override
 	public Coordinate getUserPosition() {
-		// shift to lower/left
-		return new Coordinate(circle.getUserX() - circle.getUserRadius(), circle.getUserY() - circle.getUserRadius());
+		return circle.getUserPosition();
 	}
 
-	public Object cloneObject() {
-		BaseCircleObject clone = new BaseCircleObject(circle.getUserX(), circle.getUserY(), circle.getUserRadius());
+	public BaseCircleObject cloneObject() {
+		BaseCircleObject clone = new BaseCircleObject(circle.getUserPosition().getX(), circle.getUserPosition().getY(),
+				circle.getUserRadius());
 		CopyUtil.copyStrokableProperties(this, clone);
 		CopyUtil.copyFillableProperties(this, clone);
 		return clone;
@@ -75,10 +71,7 @@ public class BaseCircleObject extends BaseGraphicsObject implements BaseCircle, 
 
 	@Override
 	public void setUserBounds(Bbox bounds) {
-		Coordinate center = BboxService.getCenterPoint(bounds);
-		circle.setUserX(center.getX());
-		circle.setUserY(center.getY());
-		circle.setUserRadius(bounds.getWidth() / 2);
+		circle.setUserBounds(bounds);
 	}
 
 	@Override
@@ -93,14 +86,12 @@ public class BaseCircleObject extends BaseGraphicsObject implements BaseCircle, 
 
 	@Override
 	public Bbox getUserBounds() {
-		return new Bbox(circle.getUserX() - circle.getUserRadius(), circle.getUserY() - circle.getUserRadius(),
-				2 * circle.getUserRadius(), 2 * circle.getUserRadius());
+		return circle.getUserBounds();
 	}
 
 	@Override
 	public Bbox getBounds() {
-		return new Bbox(circle.getX() - circle.getRadius(), circle.getY() - circle.getRadius(), 2 * circle.getRadius(),
-				2 * circle.getRadius());
+		return circle.getBounds();
 	}
 
 	@Override
@@ -158,10 +149,6 @@ public class BaseCircleObject extends BaseGraphicsObject implements BaseCircle, 
 		circle.setStrokeOpacity(strokeOpacity);
 	}
 
-	public int getX() {
-		return circle.getX();
-	}
-
 	public double getUserRadius() {
 		return circle.getUserRadius();
 	}
@@ -170,29 +157,8 @@ public class BaseCircleObject extends BaseGraphicsObject implements BaseCircle, 
 		circle.setUserRadius(userRadius);
 	}
 
-	public int getY() {
-		return circle.getY();
-	}
-
-	public double getUserX() {
-		return circle.getUserX();
-	}
-
-	public void setUserX(double userX) {
-		circle.setUserX(userX);
-	}
-
-	public double getUserY() {
-		return circle.getUserY();
-	}
-
-	public void setUserY(double userY) {
-		circle.setUserY(userY);
-	}
-
 	public int getRadius() {
 		return circle.getRadius();
 	}
-	
-	
+
 }

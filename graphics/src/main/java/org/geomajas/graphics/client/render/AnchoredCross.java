@@ -11,7 +11,6 @@
 package org.geomajas.graphics.client.render;
 
 import org.geomajas.graphics.client.object.role.Cloneable;
-import org.geomajas.graphics.client.object.updateable.anchored.AnchorMarker;
 
 /**
  * A non-scaling cross (diagonals of a square) that is anchored to its world space location on a specific pixel or
@@ -20,6 +19,6 @@ import org.geomajas.graphics.client.object.updateable.anchored.AnchorMarker;
  * @author Jan Venstermans
  *
  */
-public interface AnchoredCross extends Cloneable, AnchorMarker {
+public interface AnchoredCross extends Cloneable, Marker {
 
 }

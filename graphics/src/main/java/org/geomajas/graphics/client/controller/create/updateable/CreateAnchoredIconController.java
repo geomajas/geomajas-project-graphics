@@ -16,7 +16,7 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.controller.create.base.CreateBaseIconController;
 import org.geomajas.graphics.client.object.base.BaseIcon;
 import org.geomajas.graphics.client.object.updateable.AnchoredIcon;
-import org.geomajas.graphics.client.object.updateable.anchored.MarkerShape;
+import org.geomajas.graphics.client.object.updateable.hasmarker.MarkerShape;
 import org.geomajas.graphics.client.operation.AddOperation;
 import org.geomajas.graphics.client.render.RenderSpace;
 import org.geomajas.graphics.client.service.GraphicsService;

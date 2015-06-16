@@ -410,25 +410,26 @@ public class GraphicsObjectContainerImpl implements GraphicsObjectContainer {
 
 	@Override
 	public BboxPosition transform(BboxPosition position, RenderSpace from, RenderSpace to) {
-		switch (position) {
-			case CORNER_LL:
-				return BboxPosition.CORNER_UL;
-			case CORNER_LR:
-				return BboxPosition.CORNER_UR;
-			case CORNER_UL:
-				return BboxPosition.CORNER_LL;
-			case CORNER_UR:
-				return BboxPosition.CORNER_LR;
-			case MIDDLE_LEFT:
-				return BboxPosition.MIDDLE_LEFT;
-			case MIDDLE_LOW:
-				return BboxPosition.MIDDLE_UP;
-			case MIDDLE_RIGHT:
-				return BboxPosition.MIDDLE_RIGHT;
-			case MIDDLE_UP:
-			default:
-				return BboxPosition.MIDDLE_LOW;
-		}
+		return position;
+//		switch (position) {
+//			case CORNER_LL:
+//				return BboxPosition.CORNER_UL;
+//			case CORNER_LR:
+//				return BboxPosition.CORNER_UR;
+//			case CORNER_UL:
+//				return BboxPosition.CORNER_LL;
+//			case CORNER_UR:
+//				return BboxPosition.CORNER_LR;
+//			case MIDDLE_LEFT:
+//				return BboxPosition.MIDDLE_LEFT;
+//			case MIDDLE_LOW:
+//				return BboxPosition.MIDDLE_UP;
+//			case MIDDLE_RIGHT:
+//				return BboxPosition.MIDDLE_RIGHT;
+//			case MIDDLE_UP:
+//			default:
+//				return BboxPosition.MIDDLE_LOW;
+//		}
 	}
 
 }

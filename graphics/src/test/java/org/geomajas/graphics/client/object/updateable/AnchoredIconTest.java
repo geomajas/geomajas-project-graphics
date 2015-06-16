@@ -13,11 +13,13 @@ package org.geomajas.graphics.client.object.updateable;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.GraphicsBaseTest;
-import org.geomajas.graphics.client.object.role.Anchored;
+import org.geomajas.graphics.client.object.role.HasMarker;
 import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.role.Fillable;
 import org.geomajas.graphics.client.object.role.Strokable;
-import org.geomajas.graphics.client.object.updateable.anchored.MarkerShape;
+import org.geomajas.graphics.client.object.updateable.hasmarker.MarkerShape;
+import org.geomajas.graphics.client.util.HasFill;
+import org.geomajas.graphics.client.util.HasStroke;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,8 +41,8 @@ public class AnchoredIconTest extends GraphicsBaseTest {
 		Draggable draggable = anchoredIcon.getRole(Draggable.TYPE);
 		Assert.assertNotNull(draggable);
 		// anchored
-		Assert.assertTrue(anchoredIcon.hasRole(Anchored.TYPE));
-		Anchored anchored = anchoredIcon.getRole(Anchored.TYPE);
+		Assert.assertTrue(anchoredIcon.hasRole(HasMarker.TYPE));
+		HasMarker anchored = anchoredIcon.getRole(HasMarker.TYPE);
 		Assert.assertNotNull(anchored);
 	}
 
@@ -63,25 +65,25 @@ public class AnchoredIconTest extends GraphicsBaseTest {
 	public void testCloneObjectAnchored() throws Exception {
 		String href = "hrefTest";
 		anchoredIcon = createAnchoredIcon(new Coordinate(15, 20), 5, 5, href, new Coordinate(-1, -2), MarkerShape.CIRCLE);
-		Anchored expected = anchoredIcon.getRole(Anchored.TYPE);
-		Strokable anchorLineStrokable = expected.getAnchorLineStrokable();
+		HasMarker expected = anchoredIcon.getRole(HasMarker.TYPE);
+		Strokable anchorLineStrokable = expected.getMarkerLineStrokable();
 		anchorLineStrokable.setStrokeColor("strokeColor");
 		anchorLineStrokable.setStrokeOpacity(0.3);
 		anchorLineStrokable.setStrokeWidth(8);
-		Strokable anchorMarkerStrokable = expected.getAnchorMarkerShapeStrokable();
+		HasStroke anchorMarkerStrokable = expected.getMarker();
 		anchorMarkerStrokable.setStrokeColor("strokeColor2");
 		anchorMarkerStrokable.setStrokeOpacity(0.7);
 		anchorMarkerStrokable.setStrokeWidth(2);
-		Fillable anchorMarkerFillable = expected.getAnchorMarkerShapeFillable();
+		HasFill anchorMarkerFillable = expected.getMarker();
 		anchorMarkerFillable.setFillColor("fillColor");
 		anchorMarkerFillable.setFillOpacity(0.4);
-		expected.setAnchorPosition(new Coordinate(20, -18));
+		expected.getMarker().setUserPosition(new Coordinate(20, -18));
 
 		Object clone = anchoredIcon.cloneObject();
 
 		AnchoredIcon anchoredIconClone = assertIsCorrectObject(clone);
-		Assert.assertTrue(anchoredIconClone.hasRole(Anchored.TYPE));
-		Anchored anchoredClone = anchoredIconClone.getRole(Anchored.TYPE);
+		Assert.assertTrue(anchoredIconClone.hasRole(HasMarker.TYPE));
+		HasMarker anchoredClone = anchoredIconClone.getRole(HasMarker.TYPE);
 		assertRoleEqualityAnchored(expected, anchoredClone);
 	}
 

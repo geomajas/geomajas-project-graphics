@@ -13,36 +13,38 @@ package org.geomajas.graphics.client.object.role;
 import org.geomajas.annotation.Api;
 import org.geomajas.graphics.client.object.RoleInterface;
 import org.geomajas.graphics.client.object.RoleType;
-import org.geomajas.graphics.client.util.HasFont;
+import org.geomajas.graphics.client.render.Marker;
 
 /**
- * Implemented by Textable graphics objects. It differs from labeled: Labeled role is an updateable aware role (same
- * level as Renderable); Textable is for the properties of the text itself.
+ * Role for objects that are connected to a marker by a maker line.
  * 
+ * @author Jan De Moerloose
  * @author Jan Venstermans
  * @since 1.0.0
  * 
  */
 @Api(allMethods = true)
-public interface Textable extends RoleInterface, HasFont {
+public interface HasMarker extends RoleInterface {
 
 	/**
 	 * The role type.
 	 */
-	RoleType<Textable> TYPE = new RoleType<Textable>("Textable");
+	RoleType<HasMarker> TYPE = new RoleType<HasMarker>("HasMarker");
+
+	/* anchor line */
 
 	/**
-	 * Set the label text.
-	 * 
-	 * @param label
-	 */
-	void setText(String label);
-
-	/**
-	 * Get the label text.
+	 * Get the marker line stroke accessor.
 	 * 
 	 * @return
 	 */
-	String getText();
+	Strokable getMarkerLineStrokable();
+
+	/**
+	 * Get the marker.
+	 * 
+	 * @return
+	 */
+	Marker getMarker();
 
 }

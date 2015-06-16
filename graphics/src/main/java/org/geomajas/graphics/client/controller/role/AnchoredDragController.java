@@ -15,11 +15,11 @@ import org.geomajas.graphics.client.controller.UpdateHandlerGraphicsController;
 import org.geomajas.graphics.client.controller.UpdateHandlerGraphicsControllerWithVisibleElement;
 import org.geomajas.graphics.client.controller.drag.AbstractDragHandler;
 import org.geomajas.graphics.client.object.GraphicsObject;
-import org.geomajas.graphics.client.object.role.Anchored;
-import org.geomajas.graphics.client.object.updateable.anchored.AnchorMarker;
-import org.geomajas.graphics.client.object.updateable.anchored.MarkerShape;
-import org.geomajas.graphics.client.operation.AnchoredPositionOperation;
+import org.geomajas.graphics.client.object.role.HasMarker;
+import org.geomajas.graphics.client.object.updateable.hasmarker.MarkerShape;
+import org.geomajas.graphics.client.operation.MarkerPositionOperation;
 import org.geomajas.graphics.client.operation.GraphicsOperation;
+import org.geomajas.graphics.client.render.Marker;
 import org.geomajas.graphics.client.render.RenderContainer;
 import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.service.GraphicsService;
@@ -28,7 +28,7 @@ import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 
 /**
- * Controller to drag the anchor of an {@link Anchored} role.
+ * Controller to drag the anchor of an {@link HasMarker} role.
  * 
  * @author Jan De Moerloose
  * @author Jan Venstermans
@@ -39,7 +39,7 @@ public class AnchoredDragController extends UpdateHandlerGraphicsControllerWithV
 	/**
 	 * Object under control.
 	 */
-	private Anchored anchorPointObject;
+	private HasMarker anchorPointObject;
 
 	/**
 	 * Handler to drag the anchor.
@@ -48,7 +48,7 @@ public class AnchoredDragController extends UpdateHandlerGraphicsControllerWithV
 
 	public AnchoredDragController(GraphicsObject object, GraphicsService service) {
 		super(service, object);
-		this.anchorPointObject = object.getRole(Anchored.TYPE);
+		this.anchorPointObject = object.getRole(HasMarker.TYPE);
 	}
 
 
@@ -74,7 +74,7 @@ public class AnchoredDragController extends UpdateHandlerGraphicsControllerWithV
 
 	@Override
 	public void setControllerElementsVisible(boolean visible) {
-		getObject().getRole(Anchored.TYPE).setAnchorVisible(visible);
+		getObject().getRole(HasMarker.TYPE).getMarker().setVisible(visible);
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class AnchoredDragController extends UpdateHandlerGraphicsControllerWithV
 	 */
 	class AnchorDragHandler extends AbstractDragHandler {
 		
-		private AnchorMarker invisibleSquareAnchor;
+		private Marker invisibleSquareAnchor;
 
 		public AnchorDragHandler(GraphicsObject object, GraphicsService service,
 				UpdateHandlerGraphicsController graphicsHandler) {
@@ -96,8 +96,7 @@ public class AnchoredDragController extends UpdateHandlerGraphicsControllerWithV
 
 		@Override
 		public void update() {
-			invisibleSquareAnchor.setUserX(anchorPointObject.getAnchorPosition().getX());
-			invisibleSquareAnchor.setUserY(anchorPointObject.getAnchorPosition().getY());
+			invisibleSquareAnchor.setUserPosition(anchorPointObject.getMarker().getUserPosition());
 		}
 
 		public void renderInContainer(RenderContainer group) {	
@@ -107,7 +106,6 @@ public class AnchoredDragController extends UpdateHandlerGraphicsControllerWithV
 		@Override
 		protected Renderable createInvisibleMask() {
 			invisibleSquareAnchor = MarkerShape.SQUARE.getMarkerShape();
-			invisibleSquareAnchor.setFixedSize(true);
 			invisibleSquareAnchor.setFillOpacity(0);
 			invisibleSquareAnchor.setStrokeOpacity(0);
 			invisibleSquareAnchor.getRenderable().setCursor(Cursor.MOVE.getCssName());
@@ -118,24 +116,24 @@ public class AnchoredDragController extends UpdateHandlerGraphicsControllerWithV
 		protected GraphicsObject createDraggingMask() {
 			GraphicsObject maskObject = (GraphicsObject) getObject().cloneObject();
 			maskObject.getRenderable().setOpacity(0.5);
-			maskObject.getRole(Anchored.TYPE).setAnchorPosition(getBeginPositionUser());
+			maskObject.getRole(HasMarker.TYPE).getMarker().setUserPosition(getBeginPositionUser());
 			return maskObject;
 		}
 
 		@Override
 		protected Coordinate getObjectPosition() {
-			return anchorPointObject.getAnchorPosition();
+			return anchorPointObject.getMarker().getUserPosition();
 		}
 
 		@Override
 		protected GraphicsOperation createGraphicsOperation(Coordinate before, Coordinate after) {
-			return new AnchoredPositionOperation(getObject(), before, after);
+			return new MarkerPositionOperation(getObject(), before, after);
 		}
 
 		@Override
 		protected void mouseMoveContent(MouseMoveEvent event) {
 			Coordinate newAnchorPosition = getNewPosition(event.getClientX(), event.getClientY());
-			getDraggingMask().getRole(Anchored.TYPE).setAnchorPosition(newAnchorPosition);
+			getDraggingMask().getRole(HasMarker.TYPE).getMarker().setUserPosition(newAnchorPosition);
 		}
 
 	}

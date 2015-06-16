@@ -62,7 +62,7 @@ public class LabelOperation implements GraphicsOperation {
 
 	@Override
 	public void execute() {
-		asTextable().setLabel(afterLabel);
+		asTextable().setText(afterLabel);
 		asTextable().setFontColor(afterColor);
 		asTextable().setFontSize(afterSize);
 		asTextable().setFontFamily(afterFont);
@@ -70,7 +70,7 @@ public class LabelOperation implements GraphicsOperation {
 
 	@Override
 	public void undo() {
-		asTextable().setLabel(beforeLabel);
+		asTextable().setText(beforeLabel);
 		asTextable().setFontColor(beforeColor);
 		asTextable().setFontSize(beforeSize);
 		asTextable().setFontFamily(beforeFont);

@@ -58,7 +58,7 @@ public class ResizeControllerTest {
 
 	@Test
 	public void testResize() {
-		BaseRectangleObject m = new BaseRectangleObject(5, 6, 50, 50);
+		BaseRectangleObject m = new BaseRectangleObject(30, 31, 50, 50);
 		SimpleEventBus eventBus = new SimpleEventBus();
 		GraphicsService service = new GraphicsServiceImpl(eventBus);
 		service.setObjectContainer(objectContainer);

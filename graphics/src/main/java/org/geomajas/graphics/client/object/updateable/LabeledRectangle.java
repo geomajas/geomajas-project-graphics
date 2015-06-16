@@ -11,6 +11,8 @@
 package org.geomajas.graphics.client.object.updateable;
 
 import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.geometry.service.BboxService;
 import org.geomajas.graphics.client.Graphics;
 import org.geomajas.graphics.client.object.base.BaseRectangleObject;
 import org.geomajas.graphics.client.object.role.Draggable;
@@ -40,6 +42,14 @@ public class LabeledRectangle extends UpdateableGroupGraphicsObject {
 
 	private LabeledImpl labeled;
 
+	public LabeledRectangle(Bbox userbounds, String text) {
+		this(BboxService.getCenterPoint(userbounds), userbounds.getWidth(), userbounds.getHeight(), text);
+	}
+
+	public LabeledRectangle(Coordinate centerPoint, double width, double height, String text) {
+		this(centerPoint.getX(), centerPoint.getY(), width, height, text);
+	}
+
 	public LabeledRectangle(double userX, double userY, double width, double height, String text) {
 		// create base graphics objects
 		baseRectangle = new BaseRectangleObject(userX, userY, width, height);
@@ -64,8 +74,7 @@ public class LabeledRectangle extends UpdateableGroupGraphicsObject {
 	@Override
 	public Object cloneObject() {
 		Bbox userBounds = baseRectangle.getUserBounds();
-		LabeledRectangle labeledRectangleClone = new LabeledRectangle(userBounds.getX(),
-				userBounds.getY(), userBounds.getWidth(), userBounds.getHeight(), labeled.getTextable().getLabel());
+		LabeledRectangle labeledRectangleClone = new LabeledRectangle(userBounds, labeled.getTextable().getText());
 		CopyUtil.copyStrokableProperties(this.getRole(Strokable.TYPE), labeledRectangleClone.getRole(Strokable.TYPE));
 		CopyUtil.copyFillableProperties(this.getRole(Fillable.TYPE), labeledRectangleClone.getRole(Fillable.TYPE));
 		CopyUtil.copyLabeledProperties(this.getRole(Labeled.TYPE), labeledRectangleClone.getRole(Labeled.TYPE));

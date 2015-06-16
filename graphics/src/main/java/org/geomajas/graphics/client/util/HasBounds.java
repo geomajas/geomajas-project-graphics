@@ -24,16 +24,16 @@ public interface HasBounds {
 	void setUserBounds(Bbox bounds);
 
 	/**
-	 * Get the bounds in screen space.
+	 * Get the bounds in user space.
 	 *
-	 * @return the bounds in screen space
+	 * @return the bounds in user space
 	 */
 	Bbox getUserBounds();
 
 	/**
-	 * Get the bounds in worls space.
+	 * Get the bounds in screen space.
 	 *
-	 * @return the bounds in world space
+	 * @return the bounds in screen space
 	 */
 	Bbox getBounds();
 }

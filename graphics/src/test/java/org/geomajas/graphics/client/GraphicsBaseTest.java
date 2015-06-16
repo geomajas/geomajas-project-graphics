@@ -14,20 +14,39 @@ import junit.framework.Assert;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.graphics.client.object.role.Anchored;
+import org.geomajas.graphics.client.object.base.MockSVGImpl;
+import org.geomajas.graphics.client.object.role.HasMarker;
 import org.geomajas.graphics.client.object.role.CoordinateBased;
 import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.role.Fillable;
 import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.object.role.Strokable;
 import org.geomajas.graphics.client.object.role.Textable;
+import org.geomajas.graphics.client.util.HasFill;
+import org.geomajas.graphics.client.util.HasStroke;
+import org.junit.Before;
+import org.vaadin.gwtgraphics.client.impl.SVGImpl;
+
+import com.google.gwtmockito.GwtMockito;
+import com.google.gwtmockito.fakes.FakeProvider;
 
 public class GraphicsBaseTest {
+
+	@Before
+	public void setup() {
+		GwtMockito.useProviderForType(SVGImpl.class, new FakeProvider<SVGImpl>() {
+
+			@Override
+			public SVGImpl getFake(Class<?> type) {
+				return new MockSVGImpl();
+			}
+		});
+	}
 
 	public void assertRoleEqualityTextable(Textable textableExpected, Textable textableNew) {
 		Assert.assertNotNull(textableExpected);
 		Assert.assertNotNull(textableNew);
-		Assert.assertEquals(textableExpected.getLabel(), textableNew.getLabel());
+		Assert.assertEquals(textableExpected.getText(), textableNew.getText());
 		Assert.assertEquals(textableExpected.getFontColor(), textableNew.getFontColor());
 		Assert.assertEquals(textableExpected.getFontFamily(), textableNew.getFontFamily());
 		Assert.assertEquals(textableExpected.getFontSize(), textableNew.getFontSize());
@@ -82,7 +101,7 @@ public class GraphicsBaseTest {
 		Assert.assertEquals(resizableExpected.isPreserveRatio(), resizableNew.isPreserveRatio());
 	}
 
-	public void assertRoleEqualityStrokable(Strokable strokableExpected, Strokable strokableNew) {
+	public void assertRoleEqualityStrokable(HasStroke strokableExpected, HasStroke strokableNew) {
 		Assert.assertNotNull(strokableExpected);
 		Assert.assertNotNull(strokableNew);
 
@@ -91,7 +110,7 @@ public class GraphicsBaseTest {
 		Assert.assertEquals(strokableExpected.getStrokeWidth(), strokableNew.getStrokeWidth());
 	}
 
-	public void assertRoleEqualityFillable(Fillable fillableExpected, Fillable fillableNew) {
+	public void assertRoleEqualityFillable(HasFill fillableExpected, HasFill fillableNew) {
 		Assert.assertNotNull(fillableExpected);
 		Assert.assertNotNull(fillableNew);
 
@@ -100,7 +119,7 @@ public class GraphicsBaseTest {
 	}
 
 	public void assertRoleEqualityCoordinateBased(CoordinateBased coordinateBasedExpected,
-												  CoordinateBased coordinateBasedNew) {
+			CoordinateBased coordinateBasedNew) {
 		Assert.assertNotNull(coordinateBasedExpected);
 		Assert.assertNotNull(coordinateBasedNew);
 
@@ -108,19 +127,16 @@ public class GraphicsBaseTest {
 		Assert.assertEquals(coordinateBasedExpected.getLastCoordinate(), coordinateBasedNew.getLastCoordinate());
 		Coordinate[] coordinatesExpected = coordinateBasedExpected.getCoordinates();
 		Coordinate[] coordinatesNew = coordinateBasedNew.getCoordinates();
-		for (int i = 0 ; i < coordinateBasedExpected.getCoordinateCount() ; i++) {
+		for (int i = 0; i < coordinateBasedExpected.getCoordinateCount(); i++) {
 			Assert.assertEquals(coordinatesExpected[i], coordinatesNew[i]);
 		}
 	}
 
-	public void assertRoleEqualityAnchored(Anchored anchoredExpected, Anchored anchoredNew) {
-		assertRoleEqualityStrokable(anchoredExpected.getAnchorLineStrokable(), anchoredNew.getAnchorLineStrokable());
-		assertRoleEqualityStrokable(anchoredExpected.getAnchorMarkerShapeStrokable(),
-				anchoredNew.getAnchorMarkerShapeStrokable());
-		assertRoleEqualityFillable(anchoredExpected.getAnchorMarkerShapeFillable(),
-				anchoredNew.getAnchorMarkerShapeFillable());
-
-		Assert.assertEquals(anchoredExpected.getAnchorPosition(), anchoredNew.getAnchorPosition());
+	public void assertRoleEqualityAnchored(HasMarker anchoredExpected, HasMarker anchoredNew) {
+		assertRoleEqualityStrokable(anchoredExpected.getMarkerLineStrokable(), anchoredNew.getMarkerLineStrokable());
+		assertRoleEqualityStrokable(anchoredExpected.getMarker(), anchoredNew.getMarker());
+		assertRoleEqualityFillable(anchoredExpected.getMarker(), anchoredNew.getMarker());
+		Assert.assertEquals(anchoredExpected.getMarker().getUserPosition(), anchoredNew.getMarker().getUserPosition());
 	}
 
 }

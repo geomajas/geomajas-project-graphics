@@ -8,14 +8,14 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.graphics.client.object.updateable.anchored;
+package org.geomajas.graphics.client.object.updateable.hasmarker;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.Graphics;
 import org.geomajas.graphics.client.object.BaseGraphicsObject;
-import org.geomajas.graphics.client.object.role.Cloneable;
 import org.geomajas.graphics.client.object.role.Fillable;
 import org.geomajas.graphics.client.object.role.Strokable;
+import org.geomajas.graphics.client.render.Marker;
 import org.geomajas.graphics.client.render.RenderContainer;
 import org.geomajas.graphics.client.render.Renderable;
 
@@ -26,17 +26,17 @@ import org.geomajas.graphics.client.render.Renderable;
  * @author Jan Venstermans
  *
  */
-public class Marker extends BaseGraphicsObject implements Strokable, Fillable {
+public class MarkerObject extends BaseGraphicsObject implements Marker, Strokable, Fillable {
 
-	private AnchorMarker anchor;
+	private Marker anchor;
 
-	private AnchorMarker background;
+	private Marker background;
 
 	private MarkerShape markerShape = MarkerShape.SQUARE;
 
 	private RenderContainer markerGroup;
 
-	public Marker(Coordinate markerPosition, MarkerShape markerShape) {
+	public MarkerObject(Coordinate markerPosition, MarkerShape markerShape) {
 		this.markerShape = (markerShape != null) ? markerShape : MarkerShape.SQUARE;
 		anchor = createAnchor(this.markerShape.getMarkerShape());
 		markerGroup = Graphics.getRenderElementFactory().createRenderContainer();
@@ -56,34 +56,25 @@ public class Marker extends BaseGraphicsObject implements Strokable, Fillable {
 	}
 
 	public void setPosition(Coordinate markerPosition) {
-		anchor.setUserX(markerPosition.getX());
-		anchor.setUserY(markerPosition.getY());
+		anchor.setUserPosition(markerPosition);
 		if (background != null) {
-			background.setUserX(markerPosition.getX());
-			background.setUserY(markerPosition.getY());
+			background.setUserPosition(markerPosition);
 		}
 	}
 
 	public Coordinate getPosition() {
-		return new Coordinate(anchor.getUserX(), anchor.getUserY());
+		return anchor.getUserPosition();
 	}
 
 	public MarkerShape getMarkerShape() {
 		return markerShape;
 	}
 
-	protected AnchorMarker createAnchor(AnchorMarker shape) {
-		if (shape != null && shape instanceof Cloneable) {
-			anchor = (AnchorMarker) ((Cloneable) shape).cloneObject();
-		} else {
-			// standard marker shape: rectangle
-			anchor = Graphics.getRenderElementFactory().createAnchoredRectangle(0, 0, 8, 8, 4, 4);
-		}
-		anchor.setFixedSize(true);
-		anchor.setFillColor("#FF6600");
-		anchor.setStrokeColor("#FF6600");
-		anchor.setFillOpacity(0.7);
-		return anchor;
+	protected Marker createAnchor(Marker shape) {
+		shape.setFillColor("#FF6600");
+		shape.setStrokeColor("#FF6600");
+		shape.setFillOpacity(0.7);
+		return shape;
 	}
 
 	@Override
@@ -147,6 +138,14 @@ public class Marker extends BaseGraphicsObject implements Strokable, Fillable {
 	@Override
 	public void setStrokeOpacity(double strokeOpacity) {
 		anchor.setStrokeOpacity(strokeOpacity);
+	}
+
+	public Coordinate getUserPosition() {
+		return anchor.getUserPosition();
+	}
+
+	public void setUserPosition(Coordinate position) {
+		anchor.setUserPosition(position);
 	}
 
 	// ------------------------

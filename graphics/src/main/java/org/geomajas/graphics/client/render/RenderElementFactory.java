@@ -12,7 +12,6 @@ package org.geomajas.graphics.client.render;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.graphics.client.object.updateable.anchored.AnchorMarker;
 
 /**
  * Interface for specific view elements.
@@ -79,7 +78,8 @@ public interface RenderElementFactory {
 	 * @param margin
 	 * @return
 	 */
-	AnchoredRectangle createMarginAnchoredRectangle(double userX, double userY, double width, double height, int margin);
+	AnchoredRectangle createMarginAnchoredRectangle(double userX, double userY, double width, double height, //
+			int margin);
 
 	/**
 	 * Create a path (polygon or line) with the specified user coordinates.
@@ -187,8 +187,8 @@ public interface RenderElementFactory {
 	 * @param anchorY
 	 * @return
 	 */
-	AnchorMarker createMarkerAnchoredRectangle(double userX, double userY, double userWidth, double userHeight,
-			int anchorX, int anchorY);
+	Marker createRectangleMarker(double userX, double userY, double userWidth, double userHeight, int anchorX,
+			int anchorY);
 
 	/**
 	 * Create an anchor marker of circle type.
@@ -200,8 +200,7 @@ public interface RenderElementFactory {
 	 * @param anchorY
 	 * @return
 	 */
-	AnchorMarker createMarkerAnchoredCircle(double circleCenterX, double circleCenterY, double radius, int anchorX,
-			int anchorY);
+	Marker createCircleMarker(double circleCenterX, double circleCenterY, double radius, int anchorX, int anchorY);
 
 	/**
 	 * Create an anchor marker of cross type.
@@ -211,6 +210,6 @@ public interface RenderElementFactory {
 	 * @param crossHeightPixels
 	 * @return
 	 */
-	AnchorMarker createMarkerAnchoredCross(double userX, double userY, int crossHeightPixels);
+	Marker createCrossMarker(double userX, double userY, int crossHeightPixels);
 
 }

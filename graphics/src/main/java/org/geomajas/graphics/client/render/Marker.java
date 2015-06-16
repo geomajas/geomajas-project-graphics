@@ -8,29 +8,21 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.graphics.client.object.updateable.anchored;
+package org.geomajas.graphics.client.render;
 
-import org.geomajas.graphics.client.render.IsRenderable;
+import org.geomajas.graphics.client.object.updateable.hasmarker.MarkerShape;
 import org.geomajas.graphics.client.util.HasFill;
+import org.geomajas.graphics.client.util.HasPosition;
 import org.geomajas.graphics.client.util.HasStroke;
 
 /**
- * Interface for marker's shape.
  * 
- * @author Jan Venstermans
- * 
+ * @author Jan De Moerloose
+ *
  */
-public interface AnchorMarker extends HasFill, HasStroke, IsRenderable {
-
-	void setFixedSize(boolean fixedSize);
+public interface Marker extends HasPosition, HasFill, HasStroke, IsRenderable {
 
 	void setVisible(boolean visible);
 
-	double getUserX();
-
-	double getUserY();
-
-	void setUserX(double userX);
-
-	void setUserY(double userY);
+	MarkerShape getMarkerShape();
 }

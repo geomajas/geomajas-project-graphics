@@ -164,13 +164,13 @@ public class TextAreaWidget implements IsWidget, Fillable, Strokable, Textable {
 	}
 
 	@Override
-	public void setLabel(String content) {
+	public void setText(String content) {
 		widget.getElement().setInnerText(content);
 		updateStyle();
 	}
 
 	@Override
-	public String getLabel() {
+	public String getText() {
 		return widget.getElement().getInnerText();
 	}
 

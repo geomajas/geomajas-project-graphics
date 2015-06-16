@@ -12,13 +12,11 @@ package org.geomajas.graphics.client.util;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.graphics.client.object.role.Anchored;
 import org.geomajas.graphics.client.object.role.Bordered;
 import org.geomajas.graphics.client.object.role.Draggable;
-import org.geomajas.graphics.client.object.role.Fillable;
+import org.geomajas.graphics.client.object.role.HasMarker;
 import org.geomajas.graphics.client.object.role.Labeled;
 import org.geomajas.graphics.client.object.role.Resizable;
-import org.geomajas.graphics.client.object.role.Strokable;
 import org.geomajas.graphics.client.object.role.Textable;
 
 /**
@@ -38,23 +36,23 @@ public final class CopyUtil {
 	}
 
 	/**
-	 * Copy all {@link Fillable} properties from original to copy.
+	 * Copy all {@link HasFill} properties from original to copy.
 	 *
 	 * @param fillableOriginal
 	 * @param fillableCopy
 	 */
-	public static void copyFillableProperties(Fillable fillableOriginal, Fillable fillableCopy) {
+	public static void copyFillableProperties(HasFill fillableOriginal, HasFill fillableCopy) {
 		fillableCopy.setFillOpacity(fillableOriginal.getFillOpacity());
 		fillableCopy.setFillColor(fillableOriginal.getFillColor());
 	}
 
 	/**
-	 * Copy all {@link Strokable} properties from original to copy.
+	 * Copy all {@link HasStroke} properties from original to copy.
 	 *
 	 * @param strokableOriginal
 	 * @param strokableCopy
 	 */
-	public static void copyStrokableProperties(Strokable strokableOriginal, Strokable strokableCopy) {
+	public static void copyStrokableProperties(HasStroke strokableOriginal, HasStroke strokableCopy) {
 		strokableCopy.setStrokeOpacity(strokableOriginal.getStrokeOpacity());
 		strokableCopy.setStrokeColor(strokableOriginal.getStrokeColor());
 		strokableCopy.setStrokeWidth(strokableOriginal.getStrokeWidth());
@@ -102,15 +100,15 @@ public final class CopyUtil {
 	}
 
 	public static void copyTextableProperties(Textable textableOriginal, Textable textableCopy) {
-		textableCopy.setLabel(textableOriginal.getLabel());
+		textableCopy.setText(textableOriginal.getText());
 		textableCopy.setFontColor(textableOriginal.getFontColor());
 		textableCopy.setFontFamily(textableOriginal.getFontFamily());
 		textableCopy.setFontSize(textableOriginal.getFontSize());
 	}
 
-	//-------------------------------------------
+	// -------------------------------------------
 	// UPDATEABLE
-	//-------------------------------------------
+	// -------------------------------------------
 
 	public static void copyBorderedProperties(Bordered borderedOriginal, Bordered borderedCopy) {
 		copyFillableProperties(borderedOriginal.getFillable(), borderedCopy.getFillable());
@@ -121,12 +119,10 @@ public final class CopyUtil {
 		copyTextableProperties(labeledOriginal.getTextable(), labeledCopy.getTextable());
 	}
 
-	public static void copyAnchoredProperties(Anchored anchoredOriginal, Anchored anchoredCopy) {
-		copyStrokableProperties(anchoredOriginal.getAnchorLineStrokable(), anchoredCopy.getAnchorLineStrokable());
-		copyStrokableProperties(anchoredOriginal.getAnchorMarkerShapeStrokable(),
-				anchoredCopy.getAnchorMarkerShapeStrokable());
-		copyFillableProperties(anchoredOriginal.getAnchorMarkerShapeFillable(),
-				anchoredCopy.getAnchorMarkerShapeFillable());
-		anchoredCopy.setAnchorPosition(deepCopyCoordinate(anchoredOriginal.getAnchorPosition()));
+	public static void copyAnchoredProperties(HasMarker anchoredOriginal, HasMarker anchoredCopy) {
+		copyStrokableProperties(anchoredOriginal.getMarkerLineStrokable(), anchoredCopy.getMarkerLineStrokable());
+		copyStrokableProperties(anchoredOriginal.getMarker(), anchoredCopy.getMarker());
+		copyFillableProperties(anchoredOriginal.getMarker(), anchoredCopy.getMarker());
+		anchoredCopy.getMarker().setUserPosition(anchoredOriginal.getMarker().getUserPosition());
 	}
 }

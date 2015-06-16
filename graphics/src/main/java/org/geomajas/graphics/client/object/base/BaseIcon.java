@@ -30,8 +30,7 @@ public class BaseIcon extends BaseGraphicsObject implements Draggable {
 	private AnchoredImage anchoredImage;
 
 	public BaseIcon(double userX, double userY, int width, int height, String href) {
-		this(Graphics.getRenderElementFactory().createAnchoredImage(userX, userY,
-				width, height, href, true, 0.5, 0.5));
+		this(Graphics.getRenderElementFactory().createAnchoredImage(userX, userY, width, height, href, true, 0.5, 0.5));
 	}
 
 	public BaseIcon(AnchoredImage anchoredImage) {
@@ -46,13 +45,12 @@ public class BaseIcon extends BaseGraphicsObject implements Draggable {
 
 	@Override
 	public void setUserPosition(Coordinate imageAnchorPosition) {
-		anchoredImage.setUserX(imageAnchorPosition.getX());
-		anchoredImage.setUserY(imageAnchorPosition.getY());
+		anchoredImage.setUserPosition(imageAnchorPosition);
 	}
 
 	@Override
 	public Coordinate getUserPosition() {
-		return new Coordinate(anchoredImage.getUserX(), anchoredImage.getUserY());
+		return anchoredImage.getUserPosition();
 	}
 
 	@Override
@@ -61,18 +59,19 @@ public class BaseIcon extends BaseGraphicsObject implements Draggable {
 	}
 
 	@Override
-	public void setUserBounds(Bbox bounds) {
-		// can't do this
-	}
-
-	@Override
 	public Bbox getBounds() {
 		return anchoredImage.getBounds();
 	}
 
+	@Override
+	public void setUserBounds(Bbox bounds) {
+		// can't do this
+	}
+
 	public Object cloneObject() {
-		return new BaseIcon(anchoredImage.getUserX(), anchoredImage.getUserY(), (int) anchoredImage.getUserWidth(),
-				(int) anchoredImage.getUserHeight(), anchoredImage.getHref());
+		return new BaseIcon(anchoredImage.getUserPosition().getX(), anchoredImage.getUserPosition().getY(),
+				(int) anchoredImage.getUserBounds().getWidth(), (int) anchoredImage.getUserBounds().getHeight(),
+				anchoredImage.getHref());
 	}
 
 	public String getHref() {

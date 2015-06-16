@@ -22,10 +22,10 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.Graphics;
 import org.geomajas.graphics.client.controller.create.CreateIconController;
 import org.geomajas.graphics.client.object.updateable.AnchoredIcon;
-import org.geomajas.graphics.client.object.updateable.anchored.AnchorMarker;
-import org.geomajas.graphics.client.object.updateable.anchored.MarkerShape;
+import org.geomajas.graphics.client.object.updateable.hasmarker.MarkerShape;
 import org.geomajas.graphics.client.render.AnchoredRectangle;
 import org.geomajas.graphics.client.render.IsRenderable;
+import org.geomajas.graphics.client.render.Marker;
 import org.geomajas.graphics.client.render.RenderArea;
 import org.geomajas.graphics.client.render.RenderContainer;
 import org.geomajas.graphics.client.render.Renderable;
@@ -414,7 +414,7 @@ public class CreateIconChoicePopup {
 		/**
 		 * the shape itself.
 		 */
-		private AnchorMarker simpleShape;
+		private Marker simpleShape;
 
 		/**
 		 * click area.
@@ -429,7 +429,6 @@ public class CreateIconChoicePopup {
 			shape = markerEnum;
 			simpleShape = shape.getMarkerShape(choiceListImageSize / 2, choiceListImageSize / 2,
 					choiceListImageSize - 8);
-			simpleShape.setFixedSize(true);
 			simpleShape.setFillColor("#FF6600");
 			simpleShape.setStrokeColor("#FF6600");
 			simpleShape.setFillOpacity(0.7);

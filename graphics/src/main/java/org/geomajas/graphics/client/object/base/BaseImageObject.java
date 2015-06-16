@@ -16,11 +16,9 @@ import org.geomajas.graphics.client.Graphics;
 import org.geomajas.graphics.client.object.BaseGraphicsObject;
 import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.role.Resizable;
-import org.geomajas.graphics.client.render.AnchoredImage;
 import org.geomajas.graphics.client.render.BaseImage;
 import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.util.FlipState;
-import org.vaadin.gwtgraphics.client.Image;
 
 /**
  * Extension of {@link BaseGraphicsObject} for an image.
@@ -45,19 +43,19 @@ public class BaseImageObject extends BaseGraphicsObject implements BaseImage, Re
 
 	@Override
 	public void setUserPosition(Coordinate position) {
-		image.setUserX(position.getX());
-		image.setUserY(position.getY());
+		image.setUserPosition(position);
 	}
 
 	@Override
 	public Coordinate getUserPosition() {
-		return new Coordinate(image.getUserX(), image.getUserY());
+		return image.getUserPosition();
 	}
 
 	@Override
 	public Object cloneObject() {
-		return new BaseImageObject(image.getUserX(), image.getUserY(), (int) image.getUserWidth(),
-				(int) image.getUserHeight(), image.getHref(), image.isPreserveAspectRatio());
+		return new BaseImageObject(image.getUserPosition().getX(), image.getUserPosition().getY(), (int) image
+				.getUserBounds().getWidth(), (int) image.getUserBounds().getHeight(), image.getHref(),
+				image.isPreserveAspectRatio());
 	}
 
 	@Override
@@ -67,10 +65,7 @@ public class BaseImageObject extends BaseGraphicsObject implements BaseImage, Re
 
 	@Override
 	public void setUserBounds(Bbox bounds) {
-		image.setUserX(bounds.getX());
-		image.setUserY(bounds.getY());
-		image.setUserWidth(bounds.getWidth());
-		image.setUserHeight(bounds.getHeight());
+		image.setUserBounds(bounds);
 	}
 
 	@Override
@@ -83,66 +78,18 @@ public class BaseImageObject extends BaseGraphicsObject implements BaseImage, Re
 		return false;
 	}
 
-	public void setUserX(double x) {
-		image.setUserX(x);
-	}
-
-	public void setUserY(double y) {
-		image.setUserY(y);
-	}
-
-	public double getUserX() {
-		return image.getUserX();
-	}
-
-	public double getUserY() {
-		return image.getUserY();
-	}
-
-	public double getUserWidth() {
-		return image.getUserWidth();
-	}
-
-	public double getUserHeight() {
-		return image.getUserHeight();
-	}
-
-	public int getX() {
-		return image.getX();
-	}
-
-	public int getY() {
-		return image.getY();
-	}
-
-	public int getWidth() {
-		return image.getWidth();
-	}
-
-	public int getHeight() {
-		return image.getHeight();
-	}
-
-	public void setUserWidth(double width) {
-		image.setUserWidth(width);
-	}
-
-	public void setUserHeight(double height) {
-		image.setUserHeight(height);
-	}
-
 	public boolean isPreserveAspectRatio() {
 		return image.isPreserveAspectRatio();
 	}
 
 	@Override
 	public Bbox getUserBounds() {
-		return new Bbox(image.getUserX(), image.getUserY(), image.getUserWidth(), image.getUserHeight());
+		return image.getUserBounds();
 	}
 
 	@Override
 	public Bbox getBounds() {
-		return new Bbox(image.getX(), image.getY(), image.getWidth(), image.getHeight());
+		return image.getBounds();
 	}
 
 	@Override

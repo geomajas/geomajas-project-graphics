@@ -73,7 +73,7 @@ public class LabelController extends AbstractInterruptibleGraphicsController imp
 
 	@Override
 	public void onDoubleClick(DoubleClickEvent event) {
-		popup.setText(object.getTextable().getLabel());
+		popup.setText(object.getTextable().getText());
 		popup.clearAndShow(event.getClientX(), event.getClientY());
 		popupRegs.add(popup.addCloseHandler(handler));
 		popupRegs.add(popup.addDomHandler(handler, KeyDownEvent.getType()));
@@ -141,7 +141,7 @@ public class LabelController extends AbstractInterruptibleGraphicsController imp
 		@Override
 		public void onKeyDown(KeyDownEvent event) {
 			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-				execute(new LabelOperation(getObject(), null, object.getTextable().getLabel(), popup.getText()));
+				execute(new LabelOperation(getObject(), null, object.getTextable().getText(), popup.getText()));
 				clearPopup();
 			}
 		}

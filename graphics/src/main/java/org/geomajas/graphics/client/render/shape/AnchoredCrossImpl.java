@@ -13,7 +13,9 @@ package org.geomajas.graphics.client.render.shape;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.graphics.client.render.AnchoredCross;
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.graphics.client.object.updateable.hasmarker.MarkerShape;
+import org.geomajas.graphics.client.render.Marker;
 import org.geomajas.graphics.client.render.Renderable;
 import org.vaadin.gwtgraphics.client.shape.Path;
 import org.vaadin.gwtgraphics.client.shape.path.LineTo;
@@ -23,28 +25,27 @@ import org.vaadin.gwtgraphics.client.shape.path.ScaleHelper;
 
 /**
  * A non-scaling cross (diagonals of a square) that is anchored to its world space location on a specific pixel or
- * anchor location (useful for location markers).
- * Using own veriosn of the steps code from {@link Path} internally in this class.
+ * anchor location (useful for location markers). Using own veriosn of the steps code from {@link Path} internally in
+ * this class.
  * 
  * @author Jan Venstermans
  * 
  */
-public class AnchoredCrossImpl extends Path implements AnchoredCross {
+public class AnchoredCrossImpl extends Path implements Marker {
 
 	private int crossHeightPixels;
-	
+
 	private List<PathStep> steps = new ArrayList<PathStep>();
-	
+
 	private VectorRenderable renderable;
-	
+
 	/**
 	 * Creates a cross (diagonals of a square) at the specified world location with a specified size and anchor point.
-	 * E.g., if (anchorX,anchorY)=(0, 0), the center of the cross will be positioned at the world
-	 * location.
+	 * E.g., if (anchorX,anchorY)=(0, 0), the center of the cross will be positioned at the world location.
 	 * 
 	 * @param userX x-location in world coordinates of the cross intersection point
 	 * @param userY y-location in world coordinates of the cross intersection point
-	 * @param crossHeightPixels height of the  in pixels
+	 * @param crossHeightPixels height of the in pixels
 	 */
 	public AnchoredCrossImpl(double userX, double userY, int crossHeightPixels) {
 		super(userX, userY);
@@ -52,11 +53,6 @@ public class AnchoredCrossImpl extends Path implements AnchoredCross {
 		this.crossHeightPixels = crossHeightPixels;
 	}
 
-	@Override
-	public Object cloneObject() {
-		return new AnchoredCrossImpl(getUserX(), getUserY(), crossHeightPixels);
-	}
-	
 	protected void drawTransformed() {
 		if (crossHeightPixels > 0) {
 			int heigth = (int) (crossHeightPixels / getScaleX());
@@ -81,21 +77,38 @@ public class AnchoredCrossImpl extends Path implements AnchoredCross {
 			getImpl().drawPath(getElement(), steps);
 		}
 	}
-	
+
 	public void moveRelativelyTo(int x, int y) {
 		steps.add(new MoveTo(true, x, y));
 	}
-	
+
 	public void moveRelativelyTo(double x, double y) {
 		steps.add(new MoveTo(true, x, y));
 	}
-	
+
 	public void lineRelativelyTo(int x, int y) {
 		steps.add(new LineTo(true, x, y));
 	}
-	
+
 	@Override
 	public Renderable getRenderable() {
 		return renderable;
 	}
+
+	@Override
+	public Coordinate getUserPosition() {
+		return new Coordinate(getUserX(), getUserY());
+	}
+
+	@Override
+	public void setUserPosition(Coordinate position) {
+		setUserX(position.getX());
+		setUserY(position.getY());
+	}
+
+	@Override
+	public MarkerShape getMarkerShape() {
+		return MarkerShape.CROSS;
+	}
+
 }

@@ -48,15 +48,15 @@ import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.user.client.ui.RootPanel;
 
 /**
- * {@link org.geomajas.graphics.client.controller.UpdateHandlerGraphicsControllerWithVisibleElement}
- * that handles resizing (through anchor points).
+ * {@link org.geomajas.graphics.client.controller.UpdateHandlerGraphicsControllerWithVisibleElement} that handles
+ * resizing (through anchor points).
  * 
  * @author Jan De Moerloose
  * @author Jan Venstermans
  * 
  */
-public class ResizeController extends UpdateHandlerGraphicsControllerWithVisibleElement
-		implements GraphicsObjectContainerEvent.Handler, GraphicsOperationEvent.Handler {
+public class ResizeController extends UpdateHandlerGraphicsControllerWithVisibleElement implements
+		GraphicsObjectContainerEvent.Handler, GraphicsOperationEvent.Handler {
 
 	private static final int HANDLER_SIZE = 8;
 
@@ -143,32 +143,32 @@ public class ResizeController extends UpdateHandlerGraphicsControllerWithVisible
 		}
 	}
 
-	protected Coordinate getAnchorPointCoordinate(BboxPosition type, int size) {
+	protected Coordinate getAnchorPointCoordinate(BboxPosition type) {
 		switch (type) {
 			case CORNER_LL:
-				return new Coordinate(size, 0);
+				return new Coordinate(0.5, 0.5);
 			case CORNER_LR:
-				return new Coordinate(0, 0);
+				return new Coordinate(-0.5, 0.5);
 			case CORNER_UL:
-				return new Coordinate(size, size);
+				return new Coordinate(0.5, -0.5);
 			case CORNER_UR:
-				return new Coordinate(0, size);
+				return new Coordinate(-0.5, -0.5);
 			case MIDDLE_LEFT:
-				return new Coordinate(size, size / 2);
+				return new Coordinate(0.5, 0);
 			case MIDDLE_LOW:
-				return new Coordinate(size / 2, 0);
+				return new Coordinate(0, 0.5);
 			case MIDDLE_RIGHT:
-				return new Coordinate(0, size / 2);
+				return new Coordinate(-0.5, 0);
 			case MIDDLE_UP:
 			default:
-				return new Coordinate(size / 2, size);
+				return new Coordinate(0, -0.5);
 		}
 	}
 
 	protected AnchoredRectangle createHandlerArea(BboxPosition type) {
-		Coordinate anchor = getAnchorPointCoordinate(type, HANDLER_SIZE);
-		AnchoredRectangleImpl handler = new AnchoredRectangleImpl(0, 0, HANDLER_SIZE, HANDLER_SIZE, (int) anchor.getX(),
-				(int) anchor.getY());
+		Coordinate anchor = getAnchorPointCoordinate(type);
+		AnchoredRectangleImpl handler = new AnchoredRectangleImpl(0, 0, HANDLER_SIZE, HANDLER_SIZE, anchor.getX(),
+				anchor.getY());
 		handler.setFillColor("#99FFFF");
 		handler.setStrokeColor("#000000");
 		handler.setStrokeWidth(1);
@@ -176,9 +176,9 @@ public class ResizeController extends UpdateHandlerGraphicsControllerWithVisible
 	}
 
 	protected AnchoredRectangle createClickableArea(BboxPosition type) {
-		Coordinate anchor = getAnchorPointCoordinate(type, HANDLER_SIZE);
+		Coordinate anchor = getAnchorPointCoordinate(type);
 		AnchoredRectangleImpl clickableArea = new AnchoredRectangleImpl(0, 0, 2 * HANDLER_SIZE, 2 * HANDLER_SIZE,
-				(int) anchor.getX(), (int) anchor.getY());
+				anchor.getX(), anchor.getY());
 		clickableArea.setFillColor("#000000");
 		clickableArea.setStrokeColor("#000000");
 		clickableArea.setFillOpacity(0.0);
@@ -186,11 +186,10 @@ public class ResizeController extends UpdateHandlerGraphicsControllerWithVisible
 		clickableArea.setFixedSize(true);
 		return clickableArea;
 	}
-	
+
 	/**
-	 * Handles resizing.
-	 * There are 8 handlers: 4 corner handlers + 4 side handlers.
-	 * For every position, there is this DragHandler that will result in resizing of the graphics object.
+	 * Handles resizing. There are 8 handlers: 4 corner handlers + 4 side handlers. For every position, there is this
+	 * DragHandler that will result in resizing of the graphics object.
 	 */
 	public class ResizeHandler implements MouseDownHandler, MouseUpHandler, MouseMoveHandler, MouseOverHandler,
 			MouseOutHandler {
@@ -210,7 +209,7 @@ public class ResizeController extends UpdateHandlerGraphicsControllerWithVisible
 		private GraphicsObject mask;
 
 		private String captureCursor;
-		
+
 		/**
 		 * Are we dragging ?
 		 */
@@ -229,8 +228,7 @@ public class ResizeController extends UpdateHandlerGraphicsControllerWithVisible
 
 		public void update() {
 			Bbox userBounds = resizable.getUserBounds();
-			Bbox screenBounds = transform(userBounds,
-					RenderSpace.USER, RenderSpace.SCREEN);
+			Bbox screenBounds = transform(userBounds, RenderSpace.USER, RenderSpace.SCREEN);
 			Coordinate screenCenter = BboxService.getCenterPoint(screenBounds);
 			// minimal screen width/height + increase with half handler size so handlers don't overlap
 			double minSize = 3 * HANDLER_SIZE;
@@ -288,10 +286,8 @@ public class ResizeController extends UpdateHandlerGraphicsControllerWithVisible
 
 		public void setLocation(Coordinate location) {
 			if (getHandlerGroup() != null) {
-				rectangle.setUserX(location.getX());
-				rectangle.setUserY(location.getY());
-				clickableArea.setUserX(location.getX());
-				clickableArea.setUserY(location.getY());
+				rectangle.setUserPosition(location);
+				clickableArea.setUserPosition(location);
 			}
 		}
 
@@ -383,16 +379,16 @@ public class ResizeController extends UpdateHandlerGraphicsControllerWithVisible
 		void setVisible(boolean visible) {
 			rectangle.getRenderable().setVisible(visible);
 		}
-		
+
 		private void setDragging(boolean draggingNewValue) {
 			dragging = draggingNewValue;
 			if (!getService().isShowOriginalObjectWhileDragging()) {
 				getObject().getRenderable().setVisible(!dragging);
-				((DefaultMetaController) getService().getMetaController()).
-				setControllersOfObjectVisible(getObject(), !dragging);
+				((DefaultMetaController) getService().getMetaController()).setControllersOfObjectVisible(getObject(),
+						!dragging);
 			}
 		}
-		
+
 		protected void capture(Renderable element, Cursor cursor) {
 			element.capture();
 			captureCursor = RootPanel.getBodyElement().getStyle().getCursor();
@@ -403,7 +399,6 @@ public class ResizeController extends UpdateHandlerGraphicsControllerWithVisible
 			element.releaseCapture();
 			RootPanel.getBodyElement().getStyle().setProperty("cursor", captureCursor);
 		}
-
 
 	}
 

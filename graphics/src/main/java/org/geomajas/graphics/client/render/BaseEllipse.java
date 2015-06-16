@@ -10,7 +10,9 @@
  */
 package org.geomajas.graphics.client.render;
 
+import org.geomajas.graphics.client.util.HasBounds;
 import org.geomajas.graphics.client.util.HasFill;
+import org.geomajas.graphics.client.util.HasPosition;
 import org.geomajas.graphics.client.util.HasStroke;
 
 /**
@@ -21,15 +23,7 @@ import org.geomajas.graphics.client.util.HasStroke;
  * @author Jan Venstermans
  * 
  */
-public interface BaseEllipse extends HasStroke, HasFill, IsRenderable {
-
-	void setUserX(double x);
-
-	void setUserY(double y);
-
-	double getUserX();
-
-	double getUserY();
+public interface BaseEllipse extends HasPosition, HasBounds, HasStroke, HasFill, IsRenderable {
 
 	double getUserRadiusX();
 
@@ -39,11 +33,7 @@ public interface BaseEllipse extends HasStroke, HasFill, IsRenderable {
 
 	void setUserRadiusY(double v);
 
-	int getX();
-
 	int getRadiusX();
-
-	int getY();
 
 	int getRadiusY();
 

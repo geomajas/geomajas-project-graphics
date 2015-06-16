@@ -100,8 +100,8 @@ public class TextableEditor extends AbstractRoleEditor<Textable> {
 	protected void setRoleObjectValuesToWidget() {
 		Textable textable = getRoleObject();
 		if (textable != null) {
-			labelBox.setVisibleLines(Math.min(30, Math.max(textable.getLabel().length() / 50, 1)));
-			labelBox.setText(textable.getLabel());
+			labelBox.setVisibleLines(Math.min(30, Math.max(textable.getText().length() / 50, 1)));
+			labelBox.setText(textable.getText());
 			fillColorValidator.setLabel(textable.getFontColor());
 			fontSize.setText(textable.getFontSize() + "");
 			fontFamily.setText(textable.getFontFamily());
@@ -111,7 +111,7 @@ public class TextableEditor extends AbstractRoleEditor<Textable> {
 	public void onOk() {
 		Textable textable = getRoleObject();
 		if (textable != null) {
-			String beforeLabel = textable.getLabel();
+			String beforeLabel = textable.getText();
 			String beforeColor = textable.getFontColor();
 			int beforeSize = textable.getFontSize();
 			String beforeFont = textable.getFontFamily();

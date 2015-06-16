@@ -10,7 +10,9 @@
  */
 package org.geomajas.graphics.client.render;
 
+import org.geomajas.graphics.client.util.HasBounds;
 import org.geomajas.graphics.client.util.HasFill;
+import org.geomajas.graphics.client.util.HasPosition;
 import org.geomajas.graphics.client.util.HasStroke;
 
 /**
@@ -20,35 +22,7 @@ import org.geomajas.graphics.client.util.HasStroke;
  * @author Jan Venstermans
  * 
  */
-public interface BaseCircle extends HasStroke, HasFill, IsRenderable {
-
-	/**
-	 * Set the x-coordinate of the center in user space.
-	 * 
-	 * @param x
-	 */
-	void setUserX(double x);
-
-	/**
-	 * Set the y-coordinate of the center in user space.
-	 * 
-	 * @param y
-	 */
-	void setUserY(double y);
-
-	/**
-	 * Get the x-coordinate of the center in user space.
-	 * 
-	 * @return
-	 */
-	double getUserX();
-
-	/**
-	 * Get the y-coordinate of the center in user space.
-	 * 
-	 * @return
-	 */
-	double getUserY();
+public interface BaseCircle extends HasPosition, HasBounds, HasStroke, HasFill, IsRenderable {
 
 	/**
 	 * Get the radius in user space.
@@ -63,20 +37,6 @@ public interface BaseCircle extends HasStroke, HasFill, IsRenderable {
 	 * @param v
 	 */
 	void setUserRadius(double userRadius);
-
-	/**
-	 * Get the x-coordinate of the center in screen space.
-	 * 
-	 * @return
-	 */
-	int getX();
-
-	/**
-	 * Get the y-coordinate of the center in screen space.
-	 * 
-	 * @return
-	 */
-	int getY();
 
 	/**
 	 * Get the radius in screen space.

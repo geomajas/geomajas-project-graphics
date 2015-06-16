@@ -59,41 +59,21 @@ public class BaseTextObject extends BaseGraphicsObject implements BaseText, Drag
 
 	@Override
 	public void setUserPosition(Coordinate position) {
-		text.setUserX(position.getX());
-		text.setUserY(position.getY());
+		text.setUserPosition(position);
 	}
 
 	@Override
 	public Coordinate getUserPosition() {
-		double userX = text.getUserX();
-		double userY = text.getUserY();
-		return new Coordinate(userX, userY);
+		return text.getUserPosition();
 	}
 
 	@Override
 	public Object cloneObject() {
-		BaseTextObject clone = new BaseTextObject(text.getUserX(), text.getUserY(), text.getText());
+		BaseTextObject clone = new BaseTextObject(text.getUserPosition().getX(), text.getUserPosition().getY(),
+				text.getText());
 		clone.setFontFamily(text.getFontFamily());
 		clone.setFontSize(text.getFontSize());
 		return new BaseTextObject(clone, false);
-	}
-
-	@Override
-	public void setLabel(String label) {
-		text.setText(label);
-	}
-
-	@Override
-	public String getLabel() {
-		return text.getText();
-	}
-
-	public double getUserX() {
-		return text.getUserX();
-	}
-
-	public double getUserY() {
-		return text.getUserY();
 	}
 
 	@Override
@@ -108,18 +88,12 @@ public class BaseTextObject extends BaseGraphicsObject implements BaseText, Drag
 
 	@Override
 	public Bbox getUserBounds() {
-		double userX = text.getUserX();
-		double userY = text.getUserY();
-		double userWidth = text.getUserWidth();
-		double userHeight = text.getUserHeight();
-		Bbox box = new Bbox(userX, userY, userWidth, userHeight);
-		return box;
+		return text.getUserBounds();
 	}
 
 	@Override
 	public Bbox getBounds() {
-		// y is lower-left !!!
-		return new Bbox(text.getX(), text.getY() - text.getTextHeight(), text.getTextWidth(), text.getTextHeight());
+		return text.getBounds();
 	}
 
 	@Override
@@ -134,8 +108,7 @@ public class BaseTextObject extends BaseGraphicsObject implements BaseText, Drag
 
 	@Override
 	public void setFontColor(String color) {
-		text.setFillColor(color);
-		text.setStrokeColor(color);
+		text.setFontColor(color);
 	}
 
 	@Override
@@ -203,44 +176,12 @@ public class BaseTextObject extends BaseGraphicsObject implements BaseText, Drag
 		text.setStrokeOpacity(strokeOpacity);
 	}
 
-	public void setUserX(double userX) {
-		text.setUserX(userX);
-	}
-
-	public void setUserY(double userY) {
-		text.setUserY(userY);
-	}
-
 	public String getText() {
 		return text.getText();
 	}
 
 	public void setText(String label) {
 		text.setText(label);
-	}
-
-	public double getUserWidth() {
-		return text.getUserWidth();
-	}
-
-	public double getUserHeight() {
-		return text.getUserHeight();
-	}
-
-	public int getX() {
-		return text.getX();
-	}
-
-	public int getY() {
-		return text.getY();
-	}
-
-	public int getTextHeight() {
-		return text.getTextHeight();
-	}
-
-	public int getTextWidth() {
-		return text.getTextWidth();
 	}
 
 }

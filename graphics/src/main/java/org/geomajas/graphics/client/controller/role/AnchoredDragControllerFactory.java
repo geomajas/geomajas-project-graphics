@@ -13,7 +13,7 @@ package org.geomajas.graphics.client.controller.role;
 import org.geomajas.graphics.client.controller.GraphicsController;
 import org.geomajas.graphics.client.controller.GraphicsControllerFactory;
 import org.geomajas.graphics.client.object.GraphicsObject;
-import org.geomajas.graphics.client.object.role.Anchored;
+import org.geomajas.graphics.client.object.role.HasMarker;
 import org.geomajas.graphics.client.service.GraphicsService;
 
 /**
@@ -27,7 +27,7 @@ public class AnchoredDragControllerFactory implements GraphicsControllerFactory 
 	
 	@Override
 	public boolean supports(GraphicsObject object) {
-		return object.hasRole(Anchored.TYPE);
+		return object.hasRole(HasMarker.TYPE);
 	}
 
 	@Override

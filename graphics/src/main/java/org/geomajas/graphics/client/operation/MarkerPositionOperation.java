@@ -12,7 +12,8 @@ package org.geomajas.graphics.client.operation;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.object.GraphicsObject;
-import org.geomajas.graphics.client.object.role.Anchored;
+import org.geomajas.graphics.client.object.role.HasMarker;
+import org.geomajas.graphics.client.render.Marker;
 
 /**
  * Operation that anchors an object.
@@ -21,7 +22,7 @@ import org.geomajas.graphics.client.object.role.Anchored;
  * @author Jan Venstermans
  * 
  */
-public class AnchoredPositionOperation implements GraphicsOperation {
+public class MarkerPositionOperation implements GraphicsOperation {
 
 	private Coordinate beforePosition;
 
@@ -29,7 +30,7 @@ public class AnchoredPositionOperation implements GraphicsOperation {
 
 	private GraphicsObject anchored;
 
-	public AnchoredPositionOperation(GraphicsObject anchored, Coordinate beforePosition,
+	public MarkerPositionOperation(GraphicsObject anchored, Coordinate beforePosition,
 									 Coordinate afterPosition) {
 		this.beforePosition = beforePosition;
 		this.afterPosition = afterPosition;
@@ -38,16 +39,16 @@ public class AnchoredPositionOperation implements GraphicsOperation {
 
 	@Override
 	public void execute() {
-		asAnchored().setAnchorPosition(afterPosition);
+		asMarker().setUserPosition(afterPosition);
 	}
 
 	@Override
 	public void undo() {
-		asAnchored().setAnchorPosition(beforePosition);
+		asMarker().setUserPosition(beforePosition);
 	}
 
-	private Anchored asAnchored() {
-		return anchored.getRole(Anchored.TYPE);
+	private Marker asMarker() {
+		return anchored.getRole(HasMarker.TYPE).getMarker();
 	}
 
 	@Override

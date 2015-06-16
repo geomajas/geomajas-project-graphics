@@ -20,10 +20,8 @@ import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.object.role.Strokable;
 import org.geomajas.graphics.client.render.BaseRectangle;
 import org.geomajas.graphics.client.render.Renderable;
-import org.geomajas.graphics.client.render.shape.VectorRenderable;
 import org.geomajas.graphics.client.util.CopyUtil;
 import org.geomajas.graphics.client.util.FlipState;
-import org.vaadin.gwtgraphics.client.shape.Rectangle;
 
 /**
  * Extension of {@link BaseGraphicsObject} for a rectangle.
@@ -50,19 +48,18 @@ public class BaseRectangleObject extends BaseGraphicsObject implements BaseRecta
 
 	@Override
 	public void setUserPosition(Coordinate position) {
-		rectangle.setUserX(position.getX());
-		rectangle.setUserY(position.getY());
+		rectangle.setUserPosition(position);
 	}
 
 	@Override
 	public Coordinate getUserPosition() {
-		return new Coordinate(rectangle.getUserX(), rectangle.getUserY());
+		return rectangle.getUserPosition();
 	}
 
 	@Override
 	public Object cloneObject() {
-		BaseRectangleObject clone = new BaseRectangleObject(rectangle.getUserX(), rectangle.getUserY(),
-				rectangle.getUserWidth(), rectangle.getUserHeight());
+		BaseRectangleObject clone = new BaseRectangleObject(rectangle.getUserPosition().getX(), rectangle
+				.getUserPosition().getY(), rectangle.getUserBounds().getWidth(), rectangle.getUserBounds().getHeight());
 		CopyUtil.copyStrokableProperties(this, clone);
 		CopyUtil.copyFillableProperties(this, clone);
 		return clone;
@@ -75,10 +72,7 @@ public class BaseRectangleObject extends BaseGraphicsObject implements BaseRecta
 
 	@Override
 	public void setUserBounds(Bbox bounds) {
-		rectangle.setUserX(bounds.getX());
-		rectangle.setUserY(bounds.getY());
-		rectangle.setUserWidth(bounds.getWidth());
-		rectangle.setUserHeight(bounds.getHeight());
+		rectangle.setUserBounds(bounds);
 	}
 
 	@Override
@@ -93,12 +87,12 @@ public class BaseRectangleObject extends BaseGraphicsObject implements BaseRecta
 
 	@Override
 	public Bbox getUserBounds() {
-		return new Bbox(rectangle.getUserX(), rectangle.getUserY(), rectangle.getUserWidth(), rectangle.getUserHeight());
+		return rectangle.getUserBounds();
 	}
 
 	@Override
 	public Bbox getBounds() {
-		return new Bbox(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
+		return rectangle.getBounds();
 	}
 
 	@Override
@@ -155,53 +149,4 @@ public class BaseRectangleObject extends BaseGraphicsObject implements BaseRecta
 	public void setStrokeOpacity(double opacity) {
 		rectangle.setStrokeOpacity(opacity);
 	}
-
-	public double getUserWidth() {
-		return rectangle.getUserWidth();
-	}
-
-	public void setUserWidth(double userWidth) {
-		rectangle.setUserWidth(userWidth);
-	}
-
-	public double getUserHeight() {
-		return rectangle.getUserHeight();
-	}
-
-	public void setUserHeight(double userHeight) {
-		rectangle.setUserHeight(userHeight);
-	}
-
-	public int getX() {
-		return rectangle.getX();
-	}
-
-	public int getY() {
-		return rectangle.getY();
-	}
-
-	public int getWidth() {
-		return rectangle.getWidth();
-	}
-
-	public int getHeight() {
-		return rectangle.getHeight();
-	}
-
-	public double getUserX() {
-		return rectangle.getUserX();
-	}
-
-	public void setUserX(double userX) {
-		rectangle.setUserX(userX);
-	}
-
-	public double getUserY() {
-		return rectangle.getUserY();
-	}
-
-	public void setUserY(double userY) {
-		rectangle.setUserY(userY);
-	}
-
 }

@@ -13,10 +13,10 @@ package org.geomajas.graphics.client.object.updateable;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.Graphics;
 import org.geomajas.graphics.client.object.base.BaseIcon;
-import org.geomajas.graphics.client.object.role.Anchored;
+import org.geomajas.graphics.client.object.role.HasMarker;
 import org.geomajas.graphics.client.object.role.Draggable;
-import org.geomajas.graphics.client.object.updateable.anchored.AnchoredImpl;
-import org.geomajas.graphics.client.object.updateable.anchored.MarkerShape;
+import org.geomajas.graphics.client.object.updateable.hasmarker.HasMarkerImpl;
+import org.geomajas.graphics.client.object.updateable.hasmarker.MarkerShape;
 import org.geomajas.graphics.client.object.updateable.wrapper.DraggableWrapperForUpdateable;
 import org.geomajas.graphics.client.render.RenderContainer;
 import org.geomajas.graphics.client.render.Renderable;
@@ -35,20 +35,20 @@ public class AnchoredIcon extends UpdateableGroupGraphicsObject {
 
 	private BaseIcon baseIcon;
 
-	private AnchoredImpl anchored;
+	private HasMarkerImpl anchored;
 
 	public AnchoredIcon(Coordinate iconCoordinate, int iconWidth, int iconHeight,
 						String iconHref, Coordinate anchorCoordinate, MarkerShape markerShape) {
 		// create base graphics objects
 		baseIcon = new BaseIcon(iconCoordinate.getX(), iconCoordinate.getY(), iconWidth, iconHeight, iconHref);
-		anchored = new AnchoredImpl(baseIcon, anchorCoordinate, markerShape);
+		anchored = new HasMarkerImpl(baseIcon, anchorCoordinate, markerShape);
 
 		// register updateables
 		addUpdateable(anchored);
 
 		// register roles of group object
 		addRole(Draggable.TYPE, new DraggableWrapperForUpdateable(baseIcon, this));
-		addRole(Anchored.TYPE, anchored);
+		addRole(HasMarker.TYPE, anchored);
 
 		// register render order
 		renderContainer = Graphics.getRenderElementFactory().createRenderContainer();
@@ -59,9 +59,9 @@ public class AnchoredIcon extends UpdateableGroupGraphicsObject {
 	@Override
 	public Object cloneObject() {
 		AnchoredIcon clone = new AnchoredIcon(baseIcon.getUserPosition(), (int) baseIcon.getUserBounds().getWidth(),
-				(int) baseIcon.getUserBounds().getHeight(), baseIcon.getHref(), anchored.getAnchorPosition(),
-				anchored.getMarkerShape());
-		CopyUtil.copyAnchoredProperties(this.getRole(Anchored.TYPE), clone.getRole(Anchored.TYPE));
+				(int) baseIcon.getUserBounds().getHeight(), baseIcon.getHref(), anchored.getMarker().getUserPosition(),
+				anchored.getMarker().getMarkerShape());
+		CopyUtil.copyAnchoredProperties(this.getRole(HasMarker.TYPE), clone.getRole(HasMarker.TYPE));
 		return clone;
 	}
 

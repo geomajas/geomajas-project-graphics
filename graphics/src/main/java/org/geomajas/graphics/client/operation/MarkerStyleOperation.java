@@ -11,7 +11,9 @@
 package org.geomajas.graphics.client.operation;
 
 import org.geomajas.graphics.client.object.GraphicsObject;
-import org.geomajas.graphics.client.object.role.Anchored;
+import org.geomajas.graphics.client.object.role.HasMarker;
+import org.geomajas.graphics.client.object.role.Strokable;
+import org.geomajas.graphics.client.render.Marker;
 
 /**
  * Operation that anchors an object.
@@ -20,7 +22,7 @@ import org.geomajas.graphics.client.object.role.Anchored;
  * @author Jan Venstermans
  * 
  */
-public class AnchoredStyleOperation implements GraphicsOperation {
+public class MarkerStyleOperation implements GraphicsOperation {
 
 	private int beforeStrokeWidth;
 
@@ -44,7 +46,7 @@ public class AnchoredStyleOperation implements GraphicsOperation {
 
 	private GraphicsObject anchored;
 
-	public AnchoredStyleOperation(GraphicsObject anchored, int beforeStrokeWidth,
+	public MarkerStyleOperation(GraphicsObject anchored, int beforeStrokeWidth,
 		  String beforeStrokeColor, double beforeStrokeOpacity, String beforePointColor, double beforePointOpacity,
 		  int afterStrokeWidth, String afterStrokeColor, double afterStrokeOpacity, String afterPointColor,
 		  double afterPointOpacity) {
@@ -63,28 +65,32 @@ public class AnchoredStyleOperation implements GraphicsOperation {
 
 	@Override
 	public void execute() {
-		asAnchored().getAnchorLineStrokable().setStrokeWidth(afterStrokeWidth);
-		asAnchored().getAnchorLineStrokable().setStrokeColor(afterStrokeColor);
-		asAnchored().getAnchorLineStrokable().setStrokeOpacity(afterStrokeOpacity);
-		asAnchored().getAnchorMarkerShapeStrokable().setStrokeColor(afterPointColor);
-		asAnchored().getAnchorMarkerShapeFillable().setFillColor(afterPointColor);
-		asAnchored().getAnchorMarkerShapeStrokable().setStrokeOpacity(afterPointOpacity);
-		asAnchored().getAnchorMarkerShapeFillable().setFillOpacity(afterPointOpacity);
+		asLineStrokable().setStrokeWidth(afterStrokeWidth);
+		asLineStrokable().setStrokeColor(afterStrokeColor);
+		asLineStrokable().setStrokeOpacity(afterStrokeOpacity);
+		asMarker().setStrokeColor(afterPointColor);
+		asMarker().setFillColor(afterPointColor);
+		asMarker().setStrokeOpacity(afterPointOpacity);
+		asMarker().setFillOpacity(afterPointOpacity);
 	}
 
 	@Override
 	public void undo() {
-		asAnchored().getAnchorLineStrokable().setStrokeWidth(beforeStrokeWidth);
-		asAnchored().getAnchorLineStrokable().setStrokeColor(beforeStrokeColor);
-		asAnchored().getAnchorLineStrokable().setStrokeOpacity(beforeStrokeOpacity);
-		asAnchored().getAnchorMarkerShapeStrokable().setStrokeColor(beforePointColor);
-		asAnchored().getAnchorMarkerShapeFillable().setFillColor(beforePointColor);
-		asAnchored().getAnchorMarkerShapeStrokable().setStrokeOpacity(beforePointOpacity);
-		asAnchored().getAnchorMarkerShapeFillable().setFillOpacity(beforePointOpacity);
+		asLineStrokable().setStrokeWidth(beforeStrokeWidth);
+		asLineStrokable().setStrokeColor(beforeStrokeColor);
+		asLineStrokable().setStrokeOpacity(beforeStrokeOpacity);
+		asMarker().setStrokeColor(beforePointColor);
+		asMarker().setFillColor(beforePointColor);
+		asMarker().setStrokeOpacity(beforePointOpacity);
+		asMarker().setFillOpacity(beforePointOpacity);
 	}
 
-	private Anchored asAnchored() {
-		return anchored.getRole(Anchored.TYPE);
+	private Marker asMarker() {
+		return anchored.getRole(HasMarker.TYPE).getMarker();
+	}
+
+	private Strokable asLineStrokable() {
+		return anchored.getRole(HasMarker.TYPE).getMarkerLineStrokable();
 	}
 
 	@Override

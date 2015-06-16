@@ -69,7 +69,7 @@ public class LabeledEllipse extends UpdateableGroupGraphicsObject {
 
 	@Override
 	public Object cloneObject() {
-		LabeledEllipse clone = new LabeledEllipse(baseEllipse.getUserBounds(), labeled.getTextable().getLabel());
+		LabeledEllipse clone = new LabeledEllipse(baseEllipse.getUserBounds(), labeled.getTextable().getText());
 		CopyUtil.copyStrokableProperties(this.getRole(Strokable.TYPE), clone.getRole(Strokable.TYPE));
 		CopyUtil.copyFillableProperties(this.getRole(Fillable.TYPE), clone.getRole(Fillable.TYPE));
 		CopyUtil.copyLabeledProperties(this.getRole(Labeled.TYPE), clone.getRole(Labeled.TYPE));

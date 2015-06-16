@@ -12,11 +12,13 @@ package org.geomajas.graphics.client.object.base;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.geometry.service.BboxService;
 import org.geomajas.graphics.client.GraphicsBaseTest;
 import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.role.Fillable;
 import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.object.role.Strokable;
+import org.geomajas.graphics.client.render.shape.VectorRenderable;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +32,7 @@ public class BaseRectangleTest extends GraphicsBaseTest {
 
 	@Test
 	public void testConstructorCreatesRoles() throws Exception {
-		Bbox bbox =  new Bbox(15, 20, 5, 5);
+		Bbox bbox = new Bbox(15, 20, 5, 5);
 		baseRectangle = createRectangleText(bbox.getX(), bbox.getY(), bbox.getWidth(), bbox.getHeight());
 
 		// strokable
@@ -57,7 +59,7 @@ public class BaseRectangleTest extends GraphicsBaseTest {
 
 	@Test
 	public void testCloneObjectDraggable() throws Exception {
-		Bbox bbox =  new Bbox(15, 20, 5, 5);
+		Bbox bbox = new Bbox(15, 20, 5, 5);
 		baseRectangle = createRectangleText(bbox.getX(), bbox.getY(), bbox.getWidth(), bbox.getHeight());
 		Draggable expected = baseRectangle.getRole(Draggable.TYPE);
 		expected.setUserPosition(new Coordinate(2, 15));
@@ -73,8 +75,8 @@ public class BaseRectangleTest extends GraphicsBaseTest {
 	}
 
 	@Test
-	 public void testCloneObjectResizable() throws Exception {
-		Bbox bbox =  new Bbox(15, 20, 5, 5);
+	public void testCloneObjectResizable() throws Exception {
+		Bbox bbox = new Bbox(15, 20, 5, 5);
 		baseRectangle = createRectangleText(bbox.getX(), bbox.getY(), bbox.getWidth(), bbox.getHeight());
 		Resizable expected = baseRectangle.getRole(Resizable.TYPE);
 		expected.setUserPosition(new Coordinate(2, 15));
@@ -91,7 +93,7 @@ public class BaseRectangleTest extends GraphicsBaseTest {
 
 	@Test
 	public void testCloneObjectStrokable() throws Exception {
-		Bbox bbox =  new Bbox(15, 20, 5, 5);
+		Bbox bbox = new Bbox(15, 20, 5, 5);
 		baseRectangle = createRectangleText(bbox.getX(), bbox.getY(), bbox.getWidth(), bbox.getHeight());
 		Strokable expected = baseRectangle.getRole(Strokable.TYPE);
 		expected.setStrokeColor("strokeColor");
@@ -109,7 +111,7 @@ public class BaseRectangleTest extends GraphicsBaseTest {
 
 	@Test
 	public void testCloneObjectFillable() throws Exception {
-		Bbox bbox =  new Bbox(15, 20, 5, 5);
+		Bbox bbox = new Bbox(15, 20, 5, 5);
 		baseRectangle = createRectangleText(bbox.getX(), bbox.getY(), bbox.getWidth(), bbox.getHeight());
 		Fillable expected = baseRectangle.getRole(Fillable.TYPE);
 		expected.setFillColor("fillColor");
@@ -122,6 +124,16 @@ public class BaseRectangleTest extends GraphicsBaseTest {
 		BaseRectangleObject baseRectangleClone = (BaseRectangleObject) clone;
 		Assert.assertTrue(baseRectangleClone.hasRole(Fillable.TYPE));
 		assertRoleEqualityFillable(expected, baseRectangleClone.getRole(Fillable.TYPE));
+	}
+
+	@Test
+	public void testTransform() {
+		baseRectangle = createRectangleText(10, 20, 30, 40);
+		Assert.assertTrue(BboxService.equals(new Bbox(-5, 0, 30, 40), baseRectangle.getUserBounds(), 1E-7));
+		((VectorRenderable)baseRectangle.getRenderable()).getObject().setScale(1, -1);
+		((VectorRenderable)baseRectangle.getRenderable()).getObject().setTranslation(30, 60);
+		Assert.assertTrue(BboxService.equals(new Bbox(-5, 0, 30, 40), baseRectangle.getUserBounds(), 1E-7));
+		Assert.assertTrue(BboxService.equals(new Bbox(25, 20, 30, 40), baseRectangle.getBounds(), 1E-7));
 	}
 
 	private BaseRectangleObject createRectangleText(double userX, double userY, double width, double height) {

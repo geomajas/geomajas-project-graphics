@@ -42,8 +42,8 @@ import com.google.gwt.event.dom.client.MouseDownHandler;
  * @author Jan De Moerloose
  * 
  */
-public class PopupMenuControllerImpl extends AbstractInterruptibleGraphicsController
-		implements PopupMenuController, PopupMenuController.Handler {
+public class PopupMenuControllerImpl extends AbstractInterruptibleGraphicsController implements PopupMenuController,
+		PopupMenuController.Handler {
 
 	public static final int IMG_DIST = 10;
 
@@ -59,13 +59,13 @@ public class PopupMenuControllerImpl extends AbstractInterruptibleGraphicsContro
 	private PropertyHandler handler;
 
 	private List<Action> actions;
-	
-	public PopupMenuControllerImpl(List<Action> actions, GraphicsObject object, GraphicsService service,
-								  String iconUrl) {
+
+	public PopupMenuControllerImpl(List<Action> actions, GraphicsObject object, GraphicsService service, //
+			String iconUrl) {
 		super(service, object);
 		this.iconUrl = iconUrl;
 
-		//only register actions that are compatible with the object
+		// only register actions that are compatible with the object
 		this.actions = new ArrayList<Action>();
 		for (Action action : actions) {
 			if (action.supports(object)) {
@@ -103,7 +103,7 @@ public class PopupMenuControllerImpl extends AbstractInterruptibleGraphicsContro
 			} else {
 				// just remove the handler
 				if (handler != null) {
-					container.removeFromParent();
+					handler.removeFromContainer();
 				}
 				if (menu != null) {
 					menu.hide();
@@ -134,11 +134,11 @@ public class PopupMenuControllerImpl extends AbstractInterruptibleGraphicsContro
 			}
 		}
 	}
-	
+
 	public AnchoredImageImpl getPropertyImage() {
 		return handler.getPropertyImage();
 	}
-	
+
 	public void setPropertyImage(AnchoredImageImpl propertyImage) {
 		handler.setPropertyImage(propertyImage);
 	}
@@ -158,10 +158,13 @@ public class PopupMenuControllerImpl extends AbstractInterruptibleGraphicsContro
 
 		public PropertyHandler() {
 			propertyImage = new AnchoredImageImpl(0, 0, 16, 16, iconUrl != null ? iconUrl : GWT.getModuleBaseURL()
-					+ "image/cogContrast.png", Graphics.getGraphicsConstants().getOffsetX(),
-					Graphics.getGraphicsConstants().getOffsetY());
+					+ "image/cogContrast.png", 1.125, -1.125);
 			propertyImage.setFixedSize(true);
 			propertyImage.addMouseDownHandler(this);
+		}
+
+		public void removeFromContainer() {
+			container.remove(propertyImage);
 		}
 
 		public void update() {
@@ -187,17 +190,15 @@ public class PopupMenuControllerImpl extends AbstractInterruptibleGraphicsContro
 
 		public void onClick(ClickEvent event) {
 		}
-		
-		
+
 		public AnchoredImageImpl getPropertyImage() {
 			return propertyImage;
 		}
 
-		
 		public void setPropertyImage(AnchoredImageImpl propertyImage) {
 			this.propertyImage = propertyImage;
 		}
-		
+
 	}
 
 	@Override

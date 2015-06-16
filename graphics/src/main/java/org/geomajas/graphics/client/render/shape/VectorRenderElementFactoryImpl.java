@@ -11,7 +11,6 @@
 package org.geomajas.graphics.client.render.shape;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.graphics.client.object.updateable.anchored.AnchorMarker;
 import org.geomajas.graphics.client.object.updateable.bordered.MarginAnchoredRectangleImpl;
 import org.geomajas.graphics.client.render.AnchoredCircle;
 import org.geomajas.graphics.client.render.AnchoredImage;
@@ -23,6 +22,7 @@ import org.geomajas.graphics.client.render.BaseImage;
 import org.geomajas.graphics.client.render.BaseRectangle;
 import org.geomajas.graphics.client.render.BaseText;
 import org.geomajas.graphics.client.render.CoordinatePath;
+import org.geomajas.graphics.client.render.Marker;
 import org.geomajas.graphics.client.render.RenderArea;
 import org.geomajas.graphics.client.render.RenderContainer;
 import org.geomajas.graphics.client.render.RenderElementFactory;
@@ -49,6 +49,20 @@ public class VectorRenderElementFactoryImpl implements RenderElementFactory {
 	public AnchoredRectangle createAnchoredRectangle(double userX, double userY, double userWidth, double userHeight,
 			int anchorX, int anchorY) {
 		return new AnchoredRectangleImpl(userX, userY, userWidth, userHeight, anchorX, anchorY);
+	}
+
+	@Override
+	public AnchoredCircle createAnchoredCircle(double circleCenterX, double circleCenterY, double radius, int anchorX,
+			int anchorY) {
+		return new AnchoredCircleImpl(circleCenterX, circleCenterY, radius, anchorX, anchorY);
+	}
+
+	@Override
+	public AnchoredImage createAnchoredImage(double userX, double userY, int width, int height, String href,
+			boolean preserveRatio, double anchorX, double anchorY) {
+		AnchoredImageImpl anchoredImage = new AnchoredImageImpl(userX, userY, width, height, href, anchorX, anchorY);
+		anchoredImage.setPreserveAspectRatio(preserveRatio);
+		return anchoredImage;
 	}
 
 	@Override
@@ -79,7 +93,8 @@ public class VectorRenderElementFactoryImpl implements RenderElementFactory {
 	}
 
 	@Override
-	public BaseImage createImage(double userX, double userY, int width, int height, String href, boolean preserveRatio) {
+	public BaseImage createImage(double userX, double userY, int width, int height, String href, //
+			boolean preserveRatio) {
 		return new BaseImageImpl(userX, userY, width, height, href);
 	}
 
@@ -89,38 +104,30 @@ public class VectorRenderElementFactoryImpl implements RenderElementFactory {
 	}
 
 	@Override
-	public AnchoredCircle createAnchoredCircle(double circleCenterX, double circleCenterY, double radius, int anchorX,
-			int anchorY) {
-		return new AnchoredCircleImpl(circleCenterX, circleCenterY, radius, anchorX, anchorY);
-	}
-
-	@Override
-	public AnchoredImage createAnchoredImage(double userX, double userY, int width, int height, String href,
-			boolean preserveRatio, double anchorX, double anchorY) {
-		AnchoredImageImpl anchoredImage = new AnchoredImageImpl(userX, userY, width, height, href, anchorX, anchorY);
-		anchoredImage.setPreserveAspectRatio(preserveRatio);
-		return anchoredImage;
-	}
-
-	@Override
 	public RenderContainer createRenderContainer() {
 		return new VectorRenderContainer();
 	}
 
 	@Override
-	public AnchorMarker createMarkerAnchoredRectangle(double userX, double userY, double userWidth, double userHeight,
-			int anchorX, int anchorY) {
-		return new AnchoredRectangleImpl(userX, userY, userWidth, userHeight, anchorX, anchorY);
+	public Marker createRectangleMarker(double userX, double userY, double userWidth, double userHeight, int anchorX,
+			int anchorY) {
+		AnchoredRectangleImpl rect = new AnchoredRectangleImpl(userX, userY, userWidth, userHeight, anchorX, anchorY);
+		rect.setFixedSize(true);
+		return rect;
 	}
 
 	@Override
-	public AnchorMarker createMarkerAnchoredCircle(double circleCenterX, double circleCenterY, double radius,
-			int anchorX, int anchorY) {
-		return new AnchoredCircleImpl(circleCenterX, circleCenterY, radius, anchorX, anchorY);
+	public Marker createCircleMarker(double circleCenterX, double circleCenterY, double radius, int anchorX, //
+			int anchorY) {
+		AnchoredCircleImpl circle = new AnchoredCircleImpl(circleCenterX, circleCenterY, radius, anchorX, anchorY);
+		circle.setFixedSize(true);
+		return circle;
 	}
 
 	@Override
-	public AnchorMarker createMarkerAnchoredCross(double userX, double userY, int crossHeightPixels) {
-		return new AnchoredCrossImpl(6, 6, 8);
+	public Marker createCrossMarker(double userX, double userY, int crossHeightPixels) {
+		AnchoredCrossImpl cross = new AnchoredCrossImpl(6, 6, 8);
+		cross.setFixedSize(true);
+		return cross;
 	}
 }

@@ -62,8 +62,8 @@ public class BorderedText extends UpdateableGroupGraphicsObject {
 
 	@Override
 	public Object cloneObject() {
-		BorderedText clone = new BorderedText(baseText.getUserX(),
-				baseText.getUserY(), baseText.getLabel(), bordered.getMargin());
+		BorderedText clone = new BorderedText(baseText.getUserPosition().getX(),
+				baseText.getUserPosition().getY(), baseText.getText(), bordered.getMargin());
 		CopyUtil.copyTextableProperties(this.getRole(Textable.TYPE), clone.getRole(Textable.TYPE));
 		CopyUtil.copyBorderedProperties(this.getRole(Bordered.TYPE), clone.getRole(Bordered.TYPE));
 		return clone;

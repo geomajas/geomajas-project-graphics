@@ -13,7 +13,7 @@ package org.geomajas.graphics.client.controller.create;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.object.GraphicsObject;
-import org.geomajas.graphics.client.object.role.Anchored;
+import org.geomajas.graphics.client.object.role.HasMarker;
 import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.operation.AddOperation;
 import org.geomajas.graphics.client.render.RenderContainer;
@@ -123,13 +123,14 @@ public abstract class CreateObjectByRectangleController<T extends GraphicsObject
 	//--------------------------------------------------------------
 
 	private void setAnchor(GraphicsObject object) {
-		if (object.hasRole(Anchored.TYPE)) {
+		if (object.hasRole(HasMarker.TYPE)) {
 			Bbox userBounds = object.getRole(Resizable.TYPE).getUserBounds();
 			Coordinate midLow = GraphicsUtil.getPosition(userBounds, BboxPosition.MIDDLE_LOW);
 			Coordinate midLowScreen = getObjectContainer().transform(midLow, RenderSpace.USER, RenderSpace.SCREEN);
-			Coordinate anchorPos = getObjectContainer().transform(
-					new Coordinate(midLowScreen.getX(), midLowScreen.getY() + 20), RenderSpace.SCREEN, RenderSpace.USER);
-			object.getRole(Anchored.TYPE).setAnchorPosition(anchorPos);
+			Coordinate anchorPos = getObjectContainer()
+					.transform(new Coordinate(midLowScreen.getX(), midLowScreen.getY() + 20), RenderSpace.SCREEN,
+							RenderSpace.USER);
+			object.getRole(HasMarker.TYPE).getMarker().setUserPosition(anchorPos);
 		}
 
 	}

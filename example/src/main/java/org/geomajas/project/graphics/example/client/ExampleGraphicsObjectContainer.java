@@ -16,7 +16,6 @@ import java.util.List;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.object.base.BaseCircleObject;
-import org.geomajas.graphics.client.object.base.BaseRectangleObject;
 import org.geomajas.graphics.client.object.role.Textable;
 import org.geomajas.graphics.client.object.updateable.AnchoredBorderedText;
 import org.geomajas.graphics.client.object.updateable.AnchoredIcon;
@@ -24,7 +23,7 @@ import org.geomajas.graphics.client.object.updateable.LabeledEllipse;
 import org.geomajas.graphics.client.object.updateable.LabeledImage;
 import org.geomajas.graphics.client.object.updateable.LabeledPath;
 import org.geomajas.graphics.client.object.updateable.LabeledRectangle;
-import org.geomajas.graphics.client.object.updateable.anchored.MarkerShape;
+import org.geomajas.graphics.client.object.updateable.hasmarker.MarkerShape;
 import org.geomajas.graphics.client.render.shape.VectorRenderArea;
 import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainerImpl;
 
@@ -50,7 +49,7 @@ public class ExampleGraphicsObjectContainer extends GraphicsObjectContainerImpl
 
 	private AbsolutePanel rootPanel;
 	
-	private VectorRenderArea canvas = new VectorRenderArea(1400, 700);
+	private VectorRenderArea canvas = new VectorRenderArea(1400, 500);
 
 	public ExampleGraphicsObjectContainer(EventBus eventBus) {
 		super(eventBus);
@@ -65,7 +64,7 @@ public class ExampleGraphicsObjectContainer extends GraphicsObjectContainerImpl
 		Event.addNativePreviewHandler(this);
 
 		// graphics objects
-		LabeledRectangle rect = new LabeledRectangle(700, 50, 10, 10, "Rectangle label");
+		LabeledRectangle rect = new LabeledRectangle(700, 50, 100, 100, "Rectangle label");
 		BaseCircleObject circle = new BaseCircleObject(300, 100, 50);
 		LabeledEllipse ellipse = new LabeledEllipse(100, 300, 50, 80, "Ellipse");
 		LabeledImage image = new LabeledImage(200, 200, 200, 235,
@@ -74,9 +73,9 @@ public class ExampleGraphicsObjectContainer extends GraphicsObjectContainerImpl
 				false, "Path");
 
 		// anchored bordered text
-		Coordinate textCoordinate = new Coordinate(50, 50);
+		Coordinate textCoordinate = new Coordinate(100, 200);
 		Coordinate textMarkerCoordinate = new Coordinate(textCoordinate);
-		textMarkerCoordinate.setY(textMarkerCoordinate.getY() + 40);
+		textMarkerCoordinate.setY(textMarkerCoordinate.getY() - 40);
 		AnchoredBorderedText text = new AnchoredBorderedText(textCoordinate, "test", 10, textMarkerCoordinate, null);
 		text.getRole(Textable.TYPE).setFontColor("blue");
 
@@ -86,16 +85,13 @@ public class ExampleGraphicsObjectContainer extends GraphicsObjectContainerImpl
 		anchoredIconMarkerCoordinate.setY(anchoredIconMarkerCoordinate.getY() + 40);
 		AnchoredIcon anchoredIcon = new AnchoredIcon(anchoredIconCoordinate, 20, 20, urls.get(2),
 				anchoredIconMarkerCoordinate, MarkerShape.CIRCLE);
-		BaseRectangleObject base = new BaseRectangleObject(0, 0, 100, 100);
-
-		add(base);
-//		add(text);
-//		add(rect);
-//		add(circle);
-//		add(ellipse);
-//		add(image);
-//		add(path);
-//		add(anchoredIcon);
+		add(text);
+		add(rect);
+		add(circle);
+		add(ellipse);
+		add(image);
+		add(path);
+		add(anchoredIcon);
 	}
 
 	private List<String> urls = new ArrayList<String>(Arrays.asList(GWT.getModuleBaseURL() + "image/slider.gif",

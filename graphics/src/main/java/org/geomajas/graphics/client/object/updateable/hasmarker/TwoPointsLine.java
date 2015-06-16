@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.graphics.client.object.updateable.anchored;
+package org.geomajas.graphics.client.object.updateable.hasmarker;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.Graphics;
@@ -112,10 +112,6 @@ public class TwoPointsLine extends BaseGraphicsObject implements Strokable {
 	@Override
 	public Renderable getRenderable() {
 		return coordinatePath.getRenderable();
-	}
-
-	private Coordinate getCoordinate1() {
-		return coordinatePath.getCoordinates()[0];
 	}
 	
 	

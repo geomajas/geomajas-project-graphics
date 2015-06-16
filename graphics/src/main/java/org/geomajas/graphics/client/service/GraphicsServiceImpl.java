@@ -68,7 +68,7 @@ public class GraphicsServiceImpl implements GraphicsService, GraphicsOperationEv
 	
 	@Override
 	public void start() {
-		if(objectContainer == null) {
+		if (objectContainer == null) {
 			throw new IllegalStateException("Cannot start service. Did you forget to set the object container ?");
 		}
 		if (metaController == null) {

@@ -33,14 +33,14 @@ public class TextableWrapperForUpdateable implements Textable {
 	}
 
 	@Override
-	public void setLabel(String label) {
-		delegate.setLabel(label);
+	public void setText(String label) {
+		delegate.setText(label);
 		updateable.onUpdate();
 	}
 
 	@Override
-	public String getLabel() {
-		return delegate.getLabel();
+	public String getText() {
+		return delegate.getText();
 	}
 
 	@Override

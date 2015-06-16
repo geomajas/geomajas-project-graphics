@@ -49,7 +49,8 @@ public class GraphicsObjectDragHandler extends AbstractDragHandler {
 	protected Renderable createInvisibleMask() {
 		// make an invisible mask that is a rectangle of the bounds of the draggable.
 		Bbox bbox = getDraggable().getBounds();
-		invisbleMaskGraphicsObject = new BaseRectangleObject(bbox.getX(), bbox.getY(), bbox.getWidth(), bbox.getHeight());
+		invisbleMaskGraphicsObject = new BaseRectangleObject(bbox.getX(), bbox.getY(), bbox.getWidth(),
+				bbox.getHeight());
 		invisbleMaskGraphicsObject.getRenderable().setOpacity(0);
 		invisbleMaskGraphicsObject.getRenderable().setCursor(Cursor.MOVE.getCssName());	
 		return invisbleMaskGraphicsObject.getRenderable();

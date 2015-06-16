@@ -12,26 +12,26 @@ package org.geomajas.graphics.client.object.updateable;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.Graphics;
-import org.geomajas.graphics.client.object.base.BaseTextObject;
-import org.geomajas.graphics.client.object.role.Anchored;
+import org.geomajas.graphics.client.object.role.HasMarker;
 import org.geomajas.graphics.client.object.role.Bordered;
 import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.role.Fillable;
 import org.geomajas.graphics.client.object.role.Strokable;
 import org.geomajas.graphics.client.object.role.Textable;
-import org.geomajas.graphics.client.object.updateable.anchored.AnchoredImpl;
-import org.geomajas.graphics.client.object.updateable.anchored.MarkerShape;
 import org.geomajas.graphics.client.object.updateable.bordered.BorderedImpl;
+import org.geomajas.graphics.client.object.updateable.hasmarker.HasMarkerImpl;
+import org.geomajas.graphics.client.object.updateable.hasmarker.MarkerShape;
 import org.geomajas.graphics.client.object.updateable.wrapper.DraggableWrapperForUpdateable;
 import org.geomajas.graphics.client.object.updateable.wrapper.TextableWrapperForUpdateable;
 import org.geomajas.graphics.client.render.RenderContainer;
 import org.geomajas.graphics.client.render.Renderable;
+import org.geomajas.graphics.client.render.shape.AnchoredTextImpl;
 import org.geomajas.graphics.client.util.CopyUtil;
 
 /**
  * Extension of {@link UpdateableGroupGraphicsObject}
  * that shows a text centered on a {@link org.geomajas.graphics.client.object.base.BaseRectangleObject},
- * and with an {@link org.geomajas.graphics.client.object.updateable.anchored.AnchoredImpl}.
+ * and with an {@link org.geomajas.graphics.client.object.updateable.hasmarker.HasMarkerImpl}.
  *
  * @author Jan Venstermans
  *
@@ -40,18 +40,18 @@ public class AnchoredBorderedText extends UpdateableGroupGraphicsObject {
 
 	private RenderContainer renderContainer;
 
-	private BaseTextObject baseText;
+	private AnchoredTextImpl baseText;
 
 	private BorderedImpl bordered;
 
-	private AnchoredImpl anchored;
+	private HasMarkerImpl anchored;
 
 	public AnchoredBorderedText(Coordinate textPosition, String text, int margin,  Coordinate anchorCoordinate,
 								MarkerShape markerShape) {
 		// create base graphics objects
-		baseText = new BaseTextObject(textPosition.getX(), textPosition.getY(), text);
+		baseText = new AnchoredTextImpl(textPosition.getX(), textPosition.getY(), text, 0, 0);
 		bordered = new BorderedImpl(baseText, margin);
-		anchored = new AnchoredImpl(baseText, anchorCoordinate, markerShape);
+		anchored = new HasMarkerImpl(baseText, anchorCoordinate, markerShape);
 
 		// register updateables
 		addUpdateable(bordered);
@@ -63,7 +63,7 @@ public class AnchoredBorderedText extends UpdateableGroupGraphicsObject {
 		addRole(Strokable.TYPE, bordered.getStrokable());
 		addRole(Fillable.TYPE, bordered.getFillable());
 		addRole(Bordered.TYPE, bordered);
-		addRole(Anchored.TYPE, anchored);
+		addRole(HasMarker.TYPE, anchored);
 
 		// register render order
 		renderContainer = Graphics.getRenderElementFactory().createRenderContainer();
@@ -75,9 +75,9 @@ public class AnchoredBorderedText extends UpdateableGroupGraphicsObject {
 	@Override
 	public Object cloneObject() {
 		AnchoredBorderedText clone = new AnchoredBorderedText(new Coordinate(baseText.getUserX(),
-				baseText.getUserY()), baseText.getLabel(), bordered.getMargin(), anchored.getAnchorPosition(),
-				anchored.getMarkerShape());
-		CopyUtil.copyAnchoredProperties(this.getRole(Anchored.TYPE), clone.getRole(Anchored.TYPE));
+				baseText.getUserY()), baseText.getText(), bordered.getMargin(), anchored.getMarker().getUserPosition(),
+				anchored.getMarker().getMarkerShape());
+		CopyUtil.copyAnchoredProperties(this.getRole(HasMarker.TYPE), clone.getRole(HasMarker.TYPE));
 		CopyUtil.copyTextableProperties(this.getRole(Textable.TYPE), clone.getRole(Textable.TYPE));
 		CopyUtil.copyBorderedProperties(this.getRole(Bordered.TYPE), clone.getRole(Bordered.TYPE));
 		return clone;

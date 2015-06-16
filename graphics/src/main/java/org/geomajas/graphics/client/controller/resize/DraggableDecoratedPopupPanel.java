@@ -58,12 +58,12 @@ public class DraggableDecoratedPopupPanel extends DecoratedPopupPanel implements
 	}
 
 	@Override
-	public void setLabel(String text) {
+	public void setText(String text) {
 		label.setText(text);
 	}
 
 	@Override
-	public String getLabel() {
+	public String getText() {
 		return label.getText();
 	}
 
@@ -106,8 +106,6 @@ public class DraggableDecoratedPopupPanel extends DecoratedPopupPanel implements
 	}
 
 	private void centerText() {
-		// int upperLeftX = (int) coordinate.getX() - (getOffsetWidth()) /2;
-//		int upperLeftY = (int) coordinate.getY() - (getOffsetHeight()) /2;
 		int upperLeftX = (int) coordinate.getX();
 		int upperLeftY = (int) coordinate.getY();
 		setPopupPosition(upperLeftX, upperLeftY);

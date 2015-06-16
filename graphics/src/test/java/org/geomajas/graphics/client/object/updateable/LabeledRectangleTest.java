@@ -12,6 +12,7 @@ package org.geomajas.graphics.client.object.updateable;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.geometry.service.BboxService;
 import org.geomajas.graphics.client.GraphicsBaseTest;
 import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.role.Fillable;
@@ -100,6 +101,7 @@ public class LabeledRectangleTest extends GraphicsBaseTest {
 		expected.setUserPosition(new Coordinate(2, 15));
 		expected.setUserBounds(new Bbox(15, 20, 5, 5));
 
+		labeledRectangle.getRole(Resizable.TYPE).setUserBounds(bbox);
 		Object clone = labeledRectangle.cloneObject();
 
 		LabeledRectangle labeledRectangleClone = assertIsCorrectObject(clone);
@@ -144,7 +146,8 @@ public class LabeledRectangleTest extends GraphicsBaseTest {
 
 
 	private LabeledRectangle createLabeledRectangle(Bbox bbox, String label) {
-		return new LabeledRectangle(bbox.getX(), bbox.getY(), bbox.getWidth(), bbox.getHeight(), label);
+		Coordinate center = BboxService.getCenterPoint(bbox);
+		return new LabeledRectangle(center.getX(), center.getY(), bbox.getWidth(), bbox.getHeight(), label);
 	}
 
 	private LabeledRectangle assertIsCorrectObject(Object clone) {

@@ -59,7 +59,7 @@ public class LabeledImpl extends BaseGraphicsObject implements Labeled, Updateab
 
 	@Override
 	public Object cloneObject() {
-		LabeledImpl labeledCopy = new LabeledImpl(resizable, baseText.getLabel());
+		LabeledImpl labeledCopy = new LabeledImpl(resizable, baseText.getText());
 		return labeledCopy;
 	}
 

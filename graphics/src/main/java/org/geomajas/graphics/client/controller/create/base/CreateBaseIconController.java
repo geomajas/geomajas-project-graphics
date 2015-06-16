@@ -17,7 +17,7 @@ import org.geomajas.graphics.client.controller.create.CreateController;
 import org.geomajas.graphics.client.controller.create.CreateIconController;
 import org.geomajas.graphics.client.object.base.BaseIcon;
 import org.geomajas.graphics.client.object.role.Draggable;
-import org.geomajas.graphics.client.object.updateable.anchored.MarkerShape;
+import org.geomajas.graphics.client.object.updateable.hasmarker.MarkerShape;
 import org.geomajas.graphics.client.operation.AddOperation;
 import org.geomajas.graphics.client.service.GraphicsService;
 import org.geomajas.graphics.client.widget.CreateIconChoicePopup;

@@ -35,7 +35,8 @@ public class CreateBorderedTextController extends CreateBaseTextController {
 			execute(null);
 			return;
 		}
-		BorderedText borderedText = new BorderedText(result.getUserX(), result.getUserY(), result.getLabel(), 10);
+		BorderedText borderedText = new BorderedText(result.getUserPosition().getX(), result.getUserPosition().getY(),
+				result.getText(), 10);
 		execute(new AddOperation(borderedText));
 	}
 }
