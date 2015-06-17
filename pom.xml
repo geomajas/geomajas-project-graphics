@@ -15,7 +15,7 @@
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-al-parent</artifactId>
-		<version>2.5.0</version>
+		<version>2.6.0</version>
 	</parent>
 
 	<groupId>org.geomajas.project</groupId>
@@ -150,22 +150,6 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
-    <build>
-        <plugins>
-            <!-- can be removed when PAR-32 is resolved -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${graphics-version-maven-compiler-plugin}</version>
-                <configuration>
-                    <encoding>utf8</encoding>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
 	<profiles>
 		<profile>
