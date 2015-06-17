@@ -13,30 +13,30 @@ package org.geomajas.graphics.client.object.updateable;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.service.BboxService;
 import org.geomajas.graphics.client.Graphics;
-import org.geomajas.graphics.client.object.base.BaseEllipse;
+import org.geomajas.graphics.client.object.base.BaseEllipseObject;
 import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.role.Fillable;
+import org.geomajas.graphics.client.object.role.Labeled;
 import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.object.role.Strokable;
-import org.geomajas.graphics.client.object.updateable.labeled.Labeled;
 import org.geomajas.graphics.client.object.updateable.labeled.LabeledImpl;
 import org.geomajas.graphics.client.object.updateable.wrapper.DraggableWrapperForUpdateable;
 import org.geomajas.graphics.client.object.updateable.wrapper.ResizableWrapperForUpdateable;
-import org.geomajas.graphics.client.render.RenderableList;
+import org.geomajas.graphics.client.render.RenderContainer;
+import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.util.CopyUtil;
-import org.vaadin.gwtgraphics.client.VectorObject;
 
 /**
- * Extension of {@link UpdateableGroupGraphicsObject} that shows a text centered on a {@link BaseEllipse}.
+ * Extension of {@link UpdateableGroupGraphicsObject} that shows a text centered on a {@link BaseEllipseObject}.
  *
  * @author Jan Venstermans
  *
  */
 public class LabeledEllipse extends UpdateableGroupGraphicsObject {
 
-	private RenderableList renderableList;
+	private RenderContainer renderContainer;
 
-	private BaseEllipse baseEllipse;
+	private BaseEllipseObject baseEllipse;
 
 	private LabeledImpl labeled;
 
@@ -48,7 +48,7 @@ public class LabeledEllipse extends UpdateableGroupGraphicsObject {
 	public LabeledEllipse(double ellipseCenterX, double ellipseCenterY,
 						  double userRadiusX, double userRadiusY, String text) {
 		// create base graphics objects
-		baseEllipse = new BaseEllipse(ellipseCenterX, ellipseCenterY, userRadiusX, userRadiusY);
+		baseEllipse = new BaseEllipseObject(ellipseCenterX, ellipseCenterY, userRadiusX, userRadiusY);
 		labeled = new LabeledImpl(baseEllipse, text);
 
 		// register updateables
@@ -62,14 +62,14 @@ public class LabeledEllipse extends UpdateableGroupGraphicsObject {
 		addRole(Labeled.TYPE, labeled);
 
 		// register render order
-		renderableList = Graphics.getRenderElementFactory().createRenderableList();
-		renderableList.addRenderable(baseEllipse);
-		renderableList.addRenderable(labeled);
+		renderContainer = Graphics.getRenderElementFactory().createRenderContainer();
+		renderContainer.add(baseEllipse);
+		renderContainer.add(labeled);
 	}
 
 	@Override
 	public Object cloneObject() {
-		LabeledEllipse clone = new LabeledEllipse(baseEllipse.getUserBounds(), labeled.getTextable().getLabel());
+		LabeledEllipse clone = new LabeledEllipse(baseEllipse.getUserBounds(), labeled.getTextable().getText());
 		CopyUtil.copyStrokableProperties(this.getRole(Strokable.TYPE), clone.getRole(Strokable.TYPE));
 		CopyUtil.copyFillableProperties(this.getRole(Fillable.TYPE), clone.getRole(Fillable.TYPE));
 		CopyUtil.copyLabeledProperties(this.getRole(Labeled.TYPE), clone.getRole(Labeled.TYPE));
@@ -80,13 +80,10 @@ public class LabeledEllipse extends UpdateableGroupGraphicsObject {
 	// render section
 	//---------------------------------
 
-	@Override
-	public VectorObject asObject() {
-		return renderableList.asObject();
-	}
 
 	@Override
-	public void setOpacity(double opacity) {
-		renderableList.setOpacity(opacity);
+	public Renderable getRenderable() {
+		return renderContainer;
 	}
+
 }

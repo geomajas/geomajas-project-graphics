@@ -29,6 +29,13 @@ public final class GraphicsUtil {
 		return new Bbox(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
 	}
 
+	public static Bbox transform(Bbox bounds, double scaleX, double scaleY, double deltaX, double deltaY) {
+		Coordinate c1 = new Coordinate(bounds.getX() * scaleX + deltaX, bounds.getY() * scaleY + deltaY);
+		Coordinate c2 = new Coordinate((bounds.getX() + bounds.getWidth()) * scaleX + deltaX,
+				(bounds.getY() + bounds.getHeight()) * scaleY + deltaY);
+		return toBbox(c1, c2);
+	}
+
 	public static Coordinate getPosition(Bbox bounds, BboxPosition position) {
 		switch (position) {
 			case CORNER_LL:

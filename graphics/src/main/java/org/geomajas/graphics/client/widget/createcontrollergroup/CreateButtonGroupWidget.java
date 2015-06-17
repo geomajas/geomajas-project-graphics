@@ -10,11 +10,12 @@
  */
 package org.geomajas.graphics.client.widget.createcontrollergroup;
 
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.graphics.client.Graphics;
 import org.geomajas.graphics.client.controller.create.CreateController;
 import org.geomajas.graphics.client.service.GraphicsService;
+
+import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Default implementation of

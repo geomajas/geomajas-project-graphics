@@ -24,7 +24,7 @@ import com.google.gwtmockito.GwtMockitoTestRunner;
 @RunWith(GwtMockitoTestRunner.class)
 public class BaseTextTest extends GraphicsBaseTest {
 
-	private BaseText baseText;
+	private BaseTextObject baseText;
 
 	@Test
 	public void testConstructorCreatesRoles() throws Exception {
@@ -57,8 +57,8 @@ public class BaseTextTest extends GraphicsBaseTest {
 		Object clone = baseText.cloneObject();
 
 		Assert.assertNotNull(clone);
-		Assert.assertTrue(clone instanceof BaseText);
-		BaseText baseTextClone = (BaseText) clone;
+		Assert.assertTrue(clone instanceof BaseTextObject);
+		BaseTextObject baseTextClone = (BaseTextObject) clone;
 		Assert.assertTrue(baseTextClone.hasRole(Textable.TYPE));
 		assertRoleEqualityTextable(baseText.getRole(Textable.TYPE), baseTextClone.getRole(Textable.TYPE));
 	}
@@ -75,14 +75,14 @@ public class BaseTextTest extends GraphicsBaseTest {
 		Object clone = baseText.cloneObject();
 
 		Assert.assertNotNull(clone);
-		Assert.assertTrue(clone instanceof BaseText);
-		BaseText baseTextClone = (BaseText) clone;
+		Assert.assertTrue(clone instanceof BaseTextObject);
+		BaseTextObject baseTextClone = (BaseTextObject) clone;
 		Assert.assertTrue(baseTextClone.hasRole(Draggable.TYPE));
 		assertRoleEqualityDraggable(baseText.getRole(Draggable.TYPE), baseTextClone.getRole(Draggable.TYPE));
 	}
 
-	private BaseText createBaseText(double userX, double userY, String text) {
-		return new BaseText(userX, userY, text);
+	private BaseTextObject createBaseText(double userX, double userY, String text) {
+		return new BaseTextObject(userX, userY, text);
 	}
 
 }

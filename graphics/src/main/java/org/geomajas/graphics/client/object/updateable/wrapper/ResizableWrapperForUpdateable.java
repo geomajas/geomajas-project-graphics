@@ -12,13 +12,13 @@ package org.geomajas.graphics.client.object.updateable.wrapper;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.graphics.client.object.Updateable;
 import org.geomajas.graphics.client.object.role.Resizable;
-import org.geomajas.graphics.client.object.updateable.Updateable;
 import org.geomajas.graphics.client.util.FlipState;
 
 /**
  * Wrapper around a {@link Resizable} that will trigger
- * {@link org.geomajas.graphics.client.object.updateable.Updateable#onUpdate()}
+ * {@link org.geomajas.graphics.client.object.Updateable#onUpdate()}
  * on certain {@link Resizable} method calls.
  *
  * @author Jan Venstermans

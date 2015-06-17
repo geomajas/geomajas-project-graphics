@@ -10,21 +10,12 @@
  */
 package org.geomajas.project.graphics.example.client;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.MouseEvent;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.Event.NativePreviewEvent;
-import com.google.gwt.user.client.Event.NativePreviewHandler;
-import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.web.bindery.event.shared.EventBus;
-import org.geomajas.geometry.Bbox;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.geometry.service.BboxService;
-import org.geomajas.graphics.client.object.base.BaseCircle;
+import org.geomajas.graphics.client.object.base.BaseCircleObject;
 import org.geomajas.graphics.client.object.role.Textable;
 import org.geomajas.graphics.client.object.updateable.AnchoredBorderedText;
 import org.geomajas.graphics.client.object.updateable.AnchoredIcon;
@@ -32,37 +23,40 @@ import org.geomajas.graphics.client.object.updateable.LabeledEllipse;
 import org.geomajas.graphics.client.object.updateable.LabeledImage;
 import org.geomajas.graphics.client.object.updateable.LabeledPath;
 import org.geomajas.graphics.client.object.updateable.LabeledRectangle;
-import org.geomajas.graphics.client.service.objectcontainer.AbstractGraphicsObjectContainer;
-import org.geomajas.graphics.client.object.updateable.anchored.MarkerShape;
-import org.geomajas.graphics.client.util.BboxPosition;
-import org.vaadin.gwtgraphics.client.DrawingArea;
+import org.geomajas.graphics.client.object.updateable.hasmarker.MarkerShape;
+import org.geomajas.graphics.client.render.shape.VectorRenderArea;
+import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainerImpl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Event.NativePreviewEvent;
+import com.google.gwt.user.client.Event.NativePreviewHandler;
+import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.web.bindery.event.shared.EventBus;
 
 /**
- * Sample extension of {@link AbstractGraphicsObjectContainer}.
+ * Sample extension of {@link GraphicsObjectContainerImpl}.
  * 
  * @author Jan De Moerloose
  * 
  */
-public class ExampleGraphicsObjectContainer extends AbstractGraphicsObjectContainer
+public class ExampleGraphicsObjectContainer extends GraphicsObjectContainerImpl
 		implements IsWidget, NativePreviewHandler {
 
 	private AbsolutePanel rootPanel;
 	
-	private DrawingArea canvas = new DrawingArea(1400, 700);
-
-	private TransformingGroup rootContainer = new TransformingGroup();
+	private VectorRenderArea canvas = new VectorRenderArea(1400, 500);
 
 	public ExampleGraphicsObjectContainer(EventBus eventBus) {
 		super(eventBus);
 		rootPanel = new AbsolutePanel();
 		rootPanel.setPixelSize(canvas.getWidth(), canvas.getHeight());
-		canvas.getElement().setId("TestContainer");
-		canvas.add(rootContainer);
-		setRootContainer(rootContainer);
+		canvas.getDrawingArea().getElement().setId("TestContainer");
+		setRenderArea(canvas);
 		setBackGround(rootPanel);
 		setWidgetContainer(rootPanel);
 		rootPanel.add(canvas);
@@ -70,8 +64,8 @@ public class ExampleGraphicsObjectContainer extends AbstractGraphicsObjectContai
 		Event.addNativePreviewHandler(this);
 
 		// graphics objects
-		LabeledRectangle rect = new LabeledRectangle(100, 100, 100, 100, "Rectangle label");
-		BaseCircle circle = new BaseCircle(300, 100, 50);
+		LabeledRectangle rect = new LabeledRectangle(700, 250, 100, 100, "Rectangle label");
+		BaseCircleObject circle = new BaseCircleObject(300, 100, 50);
 		LabeledEllipse ellipse = new LabeledEllipse(100, 300, 50, 80, "Ellipse");
 		LabeledImage image = new LabeledImage(200, 200, 200, 235,
 				"http://tuxpaint.org/stamps/stamps/animals/birds/cartoon/tux.png", "Image");
@@ -79,9 +73,9 @@ public class ExampleGraphicsObjectContainer extends AbstractGraphicsObjectContai
 				false, "Path");
 
 		// anchored bordered text
-		Coordinate textCoordinate = new Coordinate(50, 50);
+		Coordinate textCoordinate = new Coordinate(100, 200);
 		Coordinate textMarkerCoordinate = new Coordinate(textCoordinate);
-		textMarkerCoordinate.setY(textMarkerCoordinate.getY() + 40);
+		textMarkerCoordinate.setY(textMarkerCoordinate.getY() - 40);
 		AnchoredBorderedText text = new AnchoredBorderedText(textCoordinate, "test", 10, textMarkerCoordinate, null);
 		text.getRole(Textable.TYPE).setFontColor("blue");
 
@@ -91,7 +85,6 @@ public class ExampleGraphicsObjectContainer extends AbstractGraphicsObjectContai
 		anchoredIconMarkerCoordinate.setY(anchoredIconMarkerCoordinate.getY() + 40);
 		AnchoredIcon anchoredIcon = new AnchoredIcon(anchoredIconCoordinate, 20, 20, urls.get(2),
 				anchoredIconMarkerCoordinate, MarkerShape.CIRCLE);
-
 		add(text);
 		add(rect);
 		add(circle);
@@ -99,10 +92,6 @@ public class ExampleGraphicsObjectContainer extends AbstractGraphicsObjectContai
 		add(image);
 		add(path);
 		add(anchoredIcon);
-	}
-	
-	public TransformingGroup getRootContainer() {
-		return rootContainer;
 	}
 
 	private List<String> urls = new ArrayList<String>(Arrays.asList(GWT.getModuleBaseURL() + "image/slider.gif",
@@ -112,8 +101,8 @@ public class ExampleGraphicsObjectContainer extends AbstractGraphicsObjectContai
 	@Override
 	public void onPreviewNativeEvent(NativePreviewEvent event) {
 		Element relatedEventTarget = event.getNativeEvent().getEventTarget().cast();
-		if (relatedEventTarget != null && canvas.isAttached()) {
-			if (DOM.isOrHasChild(canvas.getElement(), relatedEventTarget)) {
+		if (relatedEventTarget != null && canvas.getDrawingArea().isAttached()) {
+			if (DOM.isOrHasChild(canvas.getDrawingArea().getElement(), relatedEventTarget)) {
 				event.getNativeEvent().preventDefault();
 			}
 		}
@@ -122,62 +111,6 @@ public class ExampleGraphicsObjectContainer extends AbstractGraphicsObjectContai
 	@Override
 	public Widget asWidget() {
 		return rootPanel;
-	}
-
-	@Override
-	public Coordinate getScreenCoordinate(MouseEvent<?> event) {
-		return new Coordinate(event.getRelativeX(canvas.getElement()), event.getRelativeY(canvas.getElement()));
-	}
-
-	@Override
-	public Coordinate transform(Coordinate coordinate, Space from, Space to) {
-		if (from == to) {
-			return (Coordinate) coordinate.clone();
-		}
-		double x = coordinate.getX();
-		double y = coordinate.getY();
-		switch (to) {
-			case SCREEN:
-				double xs = x * rootContainer.getScaleX() + rootContainer.getDeltaX();
-				double ys = y * rootContainer.getScaleY() + rootContainer.getDeltaY();
-				return new Coordinate(xs, ys);
-			case USER:
-			default:
-				double xu = (x - rootContainer.getDeltaX()) / rootContainer.getScaleX();
-				double yu = (y - rootContainer.getDeltaY()) / rootContainer.getScaleY();
-				return new Coordinate(xu, yu);
-		}
-	}
-
-	@Override
-	public Bbox transform(Bbox bounds, Space from, Space to) {
-		Coordinate p1 = transform(BboxService.getOrigin(bounds), from, to);
-		Coordinate p2 = transform(BboxService.getEndPoint(bounds), from, to);
-		return new Bbox(Math.min(p1.getX(), p2.getX()), Math.min(p1.getY(), p2.getY()),
-				Math.abs(p1.getX() - p2.getX()), Math.abs(p1.getY() - p2.getY()));
-	}
-
-	@Override
-	public BboxPosition transform(BboxPosition position, Space from, Space to) {
-		switch (position) {
-			case CORNER_LL:
-				return BboxPosition.CORNER_UL;
-			case CORNER_LR:
-				return BboxPosition.CORNER_UR;
-			case CORNER_UL:
-				return BboxPosition.CORNER_LL;
-			case CORNER_UR:
-				return BboxPosition.CORNER_LR;
-			case MIDDLE_LEFT:
-				return BboxPosition.MIDDLE_LEFT;
-			case MIDDLE_LOW:
-				return BboxPosition.MIDDLE_UP;
-			case MIDDLE_RIGHT:
-				return BboxPosition.MIDDLE_RIGHT;
-			case MIDDLE_UP:
-			default:
-				return BboxPosition.MIDDLE_LOW;
-		}
 	}
 
 }

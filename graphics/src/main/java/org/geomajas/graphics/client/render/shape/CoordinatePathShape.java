@@ -17,6 +17,7 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.service.BboxService;
 import org.geomajas.graphics.client.render.CoordinatePath;
+import org.geomajas.graphics.client.render.Renderable;
 import org.vaadin.gwtgraphics.client.Shape;
 import org.vaadin.gwtgraphics.client.VectorObject;
 import org.vaadin.gwtgraphics.client.shape.Path;
@@ -34,6 +35,8 @@ import org.vaadin.gwtgraphics.client.shape.path.ScaleHelper;
  */
 public class CoordinatePathShape extends Shape implements CoordinatePath {
 
+	private VectorRenderable renderable;
+
 	private List<PathStep> steps = new ArrayList<PathStep>();
 
 	private boolean closed;
@@ -44,6 +47,7 @@ public class CoordinatePathShape extends Shape implements CoordinatePath {
 
 	public CoordinatePathShape(Coordinate[] coordinates, boolean closed) {
 		this.closed = closed;
+		this.renderable = new VectorRenderable(this);
 		if (!closed) {
 			// for lines: clicking the fill area (or bounding box) does not trigger pointer events
 			setFillColor("none");
@@ -230,15 +234,10 @@ public class CoordinatePathShape extends Shape implements CoordinatePath {
 		}
 	}
 
-	@Override
-	public VectorObject asObject() {
-		return this;
-	}
 
 	@Override
-	public void setOpacity(double opacity) {
-		setFillOpacity(opacity);
-		setStrokeOpacity(opacity);
+	public Renderable getRenderable() {
+		return renderable;
 	}
 
 	private boolean hasCoordinates() {

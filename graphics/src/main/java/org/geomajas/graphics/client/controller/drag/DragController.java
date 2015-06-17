@@ -10,14 +10,14 @@
  */
 package org.geomajas.graphics.client.controller.drag;
 
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseDownHandler;
 import org.geomajas.geometry.service.BboxService;
 import org.geomajas.graphics.client.controller.UpdateHandlerGraphicsController;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.service.GraphicsService;
-import org.vaadin.gwtgraphics.client.Group;
+
+import com.google.gwt.event.dom.client.MouseDownEvent;
+import com.google.gwt.event.dom.client.MouseDownHandler;
 
 /**
  * {@link org.geomajas.graphics.client.controller.UpdateHandlerGraphicsController}
@@ -61,10 +61,10 @@ public class DragController extends UpdateHandlerGraphicsController implements M
 
 	@Override
 	protected void init() {
-		setHandlerGroup(new Group());
+		setHandlerGroup(getService().getObjectContainer().createContainer());
 		// create the drag handler and attach it
 		dragHandler = new GraphicsObjectDragHandler(getObject(), getService(), this);
-		getHandlerGroup().add(dragHandler.getInvisbleMaskGraphicsObject().asObject());
+		getHandlerGroup().add(dragHandler.getInvisbleMaskGraphicsObject().getRenderable());
 		// update positions
 		updateHandlers();
 		// add the group

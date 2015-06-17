@@ -10,28 +10,28 @@
  */
 package org.geomajas.graphics.client.controller.create.base;
 
+import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.graphics.client.controller.create.CreateController;
+import org.geomajas.graphics.client.object.base.BaseCircleObject;
+import org.geomajas.graphics.client.object.role.Fillable;
+import org.geomajas.graphics.client.object.role.Resizable;
+import org.geomajas.graphics.client.object.role.Strokable;
+import org.geomajas.graphics.client.object.role.cache.FillableCache;
+import org.geomajas.graphics.client.object.role.cache.StrokableCache;
+import org.geomajas.graphics.client.object.updateable.hasmarker.TwoPointsLine;
+import org.geomajas.graphics.client.operation.AddOperation;
+import org.geomajas.graphics.client.render.RenderContainer;
+import org.geomajas.graphics.client.service.GraphicsService;
+import org.geomajas.graphics.client.util.CopyUtil;
+
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.user.client.DOM;
 import com.google.web.bindery.event.shared.HandlerRegistration;
-import org.geomajas.geometry.Bbox;
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.graphics.client.controller.create.CreateController;
-import org.geomajas.graphics.client.object.base.BaseCircle;
-import org.geomajas.graphics.client.object.role.Fillable;
-import org.geomajas.graphics.client.object.role.Resizable;
-import org.geomajas.graphics.client.object.role.Strokable;
-import org.geomajas.graphics.client.object.role.cache.FillableCache;
-import org.geomajas.graphics.client.object.role.cache.StrokableCache;
-import org.geomajas.graphics.client.object.updateable.anchored.TwoPointsLine;
-import org.geomajas.graphics.client.operation.AddOperation;
-import org.geomajas.graphics.client.service.GraphicsService;
-import org.geomajas.graphics.client.util.CopyUtil;
-import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 
 /**
  * Generic controller that allows to drag a rectangle on the map,
@@ -41,9 +41,9 @@ import org.vaadin.gwtgraphics.client.VectorObjectContainer;
  *
  */
 public class CreateBaseCircleByRadiusController
-		extends CreateController<BaseCircle> implements MouseDownHandler, MouseMoveHandler, MouseUpHandler {
+		extends CreateController<BaseCircleObject> implements MouseDownHandler, MouseMoveHandler, MouseUpHandler {
 
-	private BaseCircle dragResizable;
+	private BaseCircleObject dragResizable;
 
 	private Coordinate begin;
 
@@ -52,7 +52,7 @@ public class CreateBaseCircleByRadiusController
 	/**
 	 * Our own container.
 	 */
-	private VectorObjectContainer container;
+	private RenderContainer container;
 
 	private HandlerRegistration registration;
 
@@ -64,7 +64,7 @@ public class CreateBaseCircleByRadiusController
 
 	public CreateBaseCircleByRadiusController(GraphicsService graphicsService) {
 		super(graphicsService);
-		container = createContainer();
+		container = addContainer();
 		// default values of fillable, strokable
 		getCircleStrokable().setStrokeColor("black");
 		getCircleStrokable().setStrokeOpacity(1.0);
@@ -80,7 +80,7 @@ public class CreateBaseCircleByRadiusController
 	public void setActive(boolean active) {
 		super.setActive(active);
 		if (active) {
-			container = createContainer();
+			container = addContainer();
 			registration = getObjectContainer().addMouseDownHandler(this);
 		} else {
 			if (container != null) {
@@ -101,18 +101,18 @@ public class CreateBaseCircleByRadiusController
 			//circle
 			dragResizable = createObjectWithoutBounds();
 			dragResizable.getRole(Resizable.TYPE).setUserBounds(new Bbox(begin.getX(), begin.getY(), 0, 0));
-			dragResizable.asObject().addMouseMoveHandler(this);
-			dragResizable.asObject().addMouseUpHandler(this);
+			dragResizable.getRenderable().addMouseMoveHandler(this);
+			dragResizable.getRenderable().addMouseUpHandler(this);
 			CopyUtil.copyStrokableProperties(circleStrokable, dragResizable);
 			CopyUtil.copyFillableProperties(circleFillable, dragResizable);
-			container.add(dragResizable.asObject());
+			container.add(dragResizable);
 
 			//line
 			tempPath = new TwoPointsLine(new Coordinate(begin), new Coordinate(begin));
 			CopyUtil.copyStrokableProperties(pathStrokable, tempPath);
-			container.add(tempPath.asObject());
+			container.add(tempPath);
 		}
-		DOM.setCapture(dragResizable.asObject().getElement());
+		dragResizable.getRenderable().capture();
 	}
 
 	@Override
@@ -124,13 +124,13 @@ public class CreateBaseCircleByRadiusController
 
 	@Override
 	public void onMouseUp(MouseUpEvent event) {
-		BaseCircle result = createObjectWithoutBounds();
+		BaseCircleObject result = createObjectWithoutBounds();
 		result.getRole(Resizable.TYPE).setUserBounds(dragResizable.getRole(Resizable.TYPE).getUserBounds());
 		CopyUtil.copyStrokableProperties(circleStrokable, result);
 		CopyUtil.copyFillableProperties(circleFillable, result);
-		DOM.releaseCapture(dragResizable.asObject().getElement());
-		container.remove(dragResizable.asObject());
-		container.remove(tempPath.asObject());
+		dragResizable.getRenderable().releaseCapture();
+		dragResizable.getRenderable().removeFromParent();
+		tempPath.getRenderable().removeFromParent();
 		dragResizable = null;
 		tempPath = null;
 		execute(new AddOperation(result));
@@ -152,8 +152,8 @@ public class CreateBaseCircleByRadiusController
 	// private methods
 	//--------------------------------------------------------------
 
-	private BaseCircle createObjectWithoutBounds() {
-		BaseCircle ellipse = new BaseCircle(0, 0, 0);
+	private BaseCircleObject createObjectWithoutBounds() {
+		BaseCircleObject ellipse = new BaseCircleObject(0, 0, 0);
 		return ellipse;
 	}
 

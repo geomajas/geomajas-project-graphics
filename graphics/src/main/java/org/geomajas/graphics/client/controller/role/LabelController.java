@@ -10,6 +10,16 @@
  */
 package org.geomajas.graphics.client.controller.role;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.geomajas.graphics.client.controller.AbstractInterruptibleGraphicsController;
+import org.geomajas.graphics.client.controller.GraphicsControllerWithVisibleElement;
+import org.geomajas.graphics.client.object.GraphicsObject;
+import org.geomajas.graphics.client.object.role.Labeled;
+import org.geomajas.graphics.client.operation.LabelOperation;
+import org.geomajas.graphics.client.service.GraphicsService;
+
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
@@ -23,15 +33,6 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.web.bindery.event.shared.HandlerRegistration;
-import org.geomajas.graphics.client.controller.AbstractInterruptibleGraphicsController;
-import org.geomajas.graphics.client.controller.GraphicsControllerWithVisibleElement;
-import org.geomajas.graphics.client.object.GraphicsObject;
-import org.geomajas.graphics.client.object.updateable.labeled.Labeled;
-import org.geomajas.graphics.client.operation.LabelOperation;
-import org.geomajas.graphics.client.service.GraphicsService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Controller to change object label.
@@ -72,7 +73,7 @@ public class LabelController extends AbstractInterruptibleGraphicsController imp
 
 	@Override
 	public void onDoubleClick(DoubleClickEvent event) {
-		popup.setText(object.getTextable().getLabel());
+		popup.setText(object.getTextable().getText());
 		popup.clearAndShow(event.getClientX(), event.getClientY());
 		popupRegs.add(popup.addCloseHandler(handler));
 		popupRegs.add(popup.addDomHandler(handler, KeyDownEvent.getType()));
@@ -140,7 +141,7 @@ public class LabelController extends AbstractInterruptibleGraphicsController imp
 		@Override
 		public void onKeyDown(KeyDownEvent event) {
 			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-				execute(new LabelOperation(getObject(), null, object.getTextable().getLabel(), popup.getText()));
+				execute(new LabelOperation(getObject(), null, object.getTextable().getText(), popup.getText()));
 				clearPopup();
 			}
 		}
@@ -154,7 +155,7 @@ public class LabelController extends AbstractInterruptibleGraphicsController imp
 
 	@Override
 	public void setControllerElementsVisible(boolean visible) {
-		getObject().asObject().setVisible(visible);
+		getObject().getRenderable().setVisible(visible);
 	}
 
 }

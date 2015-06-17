@@ -24,13 +24,13 @@ import com.google.gwtmockito.GwtMockitoTestRunner;
 @RunWith(GwtMockitoTestRunner.class)
 public class BaseImageTest extends GraphicsBaseTest {
 
-	private BaseImage baseImage;
+	private BaseImageObject baseImage;
 
 	private String url = "testUrl";
 
 	@Before
 	public void construct() throws Exception {
-		baseImage = new BaseImage(15, 20, 5, 8, url, true);
+		baseImage = new BaseImageObject(15, 20, 5, 8, url, true);
 	}
 
 	@Test
@@ -55,8 +55,8 @@ public class BaseImageTest extends GraphicsBaseTest {
 		Object clone = baseImage.cloneObject();
 
 		Assert.assertNotNull(clone);
-		Assert.assertTrue(clone instanceof BaseImage);
-		BaseImage baseImageClone = (BaseImage) clone;
+		Assert.assertTrue(clone instanceof BaseImageObject);
+		BaseImageObject baseImageClone = (BaseImageObject) clone;
 		Assert.assertTrue(baseImageClone.hasRole(Draggable.TYPE));
 		assertRoleEqualityDraggable(expected, baseImageClone.getRole(Draggable.TYPE));
 	}
@@ -69,8 +69,8 @@ public class BaseImageTest extends GraphicsBaseTest {
 		Object clone = baseImage.cloneObject();
 
 		Assert.assertNotNull(clone);
-		Assert.assertTrue(clone instanceof BaseImage);
-		BaseImage baseImageClone = (BaseImage) clone;
+		Assert.assertTrue(clone instanceof BaseImageObject);
+		BaseImageObject baseImageClone = (BaseImageObject) clone;
 		Assert.assertTrue(baseImageClone.hasRole(Resizable.TYPE));
 		assertRoleEqualityResizable(expected, baseImageClone.getRole(Resizable.TYPE));
 	}

@@ -10,6 +10,7 @@
  */
 package org.geomajas.graphics.client.controller;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.service.GraphicsService;
 
@@ -18,7 +19,9 @@ import org.geomajas.graphics.client.service.GraphicsService;
  * 
  * @param <C> type of graphicsController that will be created
  * @author Jan De Moerloose
+ * @since 1.0.0
  */
+@Api(allMethods = true)
 public interface GraphicsControllerFactory<C extends GraphicsController> {
 
 	/**

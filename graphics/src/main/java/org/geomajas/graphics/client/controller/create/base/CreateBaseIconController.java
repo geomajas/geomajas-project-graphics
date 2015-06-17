@@ -10,20 +10,21 @@
  */
 package org.geomajas.graphics.client.controller.create.base;
 
-import com.google.gwt.event.dom.client.MouseUpEvent;
-import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.web.bindery.event.shared.HandlerRegistration;
+import java.util.List;
+
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.controller.create.CreateController;
 import org.geomajas.graphics.client.controller.create.CreateIconController;
-import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.base.BaseIcon;
+import org.geomajas.graphics.client.object.role.Draggable;
+import org.geomajas.graphics.client.object.updateable.hasmarker.MarkerShape;
 import org.geomajas.graphics.client.operation.AddOperation;
 import org.geomajas.graphics.client.service.GraphicsService;
-import org.geomajas.graphics.client.object.updateable.anchored.MarkerShape;
 import org.geomajas.graphics.client.widget.CreateIconChoicePopup;
 
-import java.util.List;
+import com.google.gwt.event.dom.client.MouseUpEvent;
+import com.google.gwt.event.dom.client.MouseUpHandler;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 
 /**
  * Controller that creates a {@link BaseIcon}.

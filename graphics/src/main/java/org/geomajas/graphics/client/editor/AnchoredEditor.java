@@ -10,6 +10,19 @@
  */
 package org.geomajas.graphics.client.editor;
 
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.graphics.client.object.GraphicsObject;
+import org.geomajas.graphics.client.object.role.HasMarker;
+import org.geomajas.graphics.client.object.role.Strokable;
+import org.geomajas.graphics.client.operation.MarkerPositionOperation;
+import org.geomajas.graphics.client.operation.MarkerStyleOperation;
+import org.geomajas.graphics.client.resource.GraphicsResource;
+import org.geomajas.graphics.client.service.GraphicsService;
+import org.geomajas.graphics.client.util.textbox.ColorTextBoxValidator;
+import org.geomajas.graphics.client.util.textbox.DoubleTextBoxValidator;
+import org.geomajas.graphics.client.util.textbox.IntegerTextBoxValidator;
+import org.geomajas.graphics.client.widget.TransparencySliderBar;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -21,23 +34,10 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.mogaleaf.client.common.widgets.ColorHandler;
 import com.mogaleaf.client.common.widgets.SimpleColorPicker;
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.graphics.client.object.GraphicsObject;
-import org.geomajas.graphics.client.object.role.Fillable;
-import org.geomajas.graphics.client.object.role.Strokable;
-import org.geomajas.graphics.client.object.updateable.anchored.Anchored;
-import org.geomajas.graphics.client.operation.AnchoredPositionOperation;
-import org.geomajas.graphics.client.operation.AnchoredStyleOperation;
-import org.geomajas.graphics.client.resource.GraphicsResource;
-import org.geomajas.graphics.client.service.GraphicsService;
-import org.geomajas.graphics.client.util.textbox.ColorTextBoxValidator;
-import org.geomajas.graphics.client.util.textbox.DoubleTextBoxValidator;
-import org.geomajas.graphics.client.util.textbox.IntegerTextBoxValidator;
-import org.geomajas.graphics.client.widget.TransparencySliderBar;
 
 /**
  * {@link org.geomajas.graphics.client.editor.Editor} for the
- * {@link org.geomajas.graphics.client.object.updateable.anchored.Anchored} role.
+ * {@link org.geomajas.graphics.client.object.role.HasMarker} role.
  *
  * @author Jan De Moerloose
  * @author Jan Venstermans
@@ -151,7 +151,7 @@ public class AnchoredEditor implements Editor {
 
 	@Override
 	public boolean supports(GraphicsObject object) {
-		return object.hasRole(Anchored.TYPE) ;
+		return object.hasRole(HasMarker.TYPE) ;
 	}
 
 	@Override
@@ -164,13 +164,13 @@ public class AnchoredEditor implements Editor {
 		strokeLabel.setText(GraphicsResource.MESSAGES.editorLabelAnchorStrokeDefault());
 
 		//point style
-		pointColorBox.setLabel(getAnchorMarkerShapeStrokable().getStrokeColor());
-		pointOpacitySlider.setCurrentValue(1 - getAnchorMarkerShapeStrokable().getStrokeOpacity());
+		pointColorBox.setLabel(getAnchored().getMarker().getStrokeColor());
+		pointOpacitySlider.setCurrentValue(1 - getAnchored().getMarker().getStrokeOpacity());
 		pointLabel.setText(GraphicsResource.MESSAGES.editorLabelAnchorPointDefault());
 	
 		//point coordinates
-		pointPositionX.setLabel(getAnchored().getAnchorPosition().getX() + "");
-		pointPositionY.setLabel(getAnchored().getAnchorPosition().getY() + "");
+		pointPositionX.setLabel(getAnchored().getMarker().getUserPosition().getX() + "");
+		pointPositionY.setLabel(getAnchored().getMarker().getUserPosition().getY() + "");
 		
 	}
 
@@ -179,9 +179,9 @@ public class AnchoredEditor implements Editor {
 		int beforeStrokeWidth = getAnchorLineStrokable().getStrokeWidth();
 		String beforeStrokeColor = getAnchorLineStrokable().getStrokeColor();
 		double beforeStrokeOpacity = getAnchorLineStrokable().getStrokeOpacity();
-		String beforePointColor = getAnchorMarkerShapeStrokable().getStrokeColor();
-		double beforePointOpacity = getAnchorMarkerShapeStrokable().getStrokeOpacity();
-		service.execute(new AnchoredStyleOperation(object, beforeStrokeWidth,
+		String beforePointColor = getAnchored().getMarker().getStrokeColor();
+		double beforePointOpacity = getAnchored().getMarker().getStrokeOpacity();
+		service.execute(new MarkerStyleOperation(object, beforeStrokeWidth,
 				beforeStrokeColor, beforeStrokeOpacity, beforePointColor, 
 					beforePointOpacity, strokeWidthBox.getInteger(),
 						strokeColorBox.getLabel(), 1 - strokeOpacitySlider
@@ -189,8 +189,8 @@ public class AnchoredEditor implements Editor {
 						.getCurrentValue()));
 
 		//location
-		Coordinate beforePosition  = getAnchored().getAnchorPosition();
-		service.execute(new AnchoredPositionOperation(object, beforePosition, new Coordinate(
+		Coordinate beforePosition  = getAnchored().getMarker().getUserPosition();
+		service.execute(new MarkerPositionOperation(object, beforePosition, new Coordinate(
 				pointPositionX.getDouble(), pointPositionY.getDouble())));
 
 	}
@@ -218,7 +218,6 @@ public class AnchoredEditor implements Editor {
 			valid = false;
 		}
 		if (!pointPositionY.isValid()) {
-			valid = false;
 		}
 		return valid;
 	}
@@ -239,18 +238,10 @@ public class AnchoredEditor implements Editor {
 	}
 
 	private Strokable getAnchorLineStrokable() {
-		return getAnchored().getAnchorLineStrokable();
+		return getAnchored().getMarkerLineStrokable();
 	}
 
-	private Strokable getAnchorMarkerShapeStrokable() {
-		return getAnchored().getAnchorMarkerShapeStrokable();
-	}
-
-	private Fillable getAnchorMarkerShapeFillable() {
-		return getAnchored().getAnchorMarkerShapeFillable();
-	}
-
-	private Anchored getAnchored() {
-		return object.getRole(Anchored.TYPE);
+	private HasMarker getAnchored() {
+		return object.getRole(HasMarker.TYPE);
 	}
 }

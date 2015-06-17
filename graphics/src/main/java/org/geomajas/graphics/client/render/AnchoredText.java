@@ -10,46 +10,13 @@
  */
 package org.geomajas.graphics.client.render;
 
-import org.geomajas.graphics.client.util.HasFill;
-import org.geomajas.graphics.client.util.HasFont;
-import org.geomajas.graphics.client.util.HasStroke;
-
 /**
- * A non-scaling text that is anchored to its world space location on a specific pixel or anchor location (useful for
- * location markers).
+ * An anchored text.
  *
  * @author Jan De Moerloose
  * @author Jan Venstermans
  * 
  */
-public interface AnchoredText extends HasStroke, HasFill, HasFont {
-
-	void setUserX(double userX);
-
-	void setUserY(double userY);
-
-	double getUserX();
-
-	double getUserY();
-
-	String getText();
-
-	double getAnchorX();
-
-	double getAnchorY();
-
-	void setText(String label);
-
-	double getUserWidth();
-
-	double getUserHeight();
-
-	int getX();
-
-	int getY();
-
-	int getTextHeight();
-
-	int getTextWidth();
+public interface AnchoredText extends Anchored, BaseText {
 
 }

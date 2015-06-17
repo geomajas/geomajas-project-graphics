@@ -10,16 +10,16 @@
  */
 package org.geomajas.graphics.client.controller.create.updateable;
 
+import java.util.List;
+
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.controller.create.base.CreateBaseIconController;
 import org.geomajas.graphics.client.object.base.BaseIcon;
 import org.geomajas.graphics.client.object.updateable.AnchoredIcon;
+import org.geomajas.graphics.client.object.updateable.hasmarker.MarkerShape;
 import org.geomajas.graphics.client.operation.AddOperation;
+import org.geomajas.graphics.client.render.RenderSpace;
 import org.geomajas.graphics.client.service.GraphicsService;
-import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer;
-import org.geomajas.graphics.client.object.updateable.anchored.MarkerShape;
-
-import java.util.List;
 
 /**
  * Controller that creates a {@link org.geomajas.graphics.client.object.base.BaseIcon}.
@@ -47,9 +47,9 @@ public class CreateAnchoredIconController extends CreateBaseIconController {
 	protected void addObject(BaseIcon result) {
 		Coordinate clickPosition = result.getUserPosition();
 		Coordinate screenIconPosition = transform(clickPosition,
-				GraphicsObjectContainer.Space.USER, GraphicsObjectContainer.Space.SCREEN);
+				RenderSpace.USER, RenderSpace.SCREEN);
 		Coordinate iconPosition = transform(new Coordinate(screenIconPosition.getX(), screenIconPosition.getY() - 40),
-				GraphicsObjectContainer.Space.SCREEN, GraphicsObjectContainer.Space.USER);
+				RenderSpace.SCREEN, RenderSpace.USER);
 		AnchoredIcon anchoredIcon = new AnchoredIcon(iconPosition, (int) result.getBounds().getWidth(),
 				(int) result.getBounds().getHeight(), result.getHref(), clickPosition, markerShape);
 		execute(new AddOperation(anchoredIcon));

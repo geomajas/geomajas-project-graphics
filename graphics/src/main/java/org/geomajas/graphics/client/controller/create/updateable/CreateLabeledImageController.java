@@ -10,14 +10,15 @@
  */
 package org.geomajas.graphics.client.controller.create.updateable;
 
-import com.google.gwt.event.dom.client.MouseUpEvent;
-import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.web.bindery.event.shared.HandlerRegistration;
 import org.geomajas.graphics.client.controller.create.CreateController;
 import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.updateable.LabeledImage;
 import org.geomajas.graphics.client.operation.AddOperation;
 import org.geomajas.graphics.client.service.GraphicsService;
+
+import com.google.gwt.event.dom.client.MouseUpEvent;
+import com.google.gwt.event.dom.client.MouseUpHandler;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 
 /**
  * Controller that creates a {@link LabeledImage}.

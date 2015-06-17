@@ -10,10 +10,9 @@
  */
 package org.geomajas.graphics.client.controller.popupmenu;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseDownHandler;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.Graphics;
 import org.geomajas.graphics.client.action.Action;
@@ -24,15 +23,17 @@ import org.geomajas.graphics.client.event.GraphicsOperationEvent;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.role.Resizable;
+import org.geomajas.graphics.client.render.RenderContainer;
+import org.geomajas.graphics.client.render.RenderSpace;
 import org.geomajas.graphics.client.render.shape.AnchoredImageImpl;
 import org.geomajas.graphics.client.service.GraphicsService;
-import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer.Space;
 import org.geomajas.graphics.client.util.BboxPosition;
 import org.geomajas.graphics.client.util.GraphicsUtil;
-import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.MouseDownEvent;
+import com.google.gwt.event.dom.client.MouseDownHandler;
 
 /**
  * Controller that shows a popup menu at the upper left corner of the {@link GraphicsObject}. The menu is created only
@@ -41,8 +42,8 @@ import java.util.List;
  * @author Jan De Moerloose
  * 
  */
-public class PopupMenuControllerImpl extends AbstractInterruptibleGraphicsController
-		implements PopupMenuController, PopupMenuController.Handler {
+public class PopupMenuControllerImpl extends AbstractInterruptibleGraphicsController implements PopupMenuController,
+		PopupMenuController.Handler {
 
 	public static final int IMG_DIST = 10;
 
@@ -53,18 +54,18 @@ public class PopupMenuControllerImpl extends AbstractInterruptibleGraphicsContro
 	/**
 	 * Our own container.
 	 */
-	private VectorObjectContainer container;
+	private RenderContainer container;
 
 	private PropertyHandler handler;
 
 	private List<Action> actions;
-	
-	public PopupMenuControllerImpl(List<Action> actions, GraphicsObject object, GraphicsService service,
-								  String iconUrl) {
+
+	public PopupMenuControllerImpl(List<Action> actions, GraphicsObject object, GraphicsService service, //
+			String iconUrl) {
 		super(service, object);
 		this.iconUrl = iconUrl;
 
-		//only register actions that are compatible with the object
+		// only register actions that are compatible with the object
 		this.actions = new ArrayList<Action>();
 		for (Action action : actions) {
 			if (action.supports(object)) {
@@ -72,7 +73,7 @@ public class PopupMenuControllerImpl extends AbstractInterruptibleGraphicsContro
 			}
 		}
 
-		container = createContainer();
+		container = addContainer();
 		// listen to changes to our object
 		service.getObjectContainer().addGraphicsObjectContainerHandler(this);
 		service.getObjectContainer().addGraphicsOperationEventHandler(this);
@@ -89,7 +90,7 @@ public class PopupMenuControllerImpl extends AbstractInterruptibleGraphicsContro
 				} else {
 					// the group may be detached, update and reattach !
 					handler.update();
-					handler.add(container);
+					handler.addToContainer(container);
 				}
 				if (menu == null) {
 					menu = Graphics.getViewManager().createPopupMenuView();
@@ -102,7 +103,7 @@ public class PopupMenuControllerImpl extends AbstractInterruptibleGraphicsContro
 			} else {
 				// just remove the handler
 				if (handler != null) {
-					handler.remove(container);
+					handler.removeFromContainer();
 				}
 				if (menu != null) {
 					menu.hide();
@@ -116,7 +117,7 @@ public class PopupMenuControllerImpl extends AbstractInterruptibleGraphicsContro
 		handler = new PropertyHandler();
 		handler.update();
 		// add the handler
-		handler.add(container);
+		handler.addToContainer(container);
 	}
 
 	@Override
@@ -133,11 +134,11 @@ public class PopupMenuControllerImpl extends AbstractInterruptibleGraphicsContro
 			}
 		}
 	}
-	
+
 	public AnchoredImageImpl getPropertyImage() {
 		return handler.getPropertyImage();
 	}
-	
+
 	public void setPropertyImage(AnchoredImageImpl propertyImage) {
 		handler.setPropertyImage(propertyImage);
 	}
@@ -157,15 +158,18 @@ public class PopupMenuControllerImpl extends AbstractInterruptibleGraphicsContro
 
 		public PropertyHandler() {
 			propertyImage = new AnchoredImageImpl(0, 0, 16, 16, iconUrl != null ? iconUrl : GWT.getModuleBaseURL()
-					+ "image/cogContrast.png", Graphics.getGraphicsConstants().getOffsetX(),
-					Graphics.getGraphicsConstants().getOffsetY());
+					+ "image/cogContrast.png", 1.125, -1.125);
 			propertyImage.setFixedSize(true);
 			propertyImage.addMouseDownHandler(this);
 		}
 
+		public void removeFromContainer() {
+			container.remove(propertyImage);
+		}
+
 		public void update() {
-			BboxPosition bboxPos = transform(BboxPosition.CORNER_UL, Space.SCREEN, Space.USER);
-			Coordinate pos = transform(new Coordinate(IMG_DIST, IMG_DIST), Space.SCREEN, Space.USER);
+			BboxPosition bboxPos = transform(BboxPosition.CORNER_UL, RenderSpace.SCREEN, RenderSpace.USER);
+			Coordinate pos = transform(new Coordinate(IMG_DIST, IMG_DIST), RenderSpace.SCREEN, RenderSpace.USER);
 			if (getObject().hasRole(Resizable.TYPE)) {
 				pos = GraphicsUtil.getPosition(getObject().getRole(Resizable.TYPE).getUserBounds(), bboxPos);
 			} else if (getObject().hasRole(Draggable.TYPE)) {
@@ -175,11 +179,7 @@ public class PopupMenuControllerImpl extends AbstractInterruptibleGraphicsContro
 			propertyImage.setUserY(pos.getY());
 		}
 
-		public void remove(VectorObjectContainer container) {
-			container.remove(propertyImage);
-		}
-
-		public void add(VectorObjectContainer container) {
+		public void addToContainer(RenderContainer container) {
 			container.add(propertyImage);
 		}
 
@@ -190,17 +190,15 @@ public class PopupMenuControllerImpl extends AbstractInterruptibleGraphicsContro
 
 		public void onClick(ClickEvent event) {
 		}
-		
-		
+
 		public AnchoredImageImpl getPropertyImage() {
 			return propertyImage;
 		}
 
-		
 		public void setPropertyImage(AnchoredImageImpl propertyImage) {
 			this.propertyImage = propertyImage;
 		}
-		
+
 	}
 
 	@Override

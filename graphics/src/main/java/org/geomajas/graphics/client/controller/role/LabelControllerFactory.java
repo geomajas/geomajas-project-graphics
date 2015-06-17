@@ -13,7 +13,7 @@ package org.geomajas.graphics.client.controller.role;
 import org.geomajas.graphics.client.controller.GraphicsController;
 import org.geomajas.graphics.client.controller.GraphicsControllerFactory;
 import org.geomajas.graphics.client.object.GraphicsObject;
-import org.geomajas.graphics.client.object.updateable.labeled.Labeled;
+import org.geomajas.graphics.client.object.role.Labeled;
 import org.geomajas.graphics.client.service.GraphicsService;
 
 /**

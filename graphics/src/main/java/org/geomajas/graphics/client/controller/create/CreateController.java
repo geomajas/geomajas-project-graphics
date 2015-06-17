@@ -10,13 +10,14 @@
  */
 package org.geomajas.graphics.client.controller.create;
 
-import com.google.web.bindery.event.shared.HandlerRegistration;
 import org.geomajas.graphics.client.controller.AbstractInterruptibleGraphicsController;
 import org.geomajas.graphics.client.event.GraphicsObjectContainerEvent;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.operation.AddOperation;
 import org.geomajas.graphics.client.operation.GraphicsOperation;
 import org.geomajas.graphics.client.service.GraphicsService;
+
+import com.google.web.bindery.event.shared.HandlerRegistration;
 
 /**
  * Controller that creates a {@link GraphicsObject}.

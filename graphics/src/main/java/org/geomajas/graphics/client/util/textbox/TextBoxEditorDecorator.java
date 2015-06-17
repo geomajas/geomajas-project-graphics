@@ -68,7 +68,7 @@ public class TextBoxEditorDecorator<T> extends Composite implements HasEditorErr
 	}
 
 	/**
-	 * Constructs a TextBoxEditorDecorator using a {@link TextBox} widget and a {@link ValueBoxEditor} editor.
+	 * Constructs a TextBoxEditorDecorator using a {@link ValueBoxBase} widget and a {@link ValueBoxEditor} editor.
 	 * 
 	 * @param widget the widget
 	 * @param editor the editor

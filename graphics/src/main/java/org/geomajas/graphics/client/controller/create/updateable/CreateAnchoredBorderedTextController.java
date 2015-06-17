@@ -12,12 +12,12 @@ package org.geomajas.graphics.client.controller.create.updateable;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.controller.create.base.CreateBaseTextController;
-import org.geomajas.graphics.client.object.base.BaseText;
+import org.geomajas.graphics.client.object.base.BaseTextObject;
 import org.geomajas.graphics.client.object.updateable.AnchoredBorderedText;
-import org.geomajas.graphics.client.object.updateable.anchored.MarkerShape;
+import org.geomajas.graphics.client.object.updateable.hasmarker.MarkerShape;
 import org.geomajas.graphics.client.operation.AddOperation;
+import org.geomajas.graphics.client.render.RenderSpace;
 import org.geomajas.graphics.client.service.GraphicsService;
-import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer;
 
 /**
  * Controller that creates a {@link AnchoredBorderedText}.
@@ -39,18 +39,18 @@ public class CreateAnchoredBorderedTextController extends CreateBaseTextControll
 	}
 
 	@Override
-	protected void addObject(BaseText result) {
+	protected void addObject(BaseTextObject result) {
 		if (result == null) {
 			execute(null);
 			return;
 		}
 		Coordinate clickPosition = result.getUserPosition();
 		Coordinate screenIconPosition = transform(clickPosition,
-				GraphicsObjectContainer.Space.USER, GraphicsObjectContainer.Space.SCREEN);
+				RenderSpace.USER, RenderSpace.SCREEN);
 		Coordinate iconPosition = transform(new Coordinate(screenIconPosition.getX(), screenIconPosition.getY() - 40),
-				GraphicsObjectContainer.Space.SCREEN, GraphicsObjectContainer.Space.USER);
+				RenderSpace.SCREEN, RenderSpace.USER);
 		AnchoredBorderedText anchoredBorderedText =
-				new AnchoredBorderedText(iconPosition, result.getLabel(), 10, clickPosition, markerShape);
+				new AnchoredBorderedText(iconPosition, result.getText(), 10, clickPosition, markerShape);
 		execute(new AddOperation(anchoredBorderedText));
 	}
 }

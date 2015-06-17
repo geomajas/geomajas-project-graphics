@@ -10,7 +10,12 @@
  */
 package org.geomajas.graphics.client.render.shape;
 
+import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.render.AnchoredText;
+import org.geomajas.graphics.client.render.Renderable;
+import org.geomajas.graphics.client.util.GraphicsUtil;
 import org.vaadin.gwtgraphics.client.shape.Text;
 
 /**
@@ -20,7 +25,9 @@ import org.vaadin.gwtgraphics.client.shape.Text;
  * @author Jan De Moerloose
  * 
  */
-public class AnchoredTextImpl extends Text implements AnchoredText {
+public class AnchoredTextImpl extends Text implements AnchoredText, Draggable {
+
+	private VectorRenderable renderable;
 
 	private double anchorX;
 
@@ -30,42 +37,46 @@ public class AnchoredTextImpl extends Text implements AnchoredText {
 	 * Creates an text at the specified world location with a specified size and anchor point. E.g., if
 	 * (anchorX,anchorY)=(0.5, 0.5), the center of the text will be positioned at the world location.
 	 * 
-	 * @param userX x-location in world coordinates
-	 * @param userY y-location in world coordinates
+	 * @param userX lower-left x-location in world coordinates
+	 * @param userY lower-left y-location in world coordinates
 	 * @param text width in pixels
 	 * @param anchorX x-location of the anchor point (text-relative)
 	 * @param anchorY y-location of the anchor point (text-relative)
 	 */
 	public AnchoredTextImpl(double userX, double userY, String text, double anchorX, double anchorY) {
 		super(userX, userY, text);
+		setStrokeWidth(0);
 		this.anchorX = anchorX;
 		this.anchorY = anchorY;
-		drawTransformed();
-	}
-
-	public double getAnchorX() {
-		return anchorX;
-	}
-
-	public void setAnchorX(double anchorX) {
-		this.anchorX = anchorX;
-		drawTransformed();
-	}
-
-	public double getAnchorY() {
-		return anchorY;
-	}
-
-	public void setAnchorY(double anchorY) {
-		this.anchorY = anchorY;
+		this.renderable = new VectorRenderable(this);
 		drawTransformed();
 	}
 	
+	@Override
+	protected void drawTransformed() {
+		// calculate the screen bounds and take the lower-left corner (!) in screen space
+		Bbox b = GraphicsUtil.transform(getUserBounds(), getScaleX(), getScaleY(), getDeltaX(), getDeltaY());
+		getImpl().setX(getElement(), (int) b.getX(), isAttached());
+		getImpl().setY(getElement(), (int) (b.getY() + b.getHeight()), isAttached());
+	}
+
+	@Override
+	public Coordinate getAnchor() {
+		return new Coordinate(anchorX, anchorY);
+	}
+
+	@Override
+	public void setAnchor(Coordinate anchor) {
+		this.anchorX = anchor.getX();
+		this.anchorY = anchor.getY();
+		drawTransformed();
+	}
+
 	public void setText(String text) {
 		super.setText(text);
 		drawTransformed();
 	}
-	
+
 	public double getUserWidth() {
 		return Math.abs(getTextWidth() / getScaleX());
 	}
@@ -75,12 +86,32 @@ public class AnchoredTextImpl extends Text implements AnchoredText {
 	}
 
 	@Override
-	protected void drawTransformed() {
-		getImpl().setX(getElement(),
-				(int) Math.round(getUserX() * getScaleX() + getDeltaX() - anchorX * getTextWidth()), isAttached());
-		// y is lower-left coordinate (differs from image !!!)
-		getImpl().setY(getElement(),
-				(int) Math.round(getUserY() * getScaleY() + getDeltaY() + anchorY * getTextHeight()), isAttached());
+	public Coordinate getUserPosition() {
+		return new Coordinate(getUserX(), getUserY());
+	}
+
+	@Override
+	public void setUserPosition(Coordinate position) {
+		setUserX(position.getX());
+		setUserY(position.getY());
+	}
+
+	@Override
+	public void setUserBounds(Bbox bounds) {
+		throw new UnsupportedOperationException("Can't set user bounds on text");
+	}
+
+	@Override
+	public Bbox getUserBounds() {
+		double centerX = getUserX() - anchorX * getUserWidth();
+		double centerY = getUserY() - anchorY * getUserHeight();
+		return new Bbox(centerX - 0.5 * getUserWidth(), centerY - 0.5 * getUserHeight(), getUserWidth(),
+				getUserHeight());
+	}
+
+	@Override
+	public Bbox getBounds() {
+		return new Bbox(getX(), getY() - getTextHeight(), getTextWidth(), getTextHeight());
 	}
 
 	public void update() {
@@ -90,10 +121,17 @@ public class AnchoredTextImpl extends Text implements AnchoredText {
 	@Override
 	public void setFontColor(String color) {
 		setFillColor(color);
+		setStrokeColor(color);
 	}
 
 	@Override
 	public String getFontColor() {
 		return getFillColor();
 	}
+
+	@Override
+	public Renderable getRenderable() {
+		return renderable;
+	}
+
 }

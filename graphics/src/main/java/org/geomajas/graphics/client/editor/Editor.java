@@ -10,6 +10,7 @@
  */
 package org.geomajas.graphics.client.editor;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.service.GraphicsService;
 
@@ -19,8 +20,10 @@ import com.google.gwt.user.client.ui.IsWidget;
  * Wraps editor invocation in an {@link org.geomajas.graphics.client.action.Action}.
  *
  * @author Jan De Moerloose
+ * @since 1.0.0
  *
  */
+@Api(allMethods = true)
 public interface Editor extends IsWidget {
 
 	/**
@@ -53,6 +56,7 @@ public interface Editor extends IsWidget {
 
 	/**
 	 * Returns a label for the editor. TODO: extend with icon, tooltip..
+	 * 
 	 * @return
 	 */
 	String getLabel();
@@ -63,10 +67,23 @@ public interface Editor extends IsWidget {
 	 * @return
 	 */
 	boolean validate();
-	
+
+	/**
+	 * Undo the operation.
+	 */
 	void undo();
-	
+
+	/**
+	 * Set the icon url of the action.
+	 * 
+	 * @param url
+	 */
 	void setIconUrl(String url);
-	
+
+	/**
+	 * Get the icon url of the action.
+	 * 
+	 * @return
+	 */
 	String getIconUrl();
 }

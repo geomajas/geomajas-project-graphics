@@ -16,7 +16,7 @@ import org.geomajas.graphics.client.Graphics;
 import org.geomajas.graphics.client.object.BaseGraphicsObject;
 import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.render.AnchoredImage;
-import org.vaadin.gwtgraphics.client.VectorObject;
+import org.geomajas.graphics.client.render.Renderable;
 
 /**
  * Extension of {@link BaseGraphicsObject} for an icon.
@@ -30,8 +30,7 @@ public class BaseIcon extends BaseGraphicsObject implements Draggable {
 	private AnchoredImage anchoredImage;
 
 	public BaseIcon(double userX, double userY, int width, int height, String href) {
-		this(Graphics.getRenderElementFactory().createAnchoredImage(userX, userY,
-				width, height, href, true, 0.5, 0.5));
+		this(Graphics.getRenderElementFactory().createAnchoredImage(userX, userY, width, height, href, true, 0.5, 0.5));
 	}
 
 	public BaseIcon(AnchoredImage anchoredImage) {
@@ -40,31 +39,18 @@ public class BaseIcon extends BaseGraphicsObject implements Draggable {
 	}
 
 	@Override
-	public VectorObject asObject() {
-		if (anchoredImage instanceof VectorObject) {
-			return (VectorObject) anchoredImage;
-		}
-		return null;
+	public Renderable getRenderable() {
+		return anchoredImage.getRenderable();
 	}
 
 	@Override
 	public void setUserPosition(Coordinate imageAnchorPosition) {
-		anchoredImage.setUserX(imageAnchorPosition.getX());
-		anchoredImage.setUserY(imageAnchorPosition.getY());
+		anchoredImage.setUserPosition(imageAnchorPosition);
 	}
 
 	@Override
 	public Coordinate getUserPosition() {
-		return new Coordinate(anchoredImage.getUserX(), anchoredImage.getUserY());
-	}
-
-	@Override
-	public void setOpacity(double opacity) {
-		try {
-			anchoredImage.setOpacity(opacity);
-		} catch (Exception e) {
-			// do nothing
-		}
+		return anchoredImage.getUserPosition();
 	}
 
 	@Override
@@ -73,18 +59,19 @@ public class BaseIcon extends BaseGraphicsObject implements Draggable {
 	}
 
 	@Override
-	public void setUserBounds(Bbox bounds) {
-		// can't do this
-	}
-
-	@Override
 	public Bbox getBounds() {
 		return anchoredImage.getBounds();
 	}
 
+	@Override
+	public void setUserBounds(Bbox bounds) {
+		// can't do this
+	}
+
 	public Object cloneObject() {
-		return new BaseIcon(anchoredImage.getUserX(), anchoredImage.getUserY(), (int) anchoredImage.getUserWidth(),
-				(int) anchoredImage.getUserHeight(), anchoredImage.getHref());
+		return new BaseIcon(anchoredImage.getUserPosition().getX(), anchoredImage.getUserPosition().getY(),
+				(int) anchoredImage.getUserBounds().getWidth(), (int) anchoredImage.getUserBounds().getHeight(),
+				anchoredImage.getHref());
 	}
 
 	public String getHref() {

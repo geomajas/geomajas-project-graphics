@@ -10,6 +10,15 @@
  */
 package org.geomajas.graphics.client.controller.create.base;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.graphics.client.controller.create.CreateController;
+import org.geomajas.graphics.client.object.base.BaseTextObject;
+import org.geomajas.graphics.client.operation.AddOperation;
+import org.geomajas.graphics.client.service.GraphicsService;
+
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -23,23 +32,15 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.web.bindery.event.shared.HandlerRegistration;
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.graphics.client.controller.create.CreateController;
-import org.geomajas.graphics.client.object.base.BaseText;
-import org.geomajas.graphics.client.operation.AddOperation;
-import org.geomajas.graphics.client.service.GraphicsService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Controller that creates a {@link BaseText}.
+ * Controller that creates a {@link BaseTextObject}.
  *
  * @author Jan De Moerloose
  * @author Jan Venstermans
  *
  */
-public class CreateBaseTextController extends CreateController<BaseText> implements MouseUpHandler {
+public class CreateBaseTextController extends CreateController<BaseTextObject> implements MouseUpHandler {
 
 	private HandlerRegistration registration;
 
@@ -86,18 +87,18 @@ public class CreateBaseTextController extends CreateController<BaseText> impleme
 		popupRegs.clear();
 	}
 
-	protected BaseText createText(String text) {
+	protected BaseTextObject createText(String text) {
 		return CreateBaseTextController.createTextDefault(text, position);
 	}
 	
-	public static BaseText createTextDefault(String text, Coordinate position) {
-		BaseText result = new BaseText(0, 0, text);
+	public static BaseTextObject createTextDefault(String text, Coordinate position) {
+		BaseTextObject result = new BaseTextObject(0, 0, text);
 		result.setUserPosition(position);
 		result.setFontColor("black");
 		return result;
 	}
 
-	protected void addObject(BaseText result) {
+	protected void addObject(BaseTextObject result) {
 		if (result == null) {
 			execute(null);
 			return;

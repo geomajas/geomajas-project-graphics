@@ -10,17 +10,27 @@
  */
 package org.geomajas.graphics.client.object;
 
+import org.geomajas.annotation.Api;
+
 /**
- * Enum-like class that uniquely represents a role type. Add an instance of this class to every new role interface.
+ * Enum-like class that uniquely represents a role type. Add a singleton instance of this class to every new role
+ * interface.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  * @param <T> extends a {@link RoleInterface}
  */
+@Api(allMethods = true)
 public class RoleType<T extends RoleInterface> {
 
 	private String name;
 
+	/**
+	 * Construct a new role type.
+	 * 
+	 * @param name
+	 */
 	public RoleType(String name) {
 		this.name = name;
 	}

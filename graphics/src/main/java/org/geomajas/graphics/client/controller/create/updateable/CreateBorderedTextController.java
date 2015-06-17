@@ -11,13 +11,13 @@
 package org.geomajas.graphics.client.controller.create.updateable;
 
 import org.geomajas.graphics.client.controller.create.base.CreateBaseTextController;
-import org.geomajas.graphics.client.object.base.BaseText;
+import org.geomajas.graphics.client.object.base.BaseTextObject;
 import org.geomajas.graphics.client.object.updateable.BorderedText;
 import org.geomajas.graphics.client.operation.AddOperation;
 import org.geomajas.graphics.client.service.GraphicsService;
 
 /**
- * Controller that creates a {@link org.geomajas.graphics.client.object.base.BaseText}.
+ * Controller that creates a {@link org.geomajas.graphics.client.object.base.BaseTextObject}.
  *
  * @author Jan De Moerloose
  * @author Jan Venstermans
@@ -30,12 +30,13 @@ public class CreateBorderedTextController extends CreateBaseTextController {
 	}
 
 	@Override
-	protected void addObject(BaseText result) {
+	protected void addObject(BaseTextObject result) {
 		if (result == null) {
 			execute(null);
 			return;
 		}
-		BorderedText borderedText = new BorderedText(result.getUserX(), result.getUserY(), result.getLabel(), 10);
+		BorderedText borderedText = new BorderedText(result.getUserPosition().getX(), result.getUserPosition().getY(),
+				result.getText(), 10);
 		execute(new AddOperation(borderedText));
 	}
 }

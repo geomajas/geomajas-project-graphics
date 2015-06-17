@@ -11,9 +11,9 @@
 
 package org.geomajas.graphics.client.util.textbox;
 
-import org.geomajas.graphics.client.resource.GraphicsResource;
-
 import java.util.Arrays;
+
+import org.geomajas.graphics.client.resource.GraphicsResource;
 
 
 

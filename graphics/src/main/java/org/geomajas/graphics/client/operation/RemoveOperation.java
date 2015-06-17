@@ -10,18 +10,27 @@
  */
 package org.geomajas.graphics.client.operation;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.graphics.client.object.GraphicsObject;
 
 /**
  * Operation that removes an object.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
+@Api
 public class RemoveOperation implements GraphicsOperation {
 	
 	private GraphicsObject object;
 	
+	/**
+	 * Create a new operation to add an object.
+	 * 
+	 * @param object
+	 */
+	@Api
 	public RemoveOperation(GraphicsObject object) {
 		this.object = object;
 	}

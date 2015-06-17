@@ -10,12 +10,12 @@
  */
 package org.geomajas.graphics.client.object.updateable.wrapper;
 
+import org.geomajas.graphics.client.object.Updateable;
 import org.geomajas.graphics.client.object.role.Textable;
-import org.geomajas.graphics.client.object.updateable.Updateable;
 
 /**
  * Wrapper around a {@link Textable} that will trigger
- * {@link org.geomajas.graphics.client.object.updateable.Updateable#onUpdate()}
+ * {@link org.geomajas.graphics.client.object.Updateable#onUpdate()}
  * on certain {@link Textable} method calls.
  *
  * @author Jan Venstermans
@@ -33,14 +33,14 @@ public class TextableWrapperForUpdateable implements Textable {
 	}
 
 	@Override
-	public void setLabel(String label) {
-		delegate.setLabel(label);
+	public void setText(String label) {
+		delegate.setText(label);
 		updateable.onUpdate();
 	}
 
 	@Override
-	public String getLabel() {
-		return delegate.getLabel();
+	public String getText() {
+		return delegate.getText();
 	}
 
 	@Override

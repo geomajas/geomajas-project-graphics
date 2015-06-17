@@ -11,6 +11,7 @@
 package org.geomajas.graphics.client.object.role;
 
 
+import org.geomajas.annotation.Api;
 import org.geomajas.graphics.client.object.RoleInterface;
 import org.geomajas.graphics.client.object.RoleType;
 import org.geomajas.graphics.client.util.HasStroke;
@@ -19,14 +20,15 @@ import org.geomajas.graphics.client.util.HasStroke;
  * Implemented by graphics objects that can be stroked.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
+@Api(allMethods = true)
 public interface Strokable extends RoleInterface, HasStroke {
 	
+	/**
+	 * The role type.
+	 */
 	RoleType<Strokable> TYPE = new RoleType<Strokable>("Strokable");
-
-//	String setStrokeStyle();
-//
-//	void setStrokeStyle(String style);
 
 }

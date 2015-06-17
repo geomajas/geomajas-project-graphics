@@ -15,15 +15,15 @@ import org.geomajas.graphics.client.Graphics;
 import org.geomajas.graphics.client.object.base.BasePath;
 import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.role.Fillable;
+import org.geomajas.graphics.client.object.role.Labeled;
 import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.object.role.Strokable;
-import org.geomajas.graphics.client.object.updateable.labeled.Labeled;
 import org.geomajas.graphics.client.object.updateable.labeled.LabeledImpl;
 import org.geomajas.graphics.client.object.updateable.wrapper.DraggableWrapperForUpdateable;
 import org.geomajas.graphics.client.object.updateable.wrapper.ResizableWrapperForUpdateable;
-import org.geomajas.graphics.client.render.RenderableList;
+import org.geomajas.graphics.client.render.RenderContainer;
+import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.util.CopyUtil;
-import org.vaadin.gwtgraphics.client.VectorObject;
 
 /**
  * Extension of {@link org.geomajas.graphics.client.object.updateable.UpdateableGroupGraphicsObject}
@@ -34,7 +34,7 @@ import org.vaadin.gwtgraphics.client.VectorObject;
  */
 public class LabeledPath extends UpdateableGroupGraphicsObject {
 
-	private RenderableList renderableList;
+	private RenderContainer renderContainer;
 
 	private BasePath basePath;
 
@@ -58,15 +58,15 @@ public class LabeledPath extends UpdateableGroupGraphicsObject {
 		addRole(Labeled.TYPE, labeled);
 
 		// register render order
-		renderableList = Graphics.getRenderElementFactory().createRenderableList();
-		renderableList.addRenderable(basePath);
-		renderableList.addRenderable(labeled);
+		renderContainer = Graphics.getRenderElementFactory().createRenderContainer();
+		renderContainer.add(basePath);
+		renderContainer.add(labeled);
 	}
 
 	@Override
 	public Object cloneObject() {
 		LabeledPath clone = new LabeledPath(copyCoordinatesOfBasePath(), basePath.isClosed(),
-				labeled.getTextable().getLabel());
+				labeled.getTextable().getText());
 		CopyUtil.copyStrokableProperties(getRole(Strokable.TYPE), clone.getRole(Strokable.TYPE));
 		if (hasRole(Fillable.TYPE) && clone.hasRole(Fillable.TYPE)) {
 			CopyUtil.copyFillableProperties(getRole(Fillable.TYPE), clone.getRole(Fillable.TYPE));
@@ -91,13 +91,10 @@ public class LabeledPath extends UpdateableGroupGraphicsObject {
 	// render section
 	//---------------------------------
 
-	@Override
-	public VectorObject asObject() {
-		return renderableList.asObject();
-	}
 
 	@Override
-	public void setOpacity(double opacity) {
-		renderableList.setOpacity(opacity);
+	public Renderable getRenderable() {
+		return renderContainer;
 	}
+
 }

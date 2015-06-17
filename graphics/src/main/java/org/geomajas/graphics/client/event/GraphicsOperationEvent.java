@@ -10,6 +10,7 @@
  */
 package org.geomajas.graphics.client.event;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.graphics.client.operation.GraphicsOperation;
 
 import com.google.web.bindery.event.shared.Event;
@@ -18,10 +19,12 @@ import com.google.web.bindery.event.shared.Event;
  * Event to signal a graphics operation.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
+@Api
 public class GraphicsOperationEvent extends Event<GraphicsOperationEvent.Handler> {
-	
+
 	private GraphicsOperation operation;
 
 	public GraphicsOperationEvent(GraphicsOperation operation) {
@@ -32,8 +35,10 @@ public class GraphicsOperationEvent extends Event<GraphicsOperationEvent.Handler
 	 * Handler for this event.
 	 * 
 	 * @author Jan De Moerloose
+	 * @since 1.0.0
 	 * 
 	 */
+	@Api(allMethods = true)
 	public interface Handler {
 
 		/**
@@ -61,7 +66,12 @@ public class GraphicsOperationEvent extends Event<GraphicsOperationEvent.Handler
 		handler.onOperation(this);
 	}
 
-	
+	/**
+	 * Get the operation.
+	 * 
+	 * @return
+	 */
+	@Api
 	public GraphicsOperation getOperation() {
 		return operation;
 	}

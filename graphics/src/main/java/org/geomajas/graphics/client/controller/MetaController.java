@@ -10,13 +10,17 @@
  */
 package org.geomajas.graphics.client.controller;
 
+import org.geomajas.annotation.Api;
+
 
 /**
  * Extension of {@link GraphicsController} for a meta tasks, a controller of controllers.
  * 
  * @author Jan Venstermans
+ * @since 1.0.0
  * 
  */
+@Api(allMethods = true)
 public interface MetaController extends GraphicsController {
 
 }

@@ -10,6 +10,7 @@
  */
 package org.geomajas.graphics.client.action;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.service.GraphicsService;
 
@@ -17,8 +18,10 @@ import org.geomajas.graphics.client.service.GraphicsService;
  * Single action to execute on an object.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
+@Api(allMethods = true)
 public interface Action {
 
 	/**
@@ -45,10 +48,11 @@ public interface Action {
 
 	/**
 	 * Returns a label for the action.
+	 * 
 	 * @return
 	 */
 	String getLabel();
-	
+
 	/**
 	 * Get the url of the icon that represents this action.
 	 * 

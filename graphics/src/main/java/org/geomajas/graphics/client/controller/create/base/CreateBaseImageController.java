@@ -10,22 +10,23 @@
  */
 package org.geomajas.graphics.client.controller.create.base;
 
-import com.google.gwt.event.dom.client.MouseUpEvent;
-import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.web.bindery.event.shared.HandlerRegistration;
 import org.geomajas.graphics.client.controller.create.CreateController;
+import org.geomajas.graphics.client.object.base.BaseImageObject;
 import org.geomajas.graphics.client.object.role.Draggable;
-import org.geomajas.graphics.client.object.base.BaseImage;
 import org.geomajas.graphics.client.operation.AddOperation;
 import org.geomajas.graphics.client.service.GraphicsService;
 
+import com.google.gwt.event.dom.client.MouseUpEvent;
+import com.google.gwt.event.dom.client.MouseUpHandler;
+import com.google.web.bindery.event.shared.HandlerRegistration;
+
 /**
- * Controller that creates a {@link BaseImage}.
+ * Controller that creates a {@link BaseImageObject}.
  *
  * @author Jan De Moerloose
  *
  */
-public class CreateBaseImageController extends CreateController<BaseImage> implements MouseUpHandler {
+public class CreateBaseImageController extends CreateController<BaseImageObject> implements MouseUpHandler {
 
 	private HandlerRegistration registration;
 
@@ -93,7 +94,7 @@ public class CreateBaseImageController extends CreateController<BaseImage> imple
 
 	@Override
 	public void onMouseUp(MouseUpEvent event) {
-		BaseImage result = new BaseImage(0, 0, width, height, href, preserveAspectRatio);
+		BaseImageObject result = new BaseImageObject(0, 0, width, height, href, preserveAspectRatio);
 		result.getRole(Draggable.TYPE).setUserPosition(getUserCoordinate(event));
 		execute(new AddOperation(result));
 	}

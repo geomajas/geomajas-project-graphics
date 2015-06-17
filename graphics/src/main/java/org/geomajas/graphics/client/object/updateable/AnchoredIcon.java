@@ -13,14 +13,15 @@ package org.geomajas.graphics.client.object.updateable;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.Graphics;
 import org.geomajas.graphics.client.object.base.BaseIcon;
+import org.geomajas.graphics.client.object.role.HasMarker;
 import org.geomajas.graphics.client.object.role.Draggable;
-import org.geomajas.graphics.client.object.updateable.anchored.Anchored;
-import org.geomajas.graphics.client.object.updateable.anchored.AnchoredImpl;
-import org.geomajas.graphics.client.object.updateable.anchored.MarkerShape;
+import org.geomajas.graphics.client.object.updateable.hasmarker.HasMarkerImpl;
+import org.geomajas.graphics.client.object.updateable.hasmarker.MarkerShape;
 import org.geomajas.graphics.client.object.updateable.wrapper.DraggableWrapperForUpdateable;
-import org.geomajas.graphics.client.render.RenderableList;
+import org.geomajas.graphics.client.object.updateable.wrapper.HasMarkerWrapperForUpdateable;
+import org.geomajas.graphics.client.render.RenderContainer;
+import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.util.CopyUtil;
-import org.vaadin.gwtgraphics.client.VectorObject;
 
 /**
  * Extension of {@link UpdateableGroupGraphicsObject}
@@ -31,37 +32,37 @@ import org.vaadin.gwtgraphics.client.VectorObject;
  */
 public class AnchoredIcon extends UpdateableGroupGraphicsObject {
 
-	private RenderableList renderableList;
+	private RenderContainer renderContainer;
 
 	private BaseIcon baseIcon;
 
-	private AnchoredImpl anchored;
+	private HasMarkerImpl anchored;
 
 	public AnchoredIcon(Coordinate iconCoordinate, int iconWidth, int iconHeight,
 						String iconHref, Coordinate anchorCoordinate, MarkerShape markerShape) {
 		// create base graphics objects
 		baseIcon = new BaseIcon(iconCoordinate.getX(), iconCoordinate.getY(), iconWidth, iconHeight, iconHref);
-		anchored = new AnchoredImpl(baseIcon, anchorCoordinate, markerShape);
+		anchored = new HasMarkerImpl(baseIcon, anchorCoordinate, markerShape);
 
 		// register updateables
 		addUpdateable(anchored);
 
 		// register roles of group object
 		addRole(Draggable.TYPE, new DraggableWrapperForUpdateable(baseIcon, this));
-		addRole(Anchored.TYPE, anchored);
+		addRole(HasMarker.TYPE, new HasMarkerWrapperForUpdateable(anchored, this));
 
 		// register render order
-		renderableList = Graphics.getRenderElementFactory().createRenderableList();
-		renderableList.addRenderable(anchored);
-		renderableList.addRenderable(baseIcon);
+		renderContainer = Graphics.getRenderElementFactory().createRenderContainer();
+		renderContainer.add(anchored);
+		renderContainer.add(baseIcon);
 	}
 
 	@Override
 	public Object cloneObject() {
 		AnchoredIcon clone = new AnchoredIcon(baseIcon.getUserPosition(), (int) baseIcon.getUserBounds().getWidth(),
-				(int) baseIcon.getUserBounds().getHeight(), baseIcon.getHref(), anchored.getAnchorPosition(),
+				(int) baseIcon.getUserBounds().getHeight(), baseIcon.getHref(), anchored.getMarker().getUserPosition(),
 				anchored.getMarkerShape());
-		CopyUtil.copyAnchoredProperties(this.getRole(Anchored.TYPE), clone.getRole(Anchored.TYPE));
+		CopyUtil.copyAnchoredProperties(this.getRole(HasMarker.TYPE), clone.getRole(HasMarker.TYPE));
 		return clone;
 	}
 
@@ -69,13 +70,10 @@ public class AnchoredIcon extends UpdateableGroupGraphicsObject {
 	// render section
 	//---------------------------------
 
-	@Override
-	public VectorObject asObject() {
-		return renderableList.asObject();
-	}
 
 	@Override
-	public void setOpacity(double opacity) {
-		renderableList.setOpacity(opacity);
+	public Renderable getRenderable() {
+		return renderContainer;
 	}
+
 }

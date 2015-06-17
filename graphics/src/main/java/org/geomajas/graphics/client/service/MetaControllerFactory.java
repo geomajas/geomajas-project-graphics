@@ -10,16 +10,25 @@
  */
 package org.geomajas.graphics.client.service;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.graphics.client.controller.MetaController;
 
 /**
  * Factory for the meta-controller. This is a singleton controller that handles activation/deactivation of individual
- * controllers. 
+ * controllers.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
+@Api(allMethods = true)
 public interface MetaControllerFactory {
 
+	/**
+	 * Create a meta-controller instance.
+	 * 
+	 * @param graphicsService
+	 * @return
+	 */
 	MetaController createController(GraphicsService graphicsService);
 }

@@ -10,12 +10,13 @@
  */
 package org.geomajas.graphics.client.editor;
 
-import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.object.RoleInterface;
 import org.geomajas.graphics.client.object.RoleType;
 import org.geomajas.graphics.client.resource.GraphicsResource;
 import org.geomajas.graphics.client.service.GraphicsService;
+
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Abstract implementation for an {@link AbstractRoleEditor} that will pass information and requests

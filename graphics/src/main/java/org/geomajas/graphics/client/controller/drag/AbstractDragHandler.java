@@ -10,6 +10,15 @@
  */
 package org.geomajas.graphics.client.controller.drag;
 
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.graphics.client.controller.DefaultMetaController;
+import org.geomajas.graphics.client.controller.UpdateHandlerGraphicsController;
+import org.geomajas.graphics.client.object.GraphicsObject;
+import org.geomajas.graphics.client.operation.GraphicsOperation;
+import org.geomajas.graphics.client.render.RenderSpace;
+import org.geomajas.graphics.client.render.Renderable;
+import org.geomajas.graphics.client.service.GraphicsService;
+
 import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -21,30 +30,18 @@ import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.RootPanel;
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.graphics.client.controller.DefaultMetaController;
-import org.geomajas.graphics.client.controller.UpdateHandlerGraphicsController;
-import org.geomajas.graphics.client.object.GraphicsObject;
-import org.geomajas.graphics.client.operation.GraphicsOperation;
-import org.geomajas.graphics.client.service.GraphicsService;
-import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer.Space;
-import org.vaadin.gwtgraphics.client.Group;
-import org.vaadin.gwtgraphics.client.VectorObject;
 
 /**
- * Base class for a handling drag functions. Two extra objects are
- * created: an invisible {@link VectorObject} that defines the click area; a
- * visible {@link GraphicsObject} that will be shown as the dragging object.
+ * Base class for a handling drag functions. Two extra objects are created: an invisible {@link Renderable} that defines
+ * the click area; a visible {@link GraphicsObject} that will be shown as the dragging object.
  * 
  * @author Jan De Moerloose
  * @author Jan Venstermans
  * 
  */
-public abstract class AbstractDragHandler implements MouseDownHandler,
-		MouseUpHandler, MouseMoveHandler, ClickHandler, DoubleClickHandler {
+public abstract class AbstractDragHandler implements MouseDownHandler, MouseUpHandler, MouseMoveHandler, ClickHandler,
+		DoubleClickHandler {
 
 	/**
 	 * Original object, will not be dragged.
@@ -57,15 +54,14 @@ public abstract class AbstractDragHandler implements MouseDownHandler,
 	private GraphicsObject draggingMask;
 
 	/**
-	 * VectorObject that will be set invisible. It contains the area where you
-	 * can click for starting to drag.
+	 * VectorObject that will be set invisible. It contains the area where you can click for starting to drag.
 	 */
-	private VectorObject invisibleClickArea;
+	private Renderable invisibleClickArea;
 
 	private GraphicsService service;
 
 	/**
-	 *  begin position in user coordinates (double, double)
+	 * begin position in user coordinates (double, double)
 	 */
 	private Coordinate beginPositionUser;
 
@@ -109,16 +105,15 @@ public abstract class AbstractDragHandler implements MouseDownHandler,
 	@Override
 	public void onMouseDown(MouseDownEvent event) {
 		if (!dragging) {
-			capture(invisibleClickArea.getElement(), Cursor.MOVE);
+			capture(invisibleClickArea, Cursor.MOVE);
 			setDragging(true);
 			onDragStart(event.getClientX(), event.getClientY());
 			if (draggingMask != null) { // may happen in unusual scenario where
 				// mouse-up is not called
-				graphicsHandler.getHandlerGroup().remove(
-						draggingMask.asObject());
+				draggingMask.getRenderable().removeFromParent();
 			}
 			draggingMask = createDraggingMask();
-			graphicsHandler.getHandlerGroup().add(draggingMask.asObject());
+			graphicsHandler.getHandlerGroup().add(draggingMask.getRenderable());
 		}
 	}
 
@@ -136,22 +131,18 @@ public abstract class AbstractDragHandler implements MouseDownHandler,
 	public void onMouseUp(MouseUpEvent event) {
 		if (dragging) {
 			setDragging(false);
-			graphicsHandler.getHandlerGroup().remove(draggingMask.asObject());
+			draggingMask.getRenderable().removeFromParent();
 			draggingMask = null;
 			onDragStop(event.getClientX(), event.getClientY());
-			release(invisibleClickArea.getElement());
+			release(invisibleClickArea);
 		}
 	}
 
-	public void addToGroup(Group group) {
-		group.add(invisibleClickArea);
-	}
-
-	//--------------------------------------------
+	// --------------------------------------------
 	// getter methods
-	//--------------------------------------------
+	// --------------------------------------------
 
-	public VectorObject getInvisibleMask() {
+	public Renderable getInvisibleMask() {
 		return invisibleClickArea;
 	}
 
@@ -175,11 +166,11 @@ public abstract class AbstractDragHandler implements MouseDownHandler,
 		return dragging;
 	}
 
-	//--------------------------------------------
+	// --------------------------------------------
 	// abstract methods
-	//--------------------------------------------
+	// --------------------------------------------
 
-	protected abstract VectorObject createInvisibleMask();
+	protected abstract Renderable createInvisibleMask();
 
 	protected abstract GraphicsObject createDraggingMask();
 
@@ -191,9 +182,9 @@ public abstract class AbstractDragHandler implements MouseDownHandler,
 
 	protected abstract void mouseMoveContent(MouseMoveEvent event);
 
-	//--------------------------------------------
+	// --------------------------------------------
 	// protected methods
-	//--------------------------------------------
+	// --------------------------------------------
 
 	protected void render() {
 		if (graphicsHandler.getHandlerGroup() != null) {
@@ -203,14 +194,13 @@ public abstract class AbstractDragHandler implements MouseDownHandler,
 			invisibleClickArea.addMouseDownHandler(this);
 			invisibleClickArea.addMouseUpHandler(this);
 			invisibleClickArea.addMouseMoveHandler(this);
-			invisibleClickArea.getElement().getStyle().setCursor(Cursor.MOVE);
 		}
 	}
 
 	protected void onDragStart(int x, int y) {
 		beginPositionScreenX = x;
 		beginPositionScreenY = y;
-		userBegin = service.getObjectContainer().transform(new Coordinate(x, y), Space.SCREEN, Space.USER);
+		userBegin = service.getObjectContainer().transform(new Coordinate(x, y), RenderSpace.SCREEN, RenderSpace.USER);
 		beginPositionUser = (Coordinate) getObjectPosition().clone();
 	}
 
@@ -230,7 +220,8 @@ public abstract class AbstractDragHandler implements MouseDownHandler,
 	}
 
 	protected Coordinate getNewPosition(int x, int y) {
-		Coordinate userEnd = service.getObjectContainer().transform(new Coordinate(x, y), Space.SCREEN, Space.USER);
+		Coordinate userEnd = service.getObjectContainer().transform(new Coordinate(x, y), RenderSpace.SCREEN,
+				RenderSpace.USER);
 		double dx = userEnd.getX() - userBegin.getX();
 		double dy = userEnd.getY() - userBegin.getY();
 		return new Coordinate(beginPositionUser.getX() + dx, beginPositionUser.getY() + dy);
@@ -239,19 +230,19 @@ public abstract class AbstractDragHandler implements MouseDownHandler,
 	protected void setDragging(boolean draggingNewValue) {
 		dragging = draggingNewValue;
 		if (!service.isShowOriginalObjectWhileDragging()) {
-			object.asObject().setVisible(!dragging);
+			object.getRenderable().setVisible(!dragging);
 			((DefaultMetaController) service.getMetaController()).setControllersOfObjectVisible(object, !dragging);
 		}
 	}
 
-	protected void capture(Element element, Cursor cursor) {
-		DOM.setCapture(element);
+	protected void capture(Renderable renderable, Cursor cursor) {
+		renderable.capture();
 		captureCursor = RootPanel.getBodyElement().getStyle().getCursor();
 		RootPanel.getBodyElement().getStyle().setCursor(cursor);
 	}
 
-	protected void release(Element element) {
-		DOM.releaseCapture(element);
+	protected void release(Renderable renderable) {
+		renderable.releaseCapture();
 		RootPanel.getBodyElement().getStyle().setProperty("cursor", captureCursor);
 	}
 }

@@ -10,35 +10,12 @@
  */
 package org.geomajas.graphics.client.render;
 
-import org.geomajas.graphics.client.object.updateable.anchored.AnchorMarker;
-import org.geomajas.graphics.client.util.HasFill;
-import org.geomajas.graphics.client.util.HasStroke;
-
 /**
- * A non-scaling text that is anchored to its world space location on a specific pixel or anchor location (useful for
- * location markers).
+ * An anchored circle.
  *
  * @author Jan De Moerloose
  * @author Jan Venstermans
  * 
  */
-public interface AnchoredCircle extends AnchorMarker, HasStroke, HasFill {
-
-	void setUserX(double x);
-
-	void setUserY(double y);
-
-	double getUserX();
-
-	double getUserY();
-
-	double getUserRadius();
-
-	void setUserRadius(double v);
-
-	int getX();
-
-	int getRadius();
-
-	int getY();
+public interface AnchoredCircle extends Anchored, BaseCircle {
 }

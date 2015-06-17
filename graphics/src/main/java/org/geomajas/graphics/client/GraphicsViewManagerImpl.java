@@ -12,9 +12,9 @@ package org.geomajas.graphics.client;
 
 import org.geomajas.graphics.client.controller.popupmenu.PopupMenuController;
 import org.geomajas.graphics.client.editor.Editor;
-import org.geomajas.graphics.client.widget.createcontrollergroup.CreateControllerGroupPresenter;
 import org.geomajas.graphics.client.view.popupmenu.PopupMenu;
 import org.geomajas.graphics.client.view.popupmenu.PopupMenuEditorDialog;
+import org.geomajas.graphics.client.widget.createcontrollergroup.CreateControllerGroupPresenter;
 import org.geomajas.graphics.client.widget.createcontrollergroup.CreateControllerGroupView;
 
 /**

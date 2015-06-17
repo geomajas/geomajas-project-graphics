@@ -21,8 +21,8 @@ import org.geomajas.graphics.client.controller.MetaController;
 import org.geomajas.graphics.client.event.GraphicsOperationEvent;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.operation.GraphicsOperation;
+import org.geomajas.graphics.client.render.RenderContainer;
 import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer;
-import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.Event;
@@ -56,8 +56,6 @@ public class GraphicsServiceImpl implements GraphicsService, GraphicsOperationEv
 	private HandlerRegistration standardGraphicsOperationEventRegistration;
 	
 	private boolean showOriginalObjectWhileDragging;
-	
-	private boolean externalizableLabeledOriginallyExternal;
 
 	private boolean undoKeys;
 	private HandlerRegistration undoKeysHandlerRegistration;
@@ -70,6 +68,9 @@ public class GraphicsServiceImpl implements GraphicsService, GraphicsOperationEv
 	
 	@Override
 	public void start() {
+		if (objectContainer == null) {
+			throw new IllegalStateException("Cannot start service. Did you forget to set the object container ?");
+		}
 		if (metaController == null) {
 			metaController = metaControllerFactory.createController(this);
 		}
@@ -148,16 +149,8 @@ public class GraphicsServiceImpl implements GraphicsService, GraphicsOperationEv
 		this.objectContainer = objectContainer;
 	}
 
-	public VectorObjectContainer createContainer() {
+	public RenderContainer createContainer() {
 		return objectContainer.createContainer();
-	}
-
-	public void bringContainerToFront(VectorObjectContainer container) {
-		objectContainer.bringContainerToFront(container);
-	}
-
-	public void removeContainer(VectorObjectContainer container) {
-		objectContainer.removeContainer(container);
 	}
 
 	@Override
@@ -213,17 +206,6 @@ public class GraphicsServiceImpl implements GraphicsService, GraphicsOperationEv
 	@Override
 	public void setShowOriginalObjectWhileDragging(boolean showOriginalObjectWhileDragging) {
 		this.showOriginalObjectWhileDragging = showOriginalObjectWhileDragging;
-	}
-
-	@Override
-	public boolean isExternalizableLabeledOriginallyExternal() {
-		return externalizableLabeledOriginallyExternal;
-	}
-
-	@Override
-	public void setExternalizableLabeledOriginallyExternal(
-			boolean externalizableLabeledOriginallyExternal) {
-		this.externalizableLabeledOriginallyExternal = externalizableLabeledOriginallyExternal;
 	}
 
 	private void updateUndoKeysHandler() {

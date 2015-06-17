@@ -13,15 +13,16 @@ package org.geomajas.graphics.client.object.updateable.labeled;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.service.BboxService;
 import org.geomajas.graphics.client.object.BaseGraphicsObject;
+import org.geomajas.graphics.client.object.Updateable;
+import org.geomajas.graphics.client.object.base.BaseTextObject;
+import org.geomajas.graphics.client.object.role.Labeled;
 import org.geomajas.graphics.client.object.role.Resizable;
-import org.geomajas.graphics.client.object.base.BaseText;
 import org.geomajas.graphics.client.object.role.Textable;
-import org.geomajas.graphics.client.object.updateable.Updateable;
-import org.vaadin.gwtgraphics.client.VectorObject;
+import org.geomajas.graphics.client.render.Renderable;
 
 /**
  * Implementation of {@link Labeled} role with the {@link Updateable} interface.
- * The label is a {@link BaseText} that is positioned based on a {@link Resizable}.
+ * The label is a {@link BaseTextObject} that is positioned based on a {@link Resizable}.
  *
  * @author Jan De Moerloose
  * @author Jan Venstermans
@@ -31,13 +32,13 @@ public class LabeledImpl extends BaseGraphicsObject implements Labeled, Updateab
 
 	private Resizable resizable; // subject
 
-	private BaseText baseText;
+	private BaseTextObject baseText;
 
 	public LabeledImpl(Resizable resizableSubject, String label) {
-		this(resizableSubject, new BaseText(0, 0, label));
+		this(resizableSubject, new BaseTextObject(0, 0, label));
 	}
 
-	public LabeledImpl(Resizable resizableSubject, BaseText baseText) {
+	public LabeledImpl(Resizable resizableSubject, BaseTextObject baseText) {
 		this.resizable = resizableSubject;
 		this.baseText = baseText;
 
@@ -47,8 +48,8 @@ public class LabeledImpl extends BaseGraphicsObject implements Labeled, Updateab
 	}
 
 	@Override
-	public VectorObject asObject() {
-		return baseText.asObject();
+	public Renderable getRenderable() {
+		return baseText.getRenderable();
 	}
 	
 	@Override
@@ -58,13 +59,8 @@ public class LabeledImpl extends BaseGraphicsObject implements Labeled, Updateab
 
 	@Override
 	public Object cloneObject() {
-		LabeledImpl labeledCopy = new LabeledImpl(resizable, baseText.getLabel());
+		LabeledImpl labeledCopy = new LabeledImpl(resizable, baseText.getText());
 		return labeledCopy;
-	}
-
-	@Override
-	public void setOpacity(double opacity) {
-		baseText.setOpacity(opacity);
 	}
 
 	private void centerText() {

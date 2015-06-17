@@ -10,50 +10,13 @@
  */
 package org.geomajas.graphics.client.render;
 
-import org.geomajas.geometry.Bbox;
-
 /**
- * A non-scaling text that is anchored to its world space location on a specific pixel or anchor location (useful for
- * location markers).
+ * An anchored image.
  *
  * @author Jan De Moerloose
  * @author Jan Venstermans
  * 
  */
-public interface AnchoredImage {
+public interface AnchoredImage extends Anchored, BaseImage {
 
-	// user bounds
-
-	void setUserX(double x);
-	void setUserY(double y);
-	double getUserX();
-	double getUserY();
-	double getUserWidth();
-	double getUserHeight();
-
-	int getX();
-
-	int getY();
-
-	int getWidth();
-
-	int getHeight();
-
-	String getHref();
-
-	double getAnchorX();
-
-	double getAnchorY();
-
-	Bbox getUserBounds();
-
-	Bbox getBounds();
-
-	boolean isPreserveAspectRatio();
-
-	void setOpacity(double opacity);
-
-	void setUserWidth(double width);
-
-	void setUserHeight(double height);
 }

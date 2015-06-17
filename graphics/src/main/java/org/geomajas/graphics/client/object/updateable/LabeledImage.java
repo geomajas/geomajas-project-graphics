@@ -11,36 +11,71 @@
 package org.geomajas.graphics.client.object.updateable;
 
 import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.geometry.service.BboxService;
 import org.geomajas.graphics.client.Graphics;
-import org.geomajas.graphics.client.object.base.BaseImage;
+import org.geomajas.graphics.client.object.base.BaseImageObject;
 import org.geomajas.graphics.client.object.role.Draggable;
+import org.geomajas.graphics.client.object.role.Labeled;
 import org.geomajas.graphics.client.object.role.Resizable;
-import org.geomajas.graphics.client.object.updateable.labeled.Labeled;
 import org.geomajas.graphics.client.object.updateable.labeled.LabeledImpl;
 import org.geomajas.graphics.client.object.updateable.wrapper.DraggableWrapperForUpdateable;
 import org.geomajas.graphics.client.object.updateable.wrapper.ResizableWrapperForUpdateable;
-import org.geomajas.graphics.client.render.RenderableList;
+import org.geomajas.graphics.client.render.RenderContainer;
+import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.util.CopyUtil;
-import org.vaadin.gwtgraphics.client.VectorObject;
 
 /**
- * Extension of {@link org.geomajas.graphics.client.object.updateable.UpdateableGroupGraphicsObject}
- * that shows a text centered on a {@link BaseImage}.
+ * Extension of {@link org.geomajas.graphics.client.object.updateable.UpdateableGroupGraphicsObject} that shows a text
+ * centered on a {@link BaseImageObject}.
  *
  * @author Jan Venstermans
  *
  */
 public class LabeledImage extends UpdateableGroupGraphicsObject {
 
-	private RenderableList renderableList;
+	private RenderContainer renderContainer;
 
-	private BaseImage baseImage;
+	private BaseImageObject baseImage;
 
 	private LabeledImpl labeled;
 
-	public LabeledImage(int x, int y, int width, int height, String href, String text) {
+	/**
+	 * Create a labeled image with the specified user space bounds.
+	 * 
+	 * @param userbounds
+	 * @param href
+	 * @param text
+	 */
+	public LabeledImage(Bbox userbounds, String href, String text) {
+		this(BboxService.getCenterPoint(userbounds), (int) userbounds.getWidth(), (int) userbounds.getHeight(), href,
+				text);
+	}
+
+	/**
+	 * Create a labeled image with the specified center point in user space.
+	 * 
+	 * @param userbounds
+	 * @param href
+	 * @param text
+	 */
+	public LabeledImage(Coordinate centerPoint, int width, int height, String href, String text) {
+		this(centerPoint.getX(), centerPoint.getY(), width, height, href, text);
+	}
+
+	/**
+	 * Create a labeled image with specified user space dimensions.
+	 * 
+	 * @param x
+	 * @param y
+	 * @param width
+	 * @param height
+	 * @param href
+	 * @param text
+	 */
+	public LabeledImage(double x, double y, int width, int height, String href, String text) {
 		// create base graphics objects
-		baseImage = new BaseImage(x, y, width, height, href, true);
+		baseImage = new BaseImageObject(x, y, width, height, href, true);
 		labeled = new LabeledImpl(baseImage, text);
 
 		// register updateables
@@ -52,32 +87,26 @@ public class LabeledImage extends UpdateableGroupGraphicsObject {
 		addRole(Labeled.TYPE, labeled);
 
 		// register render order
-		renderableList = Graphics.getRenderElementFactory().createRenderableList();
-		renderableList.addRenderable(baseImage);
-		renderableList.addRenderable(labeled);
+		renderContainer = Graphics.getRenderElementFactory().createRenderContainer();
+		renderContainer.add(baseImage);
+		renderContainer.add(labeled);
 	}
 
 	@Override
 	public Object cloneObject() {
-		Bbox userBounds = baseImage.getUserBounds();
-		LabeledImage labeledImageClone = new LabeledImage((int) userBounds.getX(), (int) userBounds.getY(),
-				(int) userBounds.getWidth(), (int) userBounds.getHeight(),
-				baseImage.getHref(), labeled.getTextable().getLabel());
+		LabeledImage labeledImageClone = new LabeledImage(baseImage.getUserBounds(), baseImage.getHref(), labeled
+				.getTextable().getText());
 		CopyUtil.copyLabeledProperties(this.getRole(Labeled.TYPE), labeledImageClone.getRole(Labeled.TYPE));
 		return labeledImageClone;
 	}
 
-	//---------------------------------
+	// ---------------------------------
 	// render section
-	//---------------------------------
+	// ---------------------------------
 
 	@Override
-	public VectorObject asObject() {
-		return renderableList.asObject();
+	public Renderable getRenderable() {
+		return renderContainer;
 	}
 
-	@Override
-	public void setOpacity(double opacity) {
-		renderableList.setOpacity(opacity);
-	}
 }

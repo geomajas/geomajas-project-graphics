@@ -10,6 +10,7 @@
  */
 package org.geomajas.graphics.client.event;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.graphics.client.object.GraphicsObject;
 
 import com.google.web.bindery.event.shared.Event;
@@ -18,16 +19,20 @@ import com.google.web.bindery.event.shared.Event;
  * Event to signal adding/removing/updating graphics objects in the container.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
+@Api
 public class GraphicsObjectContainerEvent extends Event<GraphicsObjectContainerEvent.Handler> {
 
 	/**
 	 * CRUD Action type.
 	 * 
 	 * @author Jan De Moerloose
+	 * @since 1.0.0
 	 * 
 	 */
+	@Api
 	public enum ActionType {
 		ADD, REMOVE, UPDATE, CLEAR
 	}
@@ -36,20 +41,31 @@ public class GraphicsObjectContainerEvent extends Event<GraphicsObjectContainerE
 
 	private ActionType actionType;
 
-
 	public GraphicsObjectContainerEvent(ActionType actionType) {
 		this.actionType = actionType;
 	}
-	
+
 	public GraphicsObjectContainerEvent(GraphicsObject object, ActionType actionType) {
 		this.object = object;
 		this.actionType = actionType;
 	}
 
+	/**
+	 * Get the object.
+	 * 
+	 * @return
+	 */
+	@Api
 	public GraphicsObject getObject() {
 		return object;
 	}
 
+	/**
+	 * Get the type of action.
+	 * 
+	 * @return
+	 */
+	@Api
 	public ActionType getActionType() {
 		return actionType;
 	}
@@ -58,8 +74,10 @@ public class GraphicsObjectContainerEvent extends Event<GraphicsObjectContainerE
 	 * Handler for this event.
 	 * 
 	 * @author Jan De Moerloose
+	 * @since 1.0.0
 	 * 
 	 */
+	@Api(allMethods = true)
 	public interface Handler {
 
 		/**

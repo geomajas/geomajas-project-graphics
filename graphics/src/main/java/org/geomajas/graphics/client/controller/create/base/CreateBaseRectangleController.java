@@ -11,24 +11,24 @@
 package org.geomajas.graphics.client.controller.create.base;
 
 import org.geomajas.graphics.client.controller.create.CreateObjectByRectangleController;
-import org.geomajas.graphics.client.object.base.BaseRectangle;
+import org.geomajas.graphics.client.object.base.BaseRectangleObject;
 import org.geomajas.graphics.client.service.GraphicsService;
 
 /**
- * Controller that creates a {@link BaseRectangle}.
+ * Controller that creates a {@link BaseRectangleObject}.
  *
  * @author Jan Venstermans
  *
  */
 
-public class CreateBaseRectangleController extends CreateObjectByRectangleController<BaseRectangle> {
+public class CreateBaseRectangleController extends CreateObjectByRectangleController<BaseRectangleObject> {
 
 	public CreateBaseRectangleController(GraphicsService graphicsService) {
 		super(graphicsService);
 	}
 
 	@Override
-	protected BaseRectangle createObjectWithoutBounds() {
-		return new BaseRectangle(0, 0, 0, 0);
+	protected BaseRectangleObject createObjectWithoutBounds() {
+		return new BaseRectangleObject(0, 0, 0, 0);
 	}
 }

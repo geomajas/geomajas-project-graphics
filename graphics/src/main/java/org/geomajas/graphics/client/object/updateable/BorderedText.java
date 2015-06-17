@@ -11,37 +11,37 @@
 package org.geomajas.graphics.client.object.updateable;
 
 import org.geomajas.graphics.client.Graphics;
+import org.geomajas.graphics.client.object.base.BaseTextObject;
+import org.geomajas.graphics.client.object.role.Bordered;
 import org.geomajas.graphics.client.object.role.Draggable;
-import org.geomajas.graphics.client.object.base.BaseText;
 import org.geomajas.graphics.client.object.role.Fillable;
 import org.geomajas.graphics.client.object.role.Strokable;
 import org.geomajas.graphics.client.object.role.Textable;
-import org.geomajas.graphics.client.object.updateable.bordered.Bordered;
 import org.geomajas.graphics.client.object.updateable.bordered.BorderedImpl;
 import org.geomajas.graphics.client.object.updateable.wrapper.DraggableWrapperForUpdateable;
 import org.geomajas.graphics.client.object.updateable.wrapper.TextableWrapperForUpdateable;
-import org.geomajas.graphics.client.render.RenderableList;
+import org.geomajas.graphics.client.render.RenderContainer;
+import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.util.CopyUtil;
-import org.vaadin.gwtgraphics.client.VectorObject;
 
 /**
  * Extension of {@link org.geomajas.graphics.client.object.updateable.UpdateableGroupGraphicsObject}
- * that shows a text centered on a {@link org.geomajas.graphics.client.object.base.BaseRectangle}.
+ * that shows a text centered on a {@link org.geomajas.graphics.client.object.base.BaseRectangleObject}.
  *
  * @author Jan Venstermans
  *
  */
 public class BorderedText extends UpdateableGroupGraphicsObject {
 
-	private RenderableList renderableList;
+	private RenderContainer renderContainer;
 
-	private BaseText baseText;
+	private BaseTextObject baseText;
 
 	private BorderedImpl bordered;
 
 	public BorderedText(double userX, double userY, String text, int margin) {
 		// create base graphics objects
-		baseText = new BaseText(userX, userY, text);
+		baseText = new BaseTextObject(userX, userY, text);
 		bordered = new BorderedImpl(baseText, margin);
 
 		// register updateables
@@ -55,15 +55,15 @@ public class BorderedText extends UpdateableGroupGraphicsObject {
 		addRole(Bordered.TYPE, bordered);
 
 		// register render order
-		renderableList = Graphics.getRenderElementFactory().createRenderableList();
-		renderableList.addRenderable(bordered);
-		renderableList.addRenderable(baseText);
+		renderContainer = Graphics.getRenderElementFactory().createRenderContainer();
+		renderContainer.add(bordered);
+		renderContainer.add(baseText);
 	}
 
 	@Override
 	public Object cloneObject() {
-		BorderedText clone = new BorderedText(baseText.getUserX(),
-				baseText.getUserY(), baseText.getLabel(), bordered.getMargin());
+		BorderedText clone = new BorderedText(baseText.getUserPosition().getX(),
+				baseText.getUserPosition().getY(), baseText.getText(), bordered.getMargin());
 		CopyUtil.copyTextableProperties(this.getRole(Textable.TYPE), clone.getRole(Textable.TYPE));
 		CopyUtil.copyBorderedProperties(this.getRole(Bordered.TYPE), clone.getRole(Bordered.TYPE));
 		return clone;
@@ -73,13 +73,10 @@ public class BorderedText extends UpdateableGroupGraphicsObject {
 	// render section
 	//---------------------------------
 
-	@Override
-	public VectorObject asObject() {
-		return renderableList.asObject();
-	}
 
 	@Override
-	public void setOpacity(double opacity) {
-		renderableList.setOpacity(opacity);
+	public Renderable getRenderable() {
+		return renderContainer;
 	}
+
 }

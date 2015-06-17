@@ -10,6 +10,18 @@
  */
 package org.geomajas.graphics.client.controller.create.base;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.graphics.client.controller.create.CreateController;
+import org.geomajas.graphics.client.object.base.BasePath;
+import org.geomajas.graphics.client.object.role.Fillable;
+import org.geomajas.graphics.client.operation.AddOperation;
+import org.geomajas.graphics.client.render.RenderContainer;
+import org.geomajas.graphics.client.render.Renderable;
+import org.geomajas.graphics.client.service.GraphicsService;
+
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
@@ -18,20 +30,8 @@ import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.web.bindery.event.shared.HandlerRegistration;
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.graphics.client.controller.create.CreateController;
-import org.geomajas.graphics.client.object.base.BasePath;
-import org.geomajas.graphics.client.object.role.Fillable;
-import org.geomajas.graphics.client.operation.AddOperation;
-import org.geomajas.graphics.client.service.GraphicsService;
-import org.vaadin.gwtgraphics.client.VectorObjectContainer;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Controller that creates a {@link BasePath}.
@@ -50,7 +50,7 @@ public class CreateBasePathController extends CreateController<BasePath> impleme
 
 	private BasePath previewPath;
 
-	private VectorObjectContainer container;
+	private RenderContainer container;
 
 	private boolean closedPath;
 
@@ -67,14 +67,14 @@ public class CreateBasePathController extends CreateController<BasePath> impleme
 		this.closedPath = closedPath;
 		fillOpacity = closedPath ? 1 : 0;
 		showPreview = closedPath;
-		container = createContainer();
+		container = addContainer();
 	}
 
 	@Override
 	public void setActive(boolean active) {
 		super.setActive(active);
 		if (isActive()) {
-			container = createContainer();
+			container = addContainer();
 			registrations.add(getObjectContainer().addMouseDownHandler(this));
 		} else {
 			for (HandlerRegistration r : registrations) {
@@ -103,7 +103,7 @@ public class CreateBasePathController extends CreateController<BasePath> impleme
 
 	@Override
 	public void onDoubleClick(DoubleClickEvent event) {
-		release(path.asObject().getElement());
+		release(path.getRenderable());
 		container.clear();
 		addObject(path);
 		dragLine = null;
@@ -124,14 +124,14 @@ public class CreateBasePathController extends CreateController<BasePath> impleme
 		this.closedPath = closedPath;
 	}
 
-	protected void capture(Element element, Cursor cursor) {
-		DOM.setCapture(element);
+	protected void capture(Renderable renderable, Cursor cursor) {
+		renderable.capture();
 		captureCursor = RootPanel.getBodyElement().getStyle().getCursor();
 		RootPanel.getBodyElement().getStyle().setCursor(cursor);
 	}
 
-	protected void release(Element element) {
-		DOM.releaseCapture(element);
+	protected void release(Renderable renderable) {
+		renderable.releaseCapture();
 		RootPanel.getBodyElement().getStyle().setProperty("cursor", captureCursor);
 	}
 
@@ -148,23 +148,23 @@ public class CreateBasePathController extends CreateController<BasePath> impleme
 					// add the preview extra point !
 					previewPath.addCoordinate(new Coordinate(getUserCoordinate(event)));
 					previewPath.setFillOpacity(previewPath.getFillOpacity() * 0.7);
-					container.add(previewPath.asObject());
+					container.add(previewPath.getRenderable());
 				}
 				// we have to show our intermediate result !
-				container.add(path.asObject());
+				container.add(path.getRenderable());
 				// start the drag line, captures all events from now !
 				if (dragLine == null) {
 					dragLine = createPath();
 					dragLine.setStrokeOpacity(1);
-					container.add(dragLine.asObject());
+					container.add(dragLine.getRenderable());
 				}
 				Coordinate c1 = path.getLastCoordinate();
 				Coordinate c2 = getUserCoordinate(event);
 				dragLine.setCoordinates(new Coordinate[] { c1, c2 });
-				dragLine.asObject().addMouseMoveHandler(this);
-				dragLine.asObject().addMouseDownHandler(this);
-				dragLine.asObject().addDoubleClickHandler(this);
-				capture(dragLine.asObject().getElement(), Cursor.CROSSHAIR);
+				dragLine.getRenderable().addMouseMoveHandler(this);
+				dragLine.getRenderable().addMouseDownHandler(this);
+				dragLine.getRenderable().addDoubleClickHandler(this);
+				dragLine.getRenderable().capture();
 			} else {
 				path.addCoordinate(getUserCoordinate(event));
 				if (showPreview) {

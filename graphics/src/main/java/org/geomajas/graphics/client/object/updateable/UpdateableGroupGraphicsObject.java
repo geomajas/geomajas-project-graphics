@@ -10,10 +10,11 @@
  */
 package org.geomajas.graphics.client.object.updateable;
 
-import org.geomajas.graphics.client.object.BaseGraphicsObject;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.geomajas.graphics.client.object.BaseGraphicsObject;
+import org.geomajas.graphics.client.object.Updateable;
 
 /**
  * Extension of {@link BaseGraphicsObject} with {@link Updateable}.
@@ -25,7 +26,7 @@ import java.util.List;
 public abstract class UpdateableGroupGraphicsObject extends BaseGraphicsObject implements Updateable {
 
 	/**
-	 * List of {@link org.geomajas.graphics.client.object.updateable.Updateable} objects that will be
+	 * List of {@link org.geomajas.graphics.client.object.Updateable} objects that will be
 	 * called on {@link this#onUpdate()}.
 	 */
 	private List<Updateable> updateableList = new ArrayList<Updateable>();

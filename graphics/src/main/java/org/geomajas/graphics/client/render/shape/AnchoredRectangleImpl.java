@@ -10,8 +10,14 @@
  */
 package org.geomajas.graphics.client.render.shape;
 
+import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.geometry.service.BboxService;
+import org.geomajas.graphics.client.object.updateable.hasmarker.MarkerShape;
 import org.geomajas.graphics.client.render.AnchoredRectangle;
-import org.vaadin.gwtgraphics.client.VectorObject;
+import org.geomajas.graphics.client.render.Marker;
+import org.geomajas.graphics.client.render.Renderable;
+import org.geomajas.graphics.client.util.GraphicsUtil;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
 
 /**
@@ -21,15 +27,17 @@ import org.vaadin.gwtgraphics.client.shape.Rectangle;
  * @author Jan De Moerloose
  * 
  */
-public class AnchoredRectangleImpl extends Rectangle implements AnchoredRectangle {
+public class AnchoredRectangleImpl extends Rectangle implements AnchoredRectangle, Marker {
 
-	private int anchorX;
+	private VectorRenderable renderable;
 
-	private int anchorY;
+	private double anchorX;
+
+	private double anchorY;
 
 	/**
 	 * Creates an rectangle at the specified world location with a specified size and anchor point. E.g., if
-	 * (anchorX,anchorY)=(width/2, height/2), the center of the rectangle will be positioned at the world location.
+	 * (anchorX,anchorY)=(0.5, 0.5), the center of the rectangle will be positioned at the world location.
 	 * 
 	 * @param userX x-location in world coordinates
 	 * @param userY y-location in world coordinates
@@ -38,43 +46,76 @@ public class AnchoredRectangleImpl extends Rectangle implements AnchoredRectangl
 	 * @param anchorX x-location of the anchor point (rectangle-relative)
 	 * @param anchorY y-location of the anchor point (rectangle-relative)
 	 */
-	public AnchoredRectangleImpl(double userX, double userY, double userWidth, double userHeight,
-								 int anchorX, int anchorY) {
+	public AnchoredRectangleImpl(double userX, double userY, double userWidth, double userHeight, double anchorX,
+			double anchorY) {
 		super(userX, userY, userWidth, userHeight);
+		this.renderable = new VectorRenderable(this);
 		this.anchorX = anchorX;
 		this.anchorY = anchorY;
 	}
 
 	@Override
 	protected void drawTransformed() {
-		getImpl().setX(getElement(), (int) Math.round(getUserX() * getScaleX() + getDeltaX()) - anchorX, isAttached());
-		getImpl().setY(getElement(), (int) Math.round(getUserY() * getScaleY() + getDeltaY()) - anchorY, isAttached());
-		// don't scale, but have to set width/height here !
+		// calculate the screen bounds and take the upper-left corner in screen space
+		Bbox b = GraphicsUtil.transform(getUserBounds(), getScaleX(), getScaleY(), getDeltaX(), getDeltaY());
+		getImpl().setX(getElement(), (int) b.getX(), isAttached());
+		getImpl().setY(getElement(), (int) b.getY(), isAttached());
 		setWidth((int) getUserWidth());
 		setHeight((int) getUserHeight());
 	}
 
 	@Override
-	public Object cloneObject() {
-		return new AnchoredRectangleImpl(getUserX(), getUserY(), getUserWidth(), getUserHeight(), anchorX, anchorY);
-	}
-	
-	public int getAnchorX() {
-		return anchorX;
-	}
-
-	public int getAnchorY() {
-		return anchorX;
+	public Coordinate getAnchor() {
+		return new Coordinate(anchorX, anchorY);
 	}
 
 	@Override
-	public VectorObject asObject() {
-		return this;
+	public void setAnchor(Coordinate anchor) {
+		this.anchorX = anchor.getX();
+		this.anchorY = anchor.getY();
+		drawTransformed();
 	}
 
 	@Override
-	public void setOpacity(double opacity) {
-		setFillOpacity(opacity);
-		setStrokeOpacity(opacity);
+	public Renderable getRenderable() {
+		return renderable;
 	}
+
+	@Override
+	public void setUserPosition(Coordinate position) {
+		setUserX(position.getX());
+		setUserY(position.getY());
+	}
+
+	@Override
+	public Coordinate getUserPosition() {
+		return new Coordinate(getUserX(), getUserY());
+	}
+
+	@Override
+	public void setUserBounds(Bbox bounds) {
+		setUserWidth(bounds.getWidth());
+		setUserHeight(bounds.getHeight());
+		Coordinate center = BboxService.getCenterPoint(bounds);
+		setUserX(center.getX() + anchorX * getUserWidth());
+		setUserY(center.getY() + anchorY * getUserHeight());
+	}
+
+	@Override
+	public Bbox getUserBounds() {
+		double centerX = getUserX() - anchorX * getUserWidth();
+		double centerY = getUserY() - anchorY * getUserHeight();
+		return new Bbox(centerX - 0.5 * getUserWidth(), centerY - 0.5 * getUserHeight(), getUserWidth(),
+				getUserHeight());
+	}
+
+	@Override
+	public Bbox getBounds() {
+		return new Bbox(getX(), getY(), getWidth(), getHeight());
+	}
+
+	public MarkerShape getMarkerShape() {
+		return MarkerShape.SQUARE;
+	}
+
 }

@@ -15,12 +15,12 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.Graphics;
 import org.geomajas.graphics.client.object.BaseGraphicsObject;
 import org.geomajas.graphics.client.object.role.Draggable;
-import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.object.role.Fillable;
+import org.geomajas.graphics.client.object.role.Resizable;
 import org.geomajas.graphics.client.object.role.Strokable;
 import org.geomajas.graphics.client.render.AnchoredRectangle;
+import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.util.FlipState;
-import org.vaadin.gwtgraphics.client.VectorObject;
 
 /**
  * Extension of {@link org.geomajas.graphics.client.object.BaseGraphicsObject} for a rectangle.
@@ -46,19 +46,19 @@ public class MarginBaseRectangle extends BaseGraphicsObject implements Resizable
 
 	@Override
 	public void setUserPosition(Coordinate position) {
-		rectangle.setUserX(position.getX());
-		rectangle.setUserY(position.getY());
+		rectangle.setUserPosition(position);
 	}
 
 	@Override
 	public Coordinate getUserPosition() {
-		return new Coordinate(rectangle.getUserX(), rectangle.getUserY());
+		return rectangle.getUserPosition();
 	}
 
 	@Override
 	public Object cloneObject() {
 		AnchoredRectangle mask = Graphics.getRenderElementFactory().createAnchoredRectangle(
-				rectangle.getUserX(), rectangle.getUserY(), rectangle.getUserWidth(), rectangle.getUserHeight(), 0, 0);
+				rectangle.getUserPosition().getX(), rectangle.getUserPosition().getY(),
+				rectangle.getUserBounds().getWidth(), rectangle.getUserBounds().getHeight(), 0, 0);
 		return new MarginBaseRectangle(mask);
 	}
 
@@ -69,10 +69,7 @@ public class MarginBaseRectangle extends BaseGraphicsObject implements Resizable
 
 	@Override
 	public void setUserBounds(Bbox bounds) {
-		rectangle.setUserX(bounds.getX());
-		rectangle.setUserY(bounds.getY());
-		rectangle.setUserWidth(bounds.getWidth());
-		rectangle.setUserHeight(bounds.getHeight());
+		rectangle.setUserBounds(bounds);
 	}
 
 	@Override
@@ -87,21 +84,17 @@ public class MarginBaseRectangle extends BaseGraphicsObject implements Resizable
 
 	@Override
 	public Bbox getUserBounds() {
-		return new Bbox(rectangle.getUserX(), rectangle.getUserY(), rectangle.getUserWidth(),
-				rectangle.getUserHeight());
+		return rectangle.getUserBounds();
 	}
 
 	@Override
 	public Bbox getBounds() {
-		return new Bbox(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
+		return rectangle.getBounds();
 	}
 
 	@Override
-	public VectorObject asObject() {
-		if (rectangle instanceof VectorObject) {
-			return (VectorObject) rectangle;
-		}
-		return null;
+	public Renderable getRenderable() {
+		return rectangle.getRenderable();
 	}
 
 	@Override
@@ -154,9 +147,4 @@ public class MarginBaseRectangle extends BaseGraphicsObject implements Resizable
 		rectangle.setStrokeOpacity(opacity);
 	}
 
-	@Override
-	public void setOpacity(double opacity) {
-		setFillOpacity(opacity);
-		setStrokeOpacity(opacity);
-	}
 }

@@ -10,6 +10,13 @@
  */
 package org.geomajas.graphics.client.editor;
 
+import org.geomajas.graphics.client.object.GraphicsObject;
+import org.geomajas.graphics.client.object.RoleType;
+import org.geomajas.graphics.client.object.role.Textable;
+import org.geomajas.graphics.client.operation.LabelOperation;
+import org.geomajas.graphics.client.resource.GraphicsResource;
+import org.geomajas.graphics.client.util.textbox.ColorTextBoxValidator;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -22,12 +29,6 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.mogaleaf.client.common.widgets.ColorHandler;
 import com.mogaleaf.client.common.widgets.SimpleColorPicker;
-import org.geomajas.graphics.client.object.GraphicsObject;
-import org.geomajas.graphics.client.object.RoleType;
-import org.geomajas.graphics.client.object.role.Textable;
-import org.geomajas.graphics.client.operation.LabelOperation;
-import org.geomajas.graphics.client.resource.GraphicsResource;
-import org.geomajas.graphics.client.util.textbox.ColorTextBoxValidator;
 
 /**
  * {@link org.geomajas.graphics.client.editor.Editor} for the
@@ -99,8 +100,8 @@ public class TextableEditor extends AbstractRoleEditor<Textable> {
 	protected void setRoleObjectValuesToWidget() {
 		Textable textable = getRoleObject();
 		if (textable != null) {
-			labelBox.setVisibleLines(Math.min(30, Math.max(textable.getLabel().length() / 50, 1)));
-			labelBox.setText(textable.getLabel());
+			labelBox.setVisibleLines(Math.min(30, Math.max(textable.getText().length() / 50, 1)));
+			labelBox.setText(textable.getText());
 			fillColorValidator.setLabel(textable.getFontColor());
 			fontSize.setText(textable.getFontSize() + "");
 			fontFamily.setText(textable.getFontFamily());
@@ -110,7 +111,7 @@ public class TextableEditor extends AbstractRoleEditor<Textable> {
 	public void onOk() {
 		Textable textable = getRoleObject();
 		if (textable != null) {
-			String beforeLabel = textable.getLabel();
+			String beforeLabel = textable.getText();
 			String beforeColor = textable.getFontColor();
 			int beforeSize = textable.getFontSize();
 			String beforeFont = textable.getFontFamily();

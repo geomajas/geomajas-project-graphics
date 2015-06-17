@@ -10,26 +10,39 @@
  */
 package org.geomajas.graphics.client.object.role;
 
-
+import org.geomajas.annotation.Api;
 import org.geomajas.graphics.client.object.RoleInterface;
 import org.geomajas.graphics.client.object.RoleType;
 import org.geomajas.graphics.client.util.HasFont;
 
 /**
- * Implemented by Textable graphics objects.
- * It differs from labeled: Labeled role is an updateable aware role (same level as Renderable);
- * Textable is for the properties of the text itself.
+ * Implemented by Textable graphics objects. It differs from labeled: Labeled role is an updateable aware role (same
+ * level as Renderable); Textable is for the properties of the text itself.
  * 
  * @author Jan Venstermans
+ * @since 1.0.0
  * 
  */
+@Api(allMethods = true)
 public interface Textable extends RoleInterface, HasFont {
-	
+
+	/**
+	 * The role type.
+	 */
 	RoleType<Textable> TYPE = new RoleType<Textable>("Textable");
 
-	void setLabel(String label);
+	/**
+	 * Set the label text.
+	 * 
+	 * @param label
+	 */
+	void setText(String label);
 
-	String getLabel();
-
+	/**
+	 * Get the label text.
+	 * 
+	 * @return
+	 */
+	String getText();
 
 }

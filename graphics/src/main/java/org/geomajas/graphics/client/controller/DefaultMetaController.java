@@ -10,6 +10,23 @@
  */
 package org.geomajas.graphics.client.controller;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.geometry.service.BboxService;
+import org.geomajas.graphics.client.event.GraphicsObjectContainerEvent;
+import org.geomajas.graphics.client.object.GraphicsObject;
+import org.geomajas.graphics.client.object.base.BaseRectangleObject;
+import org.geomajas.graphics.client.object.role.Draggable;
+import org.geomajas.graphics.client.object.role.HtmlRenderable;
+import org.geomajas.graphics.client.object.role.Resizable;
+import org.geomajas.graphics.client.render.RenderContainer;
+import org.geomajas.graphics.client.service.GraphicsService;
+
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
@@ -19,24 +36,7 @@ import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.user.client.DOM;
 import com.google.web.bindery.event.shared.HandlerRegistration;
-import org.geomajas.geometry.Bbox;
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.geometry.service.BboxService;
-import org.geomajas.graphics.client.event.GraphicsObjectContainerEvent;
-import org.geomajas.graphics.client.object.GraphicsObject;
-import org.geomajas.graphics.client.object.base.BaseRectangle;
-import org.geomajas.graphics.client.object.role.Draggable;
-import org.geomajas.graphics.client.object.role.HtmlRenderable;
-import org.geomajas.graphics.client.object.role.Resizable;
-import org.geomajas.graphics.client.service.GraphicsService;
-import org.vaadin.gwtgraphics.client.VectorObjectContainer;
-
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Default implementation of {@link MetaController}.
@@ -47,7 +47,7 @@ import java.util.Map;
 public class DefaultMetaController extends AbstractInterruptibleGraphicsController
 		implements MetaController, MouseDownHandler, DoubleClickHandler, GraphicsObjectContainerEvent.Handler {
 
-	private VectorObjectContainer container;
+	private RenderContainer container;
 
 	private Map<GraphicsObject, List<GraphicsController>> controllers;
 
@@ -69,7 +69,7 @@ public class DefaultMetaController extends AbstractInterruptibleGraphicsControll
 			if (isActive()) {
 				// for activation of objects
 				for (GraphicsObject object : getObjectContainer().getObjects()) {
-					registrations.add(object.asObject().addMouseDownHandler(this));
+					registrations.add(object.getRenderable().addMouseDownHandler(this));
 					if (object.hasRole(HtmlRenderable.TYPE)) {
 						registrations.add(object.getRole(HtmlRenderable.TYPE).asWidget()
 								.addDomHandler(this, MouseDownEvent.getType()));
@@ -186,7 +186,7 @@ public class DefaultMetaController extends AbstractInterruptibleGraphicsControll
 			}
 		}
 		if (isActive()) {
-			registrations.add(object.asObject().addMouseDownHandler(this));
+			registrations.add(object.getRenderable().addMouseDownHandler(this));
 			if (object.hasRole(HtmlRenderable.TYPE)) {
 				registrations.add(object.getRole(HtmlRenderable.TYPE).asWidget()
 						.addDomHandler(this, MouseDownEvent.getType()));
@@ -217,7 +217,7 @@ public class DefaultMetaController extends AbstractInterruptibleGraphicsControll
 	 */
 	public class BackGroundHandler implements MouseDownHandler, MouseMoveHandler, MouseUpHandler {
 
-		private BaseRectangle dragRectangle;
+		private BaseRectangleObject dragRectangle;
 
 		private Coordinate begin;
 
@@ -227,16 +227,16 @@ public class DefaultMetaController extends AbstractInterruptibleGraphicsControll
 			// start a drag selection !
 			begin = getUserCoordinate(event);
 			if (dragRectangle == null) {
-				dragRectangle = new BaseRectangle(0, 0, 0, 0);
+				dragRectangle = new BaseRectangleObject(0, 0, 0, 0);
 				dragRectangle.setStrokeColor("#696969");
 				dragRectangle.setFillOpacity(0);
 				dragRectangle.setUserBounds(new Bbox(begin.getX(), begin.getY(), 0, 0));
-				dragRectangle.asObject().addMouseMoveHandler(this);
-				dragRectangle.asObject().addMouseUpHandler(this);
-				container = createContainer();
-				container.add(dragRectangle.asObject());
+				dragRectangle.getRenderable().addMouseMoveHandler(this);
+				dragRectangle.getRenderable().addMouseUpHandler(this);
+				container = addContainer();
+				container.add(dragRectangle.getRenderable());
 			}
-			DOM.setCapture(dragRectangle.asObject().getElement());
+			dragRectangle.getRenderable().capture();
 		}
 
 		@Override
@@ -266,8 +266,8 @@ public class DefaultMetaController extends AbstractInterruptibleGraphicsControll
 
 					}
 				}
-				DOM.releaseCapture(dragRectangle.asObject().getElement());
-				container.remove(dragRectangle.asObject());
+				dragRectangle.getRenderable().releaseCapture();
+				dragRectangle.getRenderable().removeFromParent();
 				dragRectangle = null;
 				removeContainer(container);
 				event.stopPropagation();

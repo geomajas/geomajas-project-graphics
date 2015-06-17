@@ -10,60 +10,54 @@
  */
 package org.geomajas.graphics.client.service.objectcontainer;
 
-import com.google.gwt.event.dom.client.HasAllMouseHandlers;
-import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
-import com.google.gwt.event.dom.client.MouseEvent;
-import com.google.web.bindery.event.shared.HandlerRegistration;
+import java.util.List;
+
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.event.GraphicsObjectContainerEvent;
 import org.geomajas.graphics.client.event.GraphicsOperationEvent;
 import org.geomajas.graphics.client.object.GraphicsObject;
+import org.geomajas.graphics.client.render.RenderArea;
+import org.geomajas.graphics.client.render.RenderContainer;
+import org.geomajas.graphics.client.render.RenderSpace;
 import org.geomajas.graphics.client.service.HasAllMouseAndClickHandlers;
 import org.geomajas.graphics.client.util.BboxPosition;
-import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 
-import java.util.List;
+import com.google.gwt.event.dom.client.HumanInputEvent;
+import com.google.gwt.event.dom.client.MouseEvent;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 
 /**
  * Container of graphics objects.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  * 
  */
-public interface GraphicsObjectContainer extends HasAllMouseHandlers, HasClickHandlers, HasDoubleClickHandlers {
+@Api(allMethods = true)
+public interface GraphicsObjectContainer extends RenderContainer {
 
 	/**
-	 * User/screen space as known by GWT graphics objects.
+	 * Get the render area of this container.
 	 * 
-	 * @author Jan De Moerloose
-	 * 
+	 * @return
 	 */
-	enum Space {
-		USER, SCREEN
-	}
+	RenderArea getRenderArea();
+
+	/**
+	 * Set the render area of this container/.
+	 * 
+	 * @param renderArea
+	 */
+	void setRenderArea(RenderArea renderArea);
 
 	/**
 	 * Create a new container for rendering graphics (used by controllers).
 	 * 
 	 * @return a new container
 	 */
-	VectorObjectContainer createContainer();
-
-	/**
-	 * Remove this container from the root container.
-	 * 
-	 * @param container
-	 */
-	void removeContainer(VectorObjectContainer container);
-
-	/**
-	 * Add this container from the root container.
-	 *
-	 * @param container
-	 */
-	void bringContainerToFront(VectorObjectContainer container);
+	RenderContainer createContainer();
 
 	/**
 	 * Get all the objects of this container.
@@ -75,8 +69,7 @@ public interface GraphicsObjectContainer extends HasAllMouseHandlers, HasClickHa
 	/**
 	 * Add an object to the container.
 	 * 
-	 * @param object
-	 *            the object
+	 * @param object the object
 	 */
 	void add(GraphicsObject object);
 
@@ -118,7 +111,7 @@ public interface GraphicsObjectContainer extends HasAllMouseHandlers, HasClickHa
 	 * @param event
 	 * @return
 	 */
-	Coordinate getScreenCoordinate(MouseEvent<?> event);
+	Coordinate getScreenCoordinate(HumanInputEvent<?> event);
 
 	/**
 	 * Get the background as an observable for mouse events. All events that are not captured by one of the objects are
@@ -129,16 +122,16 @@ public interface GraphicsObjectContainer extends HasAllMouseHandlers, HasClickHa
 	HasAllMouseAndClickHandlers getBackGround();
 
 	/**
-	 * Get the object group as an observable for mouse events. All events that are captured by one of the objects are
-	 * sent.
+	 * Get the object container as an observable for mouse events. All events that are captured by one of the objects
+	 * are sent.
 	 * 
 	 * @return
 	 */
-	HasAllMouseAndClickHandlers getObjectGroup();
+	HasAllMouseAndClickHandlers getObjectContainer();
 
-	//-----------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------
 	// TRANSFORMATIONS
-	//-----------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------
 
 	/**
 	 * Transform a coordinate between user/screen space.
@@ -148,7 +141,7 @@ public interface GraphicsObjectContainer extends HasAllMouseHandlers, HasClickHa
 	 * @param to
 	 * @return
 	 */
-	Coordinate transform(Coordinate coordinate, Space from, Space to);
+	Coordinate transform(Coordinate coordinate, RenderSpace from, RenderSpace to);
 
 	/**
 	 * Transform a bounding box between user/screen space.
@@ -158,7 +151,7 @@ public interface GraphicsObjectContainer extends HasAllMouseHandlers, HasClickHa
 	 * @param to
 	 * @return
 	 */
-	Bbox transform(Bbox bounds, Space from, Space to);
+	Bbox transform(Bbox bounds, RenderSpace from, RenderSpace to);
 
 	/**
 	 * Transform a bounding box position between user/screen space.
@@ -168,11 +161,11 @@ public interface GraphicsObjectContainer extends HasAllMouseHandlers, HasClickHa
 	 * @param to
 	 * @return
 	 */
-	BboxPosition transform(BboxPosition position, Space from, Space to);
+	BboxPosition transform(BboxPosition position, RenderSpace from, RenderSpace to);
 
-	//-----------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------
 	// MouseEvent ANALYSIS
-	//-----------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------
 
 	/**
 	 * Check if this event has an object as its source.
@@ -184,6 +177,7 @@ public interface GraphicsObjectContainer extends HasAllMouseHandlers, HasClickHa
 
 	/**
 	 * Get the source object of this event (or null if the event was not fired by an object).
+	 * 
 	 * @param event
 	 * @return
 	 */
@@ -191,15 +185,15 @@ public interface GraphicsObjectContainer extends HasAllMouseHandlers, HasClickHa
 
 	/**
 	 * Check if this event has the background as its source.
+	 * 
 	 * @param event
 	 * @return
 	 */
 	boolean isBackGround(MouseEvent<?> event);
 
-	//-----------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------
 	// HandlerRegistration
-	//-----------------------------------------------------------------------------
-
+	// -----------------------------------------------------------------------------
 
 	/**
 	 * Add a handler that listens to CRUD operations on {@link GraphicsObject} objects.
