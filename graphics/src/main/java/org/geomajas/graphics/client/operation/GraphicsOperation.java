@@ -36,6 +36,11 @@ public interface GraphicsOperation {
 	 */
 	void undo();
 
+	/**
+	 * Get the graphics object.
+	 * 
+	 * @return
+	 */
 	GraphicsObject getObject();
 
 	/**
@@ -52,8 +57,17 @@ public interface GraphicsOperation {
 	 * 
 	 */
 	public enum Type {
+		/**
+		 * Update an object.
+		 */
 		UPDATE, // update an object
+		/**
+		 * Add an object.
+		 */
 		ADD, // add an object
+		/**
+		 * Remove an object.
+		 */
 		REMOVE // remove an object
 	}
 }

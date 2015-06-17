@@ -12,7 +12,6 @@ package org.geomajas.graphics.client.object.updateable.wrapper;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.graphics.client.object.Updateable;
-import org.geomajas.graphics.client.object.updateable.hasmarker.MarkerShape;
 import org.geomajas.graphics.client.render.Marker;
 import org.geomajas.graphics.client.render.Renderable;
 
@@ -94,13 +93,7 @@ public class MarkerWrapperForUpdateable implements Marker {
 	public void setUserPosition(Coordinate position) {
 		delegate.setUserPosition(position);
 		updateable.onUpdate();
-	}
-
-	@Override
-	public MarkerShape getMarkerShape() {
-		return delegate.getMarkerShape();
-	}
-	
+	}	
 	
 
 }

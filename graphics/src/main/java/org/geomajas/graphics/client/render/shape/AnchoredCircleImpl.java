@@ -13,7 +13,7 @@ package org.geomajas.graphics.client.render.shape;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.service.BboxService;
-import org.geomajas.graphics.client.object.role.Cloneable;
+import org.geomajas.graphics.client.object.role.IsCloneable;
 import org.geomajas.graphics.client.object.updateable.hasmarker.MarkerShape;
 import org.geomajas.graphics.client.render.AnchoredCircle;
 import org.geomajas.graphics.client.render.Marker;
@@ -28,7 +28,7 @@ import org.vaadin.gwtgraphics.client.shape.Circle;
  * @author Jan De Moerloose
  * 
  */
-public class AnchoredCircleImpl extends Circle implements Cloneable, AnchoredCircle, Marker {
+public class AnchoredCircleImpl extends Circle implements IsCloneable, AnchoredCircle, Marker {
 
 	private double anchorX;
 
@@ -120,7 +120,6 @@ public class AnchoredCircleImpl extends Circle implements Cloneable, AnchoredCir
 		return new Bbox(getX() - getRadius(), getY() - getRadius(), 2 * getRadius(), 2 * getRadius());
 	}
 
-	@Override
 	public MarkerShape getMarkerShape() {
 		return MarkerShape.CIRCLE;
 	}

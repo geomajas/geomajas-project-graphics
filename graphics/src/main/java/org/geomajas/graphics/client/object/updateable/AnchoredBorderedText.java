@@ -22,6 +22,7 @@ import org.geomajas.graphics.client.object.updateable.bordered.BorderedImpl;
 import org.geomajas.graphics.client.object.updateable.hasmarker.HasMarkerImpl;
 import org.geomajas.graphics.client.object.updateable.hasmarker.MarkerShape;
 import org.geomajas.graphics.client.object.updateable.wrapper.DraggableWrapperForUpdateable;
+import org.geomajas.graphics.client.object.updateable.wrapper.HasMarkerWrapperForUpdateable;
 import org.geomajas.graphics.client.object.updateable.wrapper.TextableWrapperForUpdateable;
 import org.geomajas.graphics.client.render.RenderContainer;
 import org.geomajas.graphics.client.render.Renderable;
@@ -63,7 +64,7 @@ public class AnchoredBorderedText extends UpdateableGroupGraphicsObject {
 		addRole(Strokable.TYPE, bordered.getStrokable());
 		addRole(Fillable.TYPE, bordered.getFillable());
 		addRole(Bordered.TYPE, bordered);
-		addRole(HasMarker.TYPE, anchored);
+		addRole(HasMarker.TYPE, new HasMarkerWrapperForUpdateable(anchored, this));
 
 		// register render order
 		renderContainer = Graphics.getRenderElementFactory().createRenderContainer();
@@ -76,7 +77,7 @@ public class AnchoredBorderedText extends UpdateableGroupGraphicsObject {
 	public Object cloneObject() {
 		AnchoredBorderedText clone = new AnchoredBorderedText(new Coordinate(baseText.getUserX(),
 				baseText.getUserY()), baseText.getText(), bordered.getMargin(), anchored.getMarker().getUserPosition(),
-				anchored.getMarker().getMarkerShape());
+				anchored.getMarkerShape());
 		CopyUtil.copyAnchoredProperties(this.getRole(HasMarker.TYPE), clone.getRole(HasMarker.TYPE));
 		CopyUtil.copyTextableProperties(this.getRole(Textable.TYPE), clone.getRole(Textable.TYPE));
 		CopyUtil.copyBorderedProperties(this.getRole(Bordered.TYPE), clone.getRole(Bordered.TYPE));

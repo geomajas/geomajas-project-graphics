@@ -20,7 +20,7 @@ import org.geomajas.annotation.Api;
  * 
  */
 @Api(allMethods = true)
-public interface Cloneable {
+public interface IsCloneable {
 
 	/**
 	 * Clone the object (deep clone).

@@ -56,6 +56,7 @@ public interface Editor extends IsWidget {
 
 	/**
 	 * Returns a label for the editor. TODO: extend with icon, tooltip..
+	 * 
 	 * @return
 	 */
 	String getLabel();
@@ -66,10 +67,23 @@ public interface Editor extends IsWidget {
 	 * @return
 	 */
 	boolean validate();
-	
+
+	/**
+	 * Undo the operation.
+	 */
 	void undo();
-	
+
+	/**
+	 * Set the icon url of the action.
+	 * 
+	 * @param url
+	 */
 	void setIconUrl(String url);
-	
+
+	/**
+	 * Get the icon url of the action.
+	 * 
+	 * @return
+	 */
 	String getIconUrl();
 }

@@ -106,7 +106,6 @@ public class AnchoredCrossImpl extends Path implements Marker {
 		setUserY(position.getY());
 	}
 
-	@Override
 	public MarkerShape getMarkerShape() {
 		return MarkerShape.CROSS;
 	}

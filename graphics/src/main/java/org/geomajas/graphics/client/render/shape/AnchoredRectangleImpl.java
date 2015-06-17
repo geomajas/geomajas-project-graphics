@@ -114,7 +114,6 @@ public class AnchoredRectangleImpl extends Rectangle implements AnchoredRectangl
 		return new Bbox(getX(), getY(), getWidth(), getHeight());
 	}
 
-	@Override
 	public MarkerShape getMarkerShape() {
 		return MarkerShape.SQUARE;
 	}

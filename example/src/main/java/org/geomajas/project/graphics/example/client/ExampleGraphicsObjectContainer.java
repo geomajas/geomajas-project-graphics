@@ -64,7 +64,7 @@ public class ExampleGraphicsObjectContainer extends GraphicsObjectContainerImpl
 		Event.addNativePreviewHandler(this);
 
 		// graphics objects
-		LabeledRectangle rect = new LabeledRectangle(700, 50, 100, 100, "Rectangle label");
+		LabeledRectangle rect = new LabeledRectangle(700, 250, 100, 100, "Rectangle label");
 		BaseCircleObject circle = new BaseCircleObject(300, 100, 50);
 		LabeledEllipse ellipse = new LabeledEllipse(100, 300, 50, 80, "Ellipse");
 		LabeledImage image = new LabeledImage(200, 200, 200, 235,

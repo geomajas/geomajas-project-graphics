@@ -95,7 +95,7 @@ public class VectorRenderElementFactoryImpl implements RenderElementFactory {
 	@Override
 	public BaseImage createImage(double userX, double userY, int width, int height, String href, //
 			boolean preserveRatio) {
-		return new BaseImageImpl(userX, userY, width, height, href);
+		return new BaseImageImpl(userX, userY, width, height, href, preserveRatio);
 	}
 
 	@Override

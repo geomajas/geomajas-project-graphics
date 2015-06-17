@@ -46,8 +46,8 @@ public class BaseRectangleImpl extends Rectangle implements BaseRectangle {
 		Bbox b = GraphicsUtil.transform(getUserBounds(), getScaleX(), getScaleY(), getDeltaX(), getDeltaY());
 		getImpl().setX(getElement(), (int) b.getX(), isAttached());
 		getImpl().setY(getElement(), (int) b.getY(), isAttached());
-		setWidth((int) getUserWidth());
-		setHeight((int) getUserHeight());
+		setWidth((int) b.getWidth());
+		setHeight((int) b.getHeight());
 	}
 
 	@Override

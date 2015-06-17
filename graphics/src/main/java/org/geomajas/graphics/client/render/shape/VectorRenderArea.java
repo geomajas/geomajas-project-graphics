@@ -73,6 +73,26 @@ public class VectorRenderArea implements RenderArea {
 		rootGroup.setScale(scaleX, scaleY);
 	}
 
+	@Override
+	public double getDeltaX() {
+		return rootGroup.getDeltaX();
+	}
+
+	@Override
+	public double getDeltaY() {
+		return rootGroup.getDeltaY();
+	}
+
+	@Override
+	public double getScaleX() {
+		return rootGroup.getScaleX();
+	}
+
+	@Override
+	public double getScaleY() {
+		return rootGroup.getScaleY();
+	}
+
 	public DrawingArea getDrawingArea() {
 		return drawingArea;
 	}

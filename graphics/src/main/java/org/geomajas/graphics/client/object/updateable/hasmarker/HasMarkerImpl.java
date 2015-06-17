@@ -86,4 +86,8 @@ public class HasMarkerImpl extends UpdateableGroupGraphicsObject implements HasM
 	public Marker getMarker() {
 		return marker;
 	}
+
+	public MarkerShape getMarkerShape() {
+		return marker.getMarkerShape();
+	}
 }

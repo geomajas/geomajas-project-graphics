@@ -21,7 +21,14 @@ import org.geomajas.annotation.Api;
  */
 @Api(allMethods = true)
 public enum RenderSpace {
+	/**
+	 * User space (assumes y-axis upward).
+	 */
 	USER, // user space
+	
+	/**
+	 * Screen space (pixel dimensions, origin in upper-left corner, y-axis downward).
+	 */
 	SCREEN; // screen space
 
 }

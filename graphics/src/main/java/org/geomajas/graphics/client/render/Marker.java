@@ -10,7 +10,7 @@
  */
 package org.geomajas.graphics.client.render;
 
-import org.geomajas.graphics.client.object.updateable.hasmarker.MarkerShape;
+import org.geomajas.annotation.Api;
 import org.geomajas.graphics.client.util.HasFill;
 import org.geomajas.graphics.client.util.HasPosition;
 import org.geomajas.graphics.client.util.HasStroke;
@@ -19,10 +19,16 @@ import org.geomajas.graphics.client.util.HasStroke;
  * 
  * @author Jan De Moerloose
  *
+ * @since 1.0.0
  */
+@Api(allMethods = true)
 public interface Marker extends HasPosition, HasFill, HasStroke, IsRenderable {
 
+	/**
+	 * Set the visibility of the marker.
+	 * 
+	 * @param visible
+	 */
 	void setVisible(boolean visible);
 
-	MarkerShape getMarkerShape();
 }

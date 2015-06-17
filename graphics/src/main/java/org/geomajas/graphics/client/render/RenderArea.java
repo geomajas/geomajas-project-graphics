@@ -66,8 +66,7 @@ public interface RenderArea extends RenderContainer, IsWidget {
 	Coordinate transform(Coordinate coordinate, RenderSpace from, RenderSpace to);
 
 	/**
-	 * Set the translation part of the user-to-screen transformation. Y-axis points down for the default
-	 * implementation.
+	 * Set the translation part of the user-to-screen transformation. Y-axis points down for the default implementation.
 	 * 
 	 * @param deltaX distance in x direction
 	 * @param deltaY distance in y direction
@@ -82,5 +81,33 @@ public interface RenderArea extends RenderContainer, IsWidget {
 	 * @param scaleY scale factor in the y-direction
 	 */
 	void setScale(double scaleX, double scaleY);
+
+	/**
+	 * Get the current scale factor in the X-direction.
+	 * 
+	 * @return
+	 */
+	double getScaleX();
+
+	/**
+	 * Get the current scale factor in the Y-direction.
+	 * 
+	 * @return
+	 */
+	double getScaleY();
+
+	/**
+	 * Get the translation distance in the x-direction.
+	 * 
+	 * @return
+	 */
+	double getDeltaX();
+
+	/**
+	 * Get the translation distance in the y-direction.
+	 * 
+	 * @return
+	 */
+	double getDeltaY();
 
 }

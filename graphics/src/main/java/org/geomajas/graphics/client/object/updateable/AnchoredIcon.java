@@ -18,6 +18,7 @@ import org.geomajas.graphics.client.object.role.Draggable;
 import org.geomajas.graphics.client.object.updateable.hasmarker.HasMarkerImpl;
 import org.geomajas.graphics.client.object.updateable.hasmarker.MarkerShape;
 import org.geomajas.graphics.client.object.updateable.wrapper.DraggableWrapperForUpdateable;
+import org.geomajas.graphics.client.object.updateable.wrapper.HasMarkerWrapperForUpdateable;
 import org.geomajas.graphics.client.render.RenderContainer;
 import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.util.CopyUtil;
@@ -48,7 +49,7 @@ public class AnchoredIcon extends UpdateableGroupGraphicsObject {
 
 		// register roles of group object
 		addRole(Draggable.TYPE, new DraggableWrapperForUpdateable(baseIcon, this));
-		addRole(HasMarker.TYPE, anchored);
+		addRole(HasMarker.TYPE, new HasMarkerWrapperForUpdateable(anchored, this));
 
 		// register render order
 		renderContainer = Graphics.getRenderElementFactory().createRenderContainer();
@@ -60,7 +61,7 @@ public class AnchoredIcon extends UpdateableGroupGraphicsObject {
 	public Object cloneObject() {
 		AnchoredIcon clone = new AnchoredIcon(baseIcon.getUserPosition(), (int) baseIcon.getUserBounds().getWidth(),
 				(int) baseIcon.getUserBounds().getHeight(), baseIcon.getHref(), anchored.getMarker().getUserPosition(),
-				anchored.getMarker().getMarkerShape());
+				anchored.getMarkerShape());
 		CopyUtil.copyAnchoredProperties(this.getRole(HasMarker.TYPE), clone.getRole(HasMarker.TYPE));
 		return clone;
 	}

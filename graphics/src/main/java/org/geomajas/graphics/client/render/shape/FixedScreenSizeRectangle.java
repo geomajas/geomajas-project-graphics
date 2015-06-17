@@ -13,7 +13,7 @@ package org.geomajas.graphics.client.render.shape;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.service.BboxService;
-import org.geomajas.graphics.client.object.role.Cloneable;
+import org.geomajas.graphics.client.object.role.IsCloneable;
 import org.geomajas.graphics.client.util.GraphicsUtil;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
 
@@ -25,7 +25,7 @@ import org.vaadin.gwtgraphics.client.shape.Rectangle;
  * @author Jan De Moerloose
  * 
  */
-public class FixedScreenSizeRectangle extends Rectangle implements Cloneable {
+public class FixedScreenSizeRectangle extends Rectangle implements IsCloneable {
 
 	private double anchorX;
 

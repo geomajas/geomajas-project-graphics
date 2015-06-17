@@ -32,8 +32,6 @@ public final class Graphics {
 
 	private static RenderElementFactory renderElementFactory;
 
-	private static GraphicsConstants graphicsConstants;
-
 	private Graphics() {
 	}
 
@@ -77,18 +75,6 @@ public final class Graphics {
 	 */
 	public static void setRenderElementFactory(RenderElementFactory renderElementFactory) {
 		Graphics.renderElementFactory = renderElementFactory;
-	}
-
-	/**
-	 * Get the graphics constants.
-	 * 
-	 * @return
-	 */
-	public static GraphicsConstants getGraphicsConstants() {
-		if (graphicsConstants == null) {
-			graphicsConstants = new GraphicsConstants();
-		}
-		return graphicsConstants;
 	}
 
 	/**
