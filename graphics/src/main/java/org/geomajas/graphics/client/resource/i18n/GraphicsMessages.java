@@ -32,6 +32,8 @@ public interface GraphicsMessages extends Messages {
 
 	String actionLabelAddTextAnchor();
 
+	String actionLabelRotate();
+
 	/* Editor labels */
 
 	String editorLabelTextable();

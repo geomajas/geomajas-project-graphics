@@ -57,19 +57,26 @@ public abstract class AbstractDragHandler implements MouseDownHandler, MouseUpHa
 	 * VectorObject that will be set invisible. It contains the area where you can click for starting to drag.
 	 */
 	private Renderable invisibleClickArea;
-
+	
+	/**
+	 * Service.
+	 */
 	private GraphicsService service;
 
 	/**
-	 * begin position in user coordinates (double, double)
+	 * Drag start (=mouse down) in user coordinates (double, double)
 	 */
-	private Coordinate beginPositionUser;
+	private Coordinate dragStartUser;
 
-	private int beginPositionScreenX;
+	/**
+	 * Drag stop (=mouse up) in user coordinates (double, double)
+	 */
+	private Coordinate dragStopUser;
 
-	private int beginPositionScreenY;
-
-	private Coordinate userBegin;
+	/**
+	 * begin position of object in user coordinates (double, double)
+	 */
+	private Coordinate beginPosition;
 
 	private String captureCursor;
 
@@ -107,7 +114,7 @@ public abstract class AbstractDragHandler implements MouseDownHandler, MouseUpHa
 		if (!dragging) {
 			capture(invisibleClickArea, Cursor.MOVE);
 			setDragging(true);
-			onDragStart(event.getClientX(), event.getClientY());
+			onDragStart(getService().getObjectContainer().getScreenCoordinate(event));
 			if (draggingMask != null) { // may happen in unusual scenario where
 				// mouse-up is not called
 				draggingMask.getRenderable().removeFromParent();
@@ -121,8 +128,9 @@ public abstract class AbstractDragHandler implements MouseDownHandler, MouseUpHa
 	@Override
 	public void onMouseMove(MouseMoveEvent event) {
 		if (dragging) {
-			mouseMoveContent(event);
-			onDragContinue();
+			Coordinate dragContinueUser = getService().getObjectContainer().getUserCoordinate(event);
+			graphicsHandler.updateHandlers();
+			onDragContinue(dragContinueUser);
 		}
 	}
 
@@ -133,7 +141,7 @@ public abstract class AbstractDragHandler implements MouseDownHandler, MouseUpHa
 			setDragging(false);
 			draggingMask.getRenderable().removeFromParent();
 			draggingMask = null;
-			onDragStop(event.getClientX(), event.getClientY());
+			onDragStop(getService().getObjectContainer().getScreenCoordinate(event));
 			release(invisibleClickArea);
 		}
 	}
@@ -146,8 +154,16 @@ public abstract class AbstractDragHandler implements MouseDownHandler, MouseUpHa
 		return invisibleClickArea;
 	}
 
-	public Coordinate getBeginPositionUser() {
-		return beginPositionUser;
+	public Coordinate getBeginPosition() {
+		return beginPosition;
+	}
+
+	public Coordinate getDragStartUser() {
+		return dragStartUser;
+	}
+
+	public Coordinate getDragStopUser() {
+		return dragStopUser;
 	}
 
 	public GraphicsObject getObject() {
@@ -178,9 +194,9 @@ public abstract class AbstractDragHandler implements MouseDownHandler, MouseUpHa
 
 	protected abstract Coordinate getObjectPosition();
 
-	protected abstract GraphicsOperation createGraphicsOperation(Coordinate before, Coordinate after);
+	protected abstract GraphicsOperation createGraphicsOperation(Coordinate dragStartUser, Coordinate dragStopUser);
 
-	protected abstract void mouseMoveContent(MouseMoveEvent event);
+	protected abstract void onDragContinue(Coordinate c);
 
 	// --------------------------------------------
 	// protected methods
@@ -197,34 +213,24 @@ public abstract class AbstractDragHandler implements MouseDownHandler, MouseUpHa
 		}
 	}
 
-	protected void onDragStart(int x, int y) {
-		beginPositionScreenX = x;
-		beginPositionScreenY = y;
-		userBegin = service.getObjectContainer().transform(new Coordinate(x, y), RenderSpace.SCREEN, RenderSpace.USER);
-		beginPositionUser = (Coordinate) getObjectPosition().clone();
+	protected void onDragStart(Coordinate c) {
+		dragStartUser = service.getObjectContainer().transform(c, RenderSpace.SCREEN, RenderSpace.USER);
+		beginPosition = (Coordinate) getObjectPosition().clone();
 	}
 
-	protected void onDragContinue() {
+	protected void onDragStop(Coordinate c) {
 		graphicsHandler.updateHandlers();
+		dragStopUser = service.getObjectContainer().transform(c, RenderSpace.SCREEN, RenderSpace.USER); 
+		performOperation(dragStartUser, dragStopUser);
 	}
 
-	protected void onDragStop(int x, int y) {
-		onDragContinue();
-		if (x != beginPositionScreenX && y != beginPositionScreenY) {
-			performOperation(beginPositionUser, getNewPosition(x, y));
-		}
+	protected Coordinate shiftPosition(Coordinate start, Coordinate stop) {
+		return new Coordinate(getBeginPosition().getX() + stop.getX() - start.getX(), getBeginPosition().getY()
+				+ stop.getY() - start.getY());
 	}
 
-	private void performOperation(Coordinate before, Coordinate after) {
-		service.execute(createGraphicsOperation(before, after));
-	}
-
-	protected Coordinate getNewPosition(int x, int y) {
-		Coordinate userEnd = service.getObjectContainer().transform(new Coordinate(x, y), RenderSpace.SCREEN,
-				RenderSpace.USER);
-		double dx = userEnd.getX() - userBegin.getX();
-		double dy = userEnd.getY() - userBegin.getY();
-		return new Coordinate(beginPositionUser.getX() + dx, beginPositionUser.getY() + dy);
+	private void performOperation(Coordinate dragStartUser, Coordinate dragStopUser) {
+		service.execute(createGraphicsOperation(dragStartUser, dragStopUser));
 	}
 
 	protected void setDragging(boolean draggingNewValue) {

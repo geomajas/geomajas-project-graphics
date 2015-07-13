@@ -396,6 +396,11 @@ public class GraphicsObjectContainerImpl implements GraphicsObjectContainer {
 	}
 
 	@Override
+	public Coordinate getUserCoordinate(HumanInputEvent<?> event) {
+		return transform(renderArea.getScreenCoordinate(event), RenderSpace.SCREEN, RenderSpace.USER);
+	}
+
+	@Override
 	public Coordinate transform(Coordinate coordinate, RenderSpace from, RenderSpace to) {
 		return renderArea.transform(coordinate, from, to);
 	}

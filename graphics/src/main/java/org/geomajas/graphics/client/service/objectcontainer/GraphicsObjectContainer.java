@@ -112,6 +112,14 @@ public interface GraphicsObjectContainer extends RenderContainer {
 	 * @return
 	 */
 	Coordinate getScreenCoordinate(HumanInputEvent<?> event);
+	
+	/**
+	 * Get the user coordinate of this event.
+	 * 
+	 * @param event
+	 * @return
+	 */
+	Coordinate getUserCoordinate(HumanInputEvent<?> event);
 
 	/**
 	 * Get the background as an observable for mouse events. All events that are not captured by one of the objects are

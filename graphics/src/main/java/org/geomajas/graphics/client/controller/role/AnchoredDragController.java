@@ -17,15 +17,14 @@ import org.geomajas.graphics.client.controller.drag.AbstractDragHandler;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.object.role.HasMarker;
 import org.geomajas.graphics.client.object.updateable.hasmarker.MarkerShape;
-import org.geomajas.graphics.client.operation.MarkerPositionOperation;
 import org.geomajas.graphics.client.operation.GraphicsOperation;
+import org.geomajas.graphics.client.operation.MarkerPositionOperation;
 import org.geomajas.graphics.client.render.Marker;
 import org.geomajas.graphics.client.render.RenderContainer;
 import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.service.GraphicsService;
 
 import com.google.gwt.dom.client.Style.Cursor;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
 
 /**
  * Controller to drag the anchor of an {@link HasMarker} role.
@@ -116,7 +115,7 @@ public class AnchoredDragController extends UpdateHandlerGraphicsControllerWithV
 		protected GraphicsObject createDraggingMask() {
 			GraphicsObject maskObject = (GraphicsObject) getObject().cloneObject();
 			maskObject.getRenderable().setOpacity(0.5);
-			maskObject.getRole(HasMarker.TYPE).getMarker().setUserPosition(getBeginPositionUser());
+			maskObject.getRole(HasMarker.TYPE).getMarker().setUserPosition(getBeginPosition());
 			return maskObject;
 		}
 
@@ -126,14 +125,15 @@ public class AnchoredDragController extends UpdateHandlerGraphicsControllerWithV
 		}
 
 		@Override
-		protected GraphicsOperation createGraphicsOperation(Coordinate before, Coordinate after) {
-			return new MarkerPositionOperation(getObject(), before, after);
+		protected GraphicsOperation createGraphicsOperation(Coordinate dragStartUser, Coordinate dragStopUser) {
+			Coordinate newPosition = shiftPosition(dragStartUser, dragStopUser);
+			return new MarkerPositionOperation(getObject(), getBeginPosition(), newPosition);
 		}
 
 		@Override
-		protected void mouseMoveContent(MouseMoveEvent event) {
-			Coordinate newAnchorPosition = getNewPosition(event.getClientX(), event.getClientY());
-			getDraggingMask().getRole(HasMarker.TYPE).getMarker().setUserPosition(newAnchorPosition);
+		protected void onDragContinue(Coordinate dragContinueUser) {
+			Coordinate newPosition = shiftPosition(getDragStartUser(), dragContinueUser);
+			getDraggingMask().getRole(HasMarker.TYPE).getMarker().setUserPosition(newPosition);
 		}
 
 	}

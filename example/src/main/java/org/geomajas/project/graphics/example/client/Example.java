@@ -18,6 +18,7 @@ import org.geomajas.graphics.client.Graphics;
 import org.geomajas.graphics.client.action.BringToFrontAction;
 import org.geomajas.graphics.client.action.DeleteAction;
 import org.geomajas.graphics.client.action.DuplicateAction;
+import org.geomajas.graphics.client.action.RotateAction;
 import org.geomajas.graphics.client.controller.create.base.CreateBaseCircleByRadiusController;
 import org.geomajas.graphics.client.controller.create.base.CreateBaseCircleByRectangleController;
 import org.geomajas.graphics.client.controller.create.base.CreateBaseEllipseController;
@@ -191,6 +192,7 @@ public class Example implements EntryPoint {
 		PopupMenuControllerFactory popupFactory = new PopupMenuControllerFactory();
 		// register actions
 		popupFactory.registerAction(new DeleteAction());
+		popupFactory.registerAction(new RotateAction());
 		popupFactory.registerEditor(new TextableEditor());
 		popupFactory.registerEditor(new LabeledEditor());
 		popupFactory.registerEditor(new StrokeFillEditor());

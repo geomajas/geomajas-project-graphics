@@ -56,8 +56,8 @@ public class DragControllerTest {
 		ResizeController r = new ResizeController(m, service);
 		GraphicsObjectDragHandler h = new GraphicsObjectDragHandler(m, service, r);
 
-		h.onDragStart(100, 100);
-		h.onDragStop(105, 110);
+		h.onDragStart(new Coordinate(100, 100));
+		h.onDragStop(new Coordinate(105, 110));
 
 		Assert.assertTrue(m.getUserPosition().equalsDelta(new Coordinate(10, 16), DOUBLE_DELTA));
 		service.undo();

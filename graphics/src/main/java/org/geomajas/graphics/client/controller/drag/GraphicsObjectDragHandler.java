@@ -20,9 +20,9 @@ import org.geomajas.graphics.client.operation.DragOperation;
 import org.geomajas.graphics.client.operation.GraphicsOperation;
 import org.geomajas.graphics.client.render.Renderable;
 import org.geomajas.graphics.client.service.GraphicsService;
+import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainer;
 
 import com.google.gwt.dom.client.Style.Cursor;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
 
 /**
  * Extension of {@link AbstractDragHandler} with a {@link BaseRectangleObject} for an invisible mask.
@@ -35,9 +35,12 @@ public class GraphicsObjectDragHandler extends AbstractDragHandler {
 	
 	private BaseRectangleObject invisbleMaskGraphicsObject;
 
+	private GraphicsObjectContainer objectContainer;
+
 	public GraphicsObjectDragHandler(GraphicsObject object, GraphicsService service,
 			UpdateHandlerGraphicsController graphicsController) {
 		super(object, service, graphicsController);
+		objectContainer = service.getObjectContainer();
 	}
 
 	@Override
@@ -60,7 +63,7 @@ public class GraphicsObjectDragHandler extends AbstractDragHandler {
 	protected GraphicsObject createDraggingMask() {
 		GraphicsObject maskObject = (GraphicsObject) getObject().cloneObject();
 		maskObject.getRenderable().setOpacity(0.5);
-		maskObject.getRole(Draggable.TYPE).setUserPosition(getBeginPositionUser());
+		maskObject.getRole(Draggable.TYPE).setUserPosition(getBeginPosition());
 		return maskObject;
 	}
 
@@ -70,15 +73,15 @@ public class GraphicsObjectDragHandler extends AbstractDragHandler {
 	}
 
 	@Override
-	protected GraphicsOperation createGraphicsOperation(Coordinate before,
-			Coordinate after) {
-		return new DragOperation(getObject(), before, after);
+	protected GraphicsOperation createGraphicsOperation(Coordinate dragStartUser, Coordinate dragStopUser) {
+		Coordinate newPosition = shiftPosition(dragStartUser, dragStopUser);
+		return new DragOperation(getObject(), getBeginPosition(), newPosition);
 	}
 
 	@Override
-	protected void mouseMoveContent(MouseMoveEvent event) {
-		getDraggingMask().getRole(Draggable.TYPE).setUserPosition(
-				getNewPosition(event.getClientX(), event.getClientY()));
+	protected void onDragContinue(Coordinate dragContinueUser) {
+		Coordinate newPosition = shiftPosition(getDragStartUser(), dragContinueUser);
+		getDraggingMask().getRole(Draggable.TYPE).setUserPosition(newPosition);
 	}
 
 	public GraphicsObject getInvisbleMaskGraphicsObject() {
