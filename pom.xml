@@ -171,7 +171,7 @@
         <!-- maven plugin dependencies-->
 		<graphics-version-maven-compiler-plugin>2.3.2</graphics-version-maven-compiler-plugin>
 		<graphics-version-maven-javadoc-plugin>2.9.1</graphics-version-maven-javadoc-plugin>
-		<graphics-version-maven-jetty-plugin>6.1.20</graphics-version-maven-jetty-plugin>
+		<graphics-version-maven-jetty-plugin>8.1.9.v20130131</graphics-version-maven-jetty-plugin>
 		<graphics-version-cargo-maven2-plugin>1.2.1</graphics-version-cargo-maven2-plugin>
         <!-- other dependencies-->
 		<graphics-version-commons-codec>1.7</graphics-version-commons-codec>
